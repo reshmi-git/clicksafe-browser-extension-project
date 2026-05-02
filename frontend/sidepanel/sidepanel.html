@@ -479,14 +479,6 @@
     </div>
     </div>
     <div class="header-right">
-      <span class="conn-pill checking" id="conn-pill">
-        <span class="conn-dot pulsing"></span>
-        <span id="conn-text">Checking</span>
-      </span>
-      <span class="conn-pill backend-checking" id="backend-pill" title="ClickSafe backend status">
-        <span class="conn-dot pulsing" id="backend-dot"></span>
-        <span id="backend-text">API</span>
-      </span>
       <button class="icon-btn" id="dashboard-btn" title="Dashboard">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
@@ -498,7 +490,19 @@
 
   <!-- SCORE -->
   <div class="score-section">
-    <div class="mono-label">Privacy Score</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <div class="mono-label" style="margin-bottom:0;">Privacy Score</div>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <span class="conn-pill checking" id="conn-pill">
+          <span class="conn-dot pulsing"></span>
+          <span id="conn-text">Checking</span>
+        </span>
+        <span class="conn-pill backend-checking" id="backend-pill" title="ClickSafe backend status">
+          <span class="conn-dot pulsing" id="backend-dot"></span>
+          <span id="backend-text">API</span>
+        </span>
+      </div>
+    </div>
     <div class="score-layout">
       <div class="score-ring-wrap">
         <div class="score-ring">
