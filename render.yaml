@@ -1,0 +1,32 @@
+# render.yaml — Render.com Infrastructure as Code
+# Commit this file to your repo root.  When you create a new Render service
+# and point it at this repo, Render will read this file automatically.
+#
+# Render docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: clicksafe-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free          # upgrade to "starter" for always-on (no cold starts)
+    envVars:
+      - key: GOOGLE_SAFE_BROWSING_API_KEY
+        sync: false     # set this manually in the Render dashboard — never commit the key
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        sync: false     # generate a strong random secret and set in Render dashboard
+      - key: DB_HOST
+        sync: false     # your MySQL host (e.g. from PlanetScale or Railway)
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+    healthCheckPath: /api/health
