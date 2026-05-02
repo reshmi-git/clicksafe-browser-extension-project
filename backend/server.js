@@ -1,5 +1,14 @@
 // dotenv MUST be configured before any other require() that reads process.env
 require("dotenv").config();
+process.on('uncaughtException', err => {
+  console.error('[ClickSafe] CRASH:', err.message);
+  console.error(err.stack);
+  process.exit(1);
+});
+process.on('unhandledRejection', reason => {
+  console.error('[ClickSafe] UNHANDLED REJECTION:', reason);
+  process.exit(1);
+});
 
 const express = require("express");
 const path    = require("path");
