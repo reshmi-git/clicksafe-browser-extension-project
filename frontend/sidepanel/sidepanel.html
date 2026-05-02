@@ -98,6 +98,36 @@
     .conn-pill.backend-offline { color: var(--red-bright); border-color: rgba(193,18,31,0.3); background: rgba(193,18,31,0.08); }
     .conn-pill.backend-checking { color: #6B7280; border-color: var(--border-dark); background: #f5f5f5; }
 
+    /* Pills inside the dark score section — override to white/transparent */
+    .score-section .conn-pill {
+      color: #374151 !important;
+      border-color: rgba(0,0,0,0.12) !important;
+      background: #ffffff !important;
+    }
+    .score-section .conn-dot {
+      background: #9ca3af !important;
+    }
+    .score-section .conn-pill.secure .conn-dot,
+    .score-section .conn-pill.backend-online .conn-dot {
+      background: #86efac !important;
+    }
+    .score-section .conn-pill.insecure .conn-dot,
+    .score-section .conn-pill.backend-offline .conn-dot {
+      background: #fca5a5 !important;
+    }
+    .score-section .conn-pill.secure,
+    .score-section .conn-pill.backend-online {
+      color: #16a34a !important;
+      box-shadow: 0 0 8px 2px rgba(134,239,172,0.55), 0 0 2px 1px rgba(134,239,172,0.3) !important;
+      border-color: rgba(22,163,74,0.3) !important;
+    }
+    .score-section .conn-pill.insecure,
+    .score-section .conn-pill.backend-offline {
+      color: #c1121f !important;
+      box-shadow: 0 0 8px 2px rgba(252,165,165,0.55), 0 0 2px 1px rgba(252,165,165,0.3) !important;
+      border-color: rgba(193,18,31,0.3) !important;
+    }
+
     .conn-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -128,7 +158,7 @@
     /* SCORE SECTION */
     .score-section {
       background: linear-gradient(135deg, rgba(189,108,108,0.85) 0%, #0d0d0d 100%);
-      padding: 14px 14px 16px;
+      padding: 16px 14px 22px;
       border-bottom: none;
       box-shadow: 0 4px 16px rgba(193,18,31,0.18);
     }
@@ -141,7 +171,7 @@
       margin-bottom: 12px;
     }
 
-    .score-layout { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+    .score-layout { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; margin-top: 10px; }
 
     .score-ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
