@@ -3,185 +3,614 @@
 <head>
   <meta charset="UTF-8" />
   <title>ClickSafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap');
+
+    :root {
+      --dark:             #0d0d0d;
+      --dark-2:           #141414;
+      --dark-3:           #1a1a1a;
+      --light:            #ffffff;
+      --mid:              #f8f8f8;
+      --red:              #C1121F;
+      --red-bright:       #C1121F;
+      --red-dim:          #FEE8EA;
+      --text-dark:        #111111;
+      --text-muted:       #6B7280;
+      --text-light:       #111111;
+      --text-light-muted: #6B7280;
+      --border-light:     rgba(0,0,0,0.08);
+      --border-dark:      rgba(0,0,0,0.08);
+      --font-display:     'DM Serif Display', Georgia, serif;
+      --font-body:        'Satoshi', system-ui, sans-serif;
+      --font-mono:        'Space Mono', monospace;
+      --orange:           #FF9600;
+      --orange-dark:      #CC7700;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      background: #f9fafb; height: 100vh; overflow-y: auto; overflow-x: hidden;
+      font-family: var(--font-body);
+      background: #f8f8f8;
+      color: #111111;
+      font-size: 9px;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 99px; }
+
+    /* HEADER */
     .header {
-      background: #1e40af; color: white; padding: 14px 16px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 10;
+      background: #ffffff;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-    .header-left { display: flex; align-items: center; gap: 10px; }
-    .header h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
-    .header-sub { font-size: 11px; opacity: 0.75; margin-top: 1px; }
-    .settings-btn {
-      background: rgba(255,255,255,0.15); border: none; color: white;
-      width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
-      font-size: 15px; display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
+
+    .header-brand { display: flex; align-items: center; gap: 8px; }
+
+    .brand-icon {
+      width: 27px; height: 27px;
+      background: var(--red-bright);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-    .settings-btn:hover { background: rgba(255,255,255,0.25); }
+
+    .brand-icon svg { width: 14px; height: 14px; fill: white; }
+
+    .brand-name {
+      font-family: var(--font-body);
+      font-size: 17px; font-weight: 700;
+      letter-spacing: -0.2px;
+      color: #111111;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 6px; }
+
+    .conn-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 999px;
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.5px; font-weight: 700;
+      white-space: nowrap; border: 1px solid;
+    }
+
+    .conn-pill.secure   { color: #16a34a; border-color: rgba(22,163,74,0.3); background: rgba(22,163,74,0.08); }
+    .conn-pill.insecure { color: var(--red-bright); border-color: rgba(193,18,31,0.3); background: rgba(193,18,31,0.08); }
+    .conn-pill.checking { color: #6B7280; border-color: var(--border-dark); background: rgba(0,0,0,0.04); }
+    .conn-pill.backend-online  { color: #16a34a; border-color: rgba(22,163,74,0.3); background: rgba(22,163,74,0.08); }
+    .conn-pill.backend-offline { color: var(--red-bright); border-color: rgba(193,18,31,0.3); background: rgba(193,18,31,0.08); }
+    .conn-pill.backend-checking { color: #6B7280; border-color: var(--border-dark); background: #f5f5f5; }
+
+    .conn-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .conn-dot.pulsing { animation: pulse 1.5s ease-in-out infinite; }
+
+    .icon-btn {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.10);
+      background: #f5f5f5;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .icon-btn:hover { background: #eeeeee; border-color: rgba(0,0,0,0.15); }
+    .icon-btn svg { width: 17px; height: 17px; fill: #6B7280; }
+
+    /* SCORE SECTION */
     .score-section {
-      padding: 16px; border-bottom: 1px solid #e5e7eb;
-      display: flex; align-items: center; gap: 16px; background: white;
+      background: linear-gradient(135deg, rgba(189,108,108,0.85) 0%, #0d0d0d 100%);
+      padding: 14px 14px 16px;
+      border-bottom: none;
+      box-shadow: 0 4px 16px rgba(193,18,31,0.18);
     }
-    .gauge-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
-    .gauge-wrap svg { width: 76px; height: 76px; transform: rotate(-90deg); }
-    .gauge-bg  { fill: none; stroke: #e5e7eb; stroke-width: 8; }
-    .gauge-arc {
-      fill: none; stroke-width: 8; stroke-linecap: round;
-      transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;
+
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 12px;
     }
-    .gauge-text {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; pointer-events: none;
+
+    .score-layout { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+
+    .score-ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+
+    .score-ring { position: relative; width: 86px; height: 86px; flex-shrink: 0; }
+
+    .score-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+
+    .g-track { fill: none; stroke: rgba(193,18,31,0.15); stroke-width: 5; }
+    .g-fill  { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.34,1.2,.64,1), stroke 0.4s; }
+
+    .score-ring-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
     }
-    .gauge-number { font-size: 19px; font-weight: 700; line-height: 1; }
-    .gauge-label  { font-size: 9px; color: #9ca3af; margin-top: 2px; letter-spacing: 0.04em; }
-    .score-info { flex: 1; min-width: 0; }
-    .score-info h2 { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
-    .score-verdict { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-    .score-desc    { font-size: 11px; color: #6b7280; line-height: 1.4; }
-    .section { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; background: white; }
-    .section-title { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; font-weight: 600; }
-    .page-url { font-size: 11px; color: #374151; word-break: break-all; background: #f3f4f6; padding: 7px 10px; border-radius: 6px; line-height: 1.4; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; margin-top: 8px; }
-    .badge.secure   { background: #dcfce7; color: #15803d; }
-    .badge.insecure { background: #fee2e2; color: #dc2626; }
-    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #374151; }
-    .stat-row:last-child { border-bottom: none; }
-    .stat-label { display: flex; align-items: center; gap: 6px; }
-    .stat-value { font-weight: 700; font-size: 15px; color: #1e40af; min-width: 24px; text-align: right; }
-    .stat-value.danger { color: #dc2626; }
-    .cookie-item { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 9px 10px; margin-bottom: 6px; font-size: 12px; }
-    .cookie-domain { font-weight: 700; color: #dc2626; display: block; margin-bottom: 2px; font-size: 11px; }
-    .cookie-name { color: #6b7280; font-size: 10px; display: block; }
-    .cookie-reasons { margin-top: 5px; padding-top: 5px; border-top: 1px solid #e5e7eb; display: flex; flex-wrap: wrap; gap: 4px; }
-    .reason-tag { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px; font-size: 10px; }
-    .section-gap { height: 6px; background: #f3f4f6; }
-    .footer { padding: 12px 16px; text-align: center; font-size: 10px; color: #9ca3af; background: #f9fafb; border-top: 1px solid #e5e7eb; }
-    .btn-row { display: flex; gap: 8px; padding: 12px 16px; background: white; border-bottom: 1px solid #e5e7eb; }
-    .btn-action {
-      flex: 1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600;
-      cursor: pointer; border: none; text-align: center; font-family: inherit;
+
+    .score-num { font-family: var(--font-display); font-size: 28px; color: #ffffff; line-height: 1; }
+    .score-denom { font-family: var(--font-mono); font-size: 9px; color: rgba(255,255,255,0.85); margin-top: 1px; }
+    .score-verdict { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase; color: #ffffff; text-align: center; }
+    .score-delta { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.5px; text-align: center; margin-top: 3px; min-height: 11px; transition: opacity 0.3s; }
+    .score-delta:empty { opacity: 0; }
+    .score-delta.up   { color: #16a34a; }
+    .score-delta.down { color: var(--red-bright); }
+    .score-delta.same { color: #6B7280; }
+
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+
+    .stat-box {
+      background: #ffffff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 7px;
+      padding: 7px 9px;
     }
-    .btn-dashboard { background: #1e40af; color: white; }
-    .btn-settings  { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+
+    .stat-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.5px; color: #6B7280; text-transform: uppercase; }
+    .stat-val { font-family: var(--font-display); font-size: 21px; color: #111111; line-height: 1.1; }
+    /* STREAK */
+    .streak-section {
+      background: #ffffff;
+      padding: 7px 14px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .streak-label { font-family: var(--font-mono); font-size: 11px; color: #9CA3AF; white-space: nowrap; }
+
+    .streak-bars { display: flex; gap: 3px; flex: 1; align-items: center; }
+
+    .sbar { flex: 1; height: 3px; border-radius: 999px; background: rgba(0,0,0,0.08); }
+    .sbar.done   { background: var(--red); }
+    .sbar.active { background: var(--red-bright); }
+
+
+
+    /* REASON BAR */
+    .reason-bar {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reason-icon {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .reason-icon.up   { color: #16a34a; }
+    .reason-icon.down { color: var(--red-bright); }
+    .reason-icon.same { color: #6B7280; }
+
+    .reason-text {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.4px;
+      color: #6B7280;
+    }
+
+        /* WHO'S WATCHING — light */
+    .light-section {
+      background: var(--light);
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .light-section .mono-label { color: #8B0000; font-weight: 700; }
+
+    .section-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .detail-btn {
+      background: var(--mid); border: 1px solid var(--border-light);
+      border-radius: 6px; width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .detail-btn:hover { border-color: var(--red); background: rgba(193,18,31,0.05); }
+    .detail-btn svg { width: 16px; height: 16px; stroke: var(--text-muted); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    /* Company cards */
+    .company-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 11px;
+      background: #fafafa; border: 1px solid var(--border-light);
+      border-left: 3px solid transparent; border-radius: 8px;
+      margin-bottom: 6px; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .company-card:last-child { margin-bottom: 0; }
+    .company-card:hover { background: white; border-color: rgba(189,108,108,0.3); }
+    .company-card.t1 { border-left-color: var(--red-bright); }
+    .company-card.t2 { border-left-color: var(--orange); }
+    .company-card.t3 { border-left-color: #60a5fa; }
+
+    .company-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 700; flex-shrink: 0;
+    }
+
+    .company-avatar.t1 { background: rgba(193,18,31,0.1); color: var(--red-bright); }
+    .company-avatar.t2 { background: rgba(255,150,0,0.1); color: var(--orange-dark); }
+    .company-avatar.t3 { background: rgba(96,165,250,0.1); color: #2563eb; }
+
+    .company-body { flex: 1; min-width: 0; }
+    .company-name { font-size: 15px; font-weight: 600; color: var(--text-dark); letter-spacing: -0.1px; }
+    .company-what { font-size: 11px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .tier-badge {
+      font-family: var(--font-mono); font-size: 9px;
+      padding: 2px 6px; border-radius: 99px; flex-shrink: 0;
+    }
+
+    .tier-badge.t1 { background: rgba(193,18,31,0.1); color: var(--red-bright); }
+    .tier-badge.t2 { background: rgba(255,150,0,0.1); color: var(--orange-dark); }
+    .tier-badge.t3 { background: rgba(96,165,250,0.1); color: #2563eb; }
+
+    /* Empty state */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 18px 0 6px; text-align: center; gap: 6px;
+    }
+
+    .empty-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(22,163,74,0.08); border: 1px solid rgba(74,222,128,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+
+    .empty-title { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+    .empty-sub { font-size: 9px; color: var(--text-muted); }
+
+    /* Detail view (back face) */
+    .detail-view { display: none; }
+
+    .detail-sublabel {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 10px 0 6px;
+    }
+
+    .detail-sublabel:first-child { margin-top: 0; }
+
+    .detail-list { display: flex; flex-direction: column; gap: 5px; max-height: 260px; overflow-y: auto; }
+
+    .cookie-domain-group {
+      background: #fafafa; border: 1px solid var(--border-light);
+      border-radius: 8px; padding: 8px 10px;
+    }
+
+    .cookie-domain-header {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 5px;
+    }
+
+    .domain-initial {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--red-dim); color: var(--red-bright);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 700; flex-shrink: 0;
+    }
+
+    .cookie-entry {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 3px 0; border-top: 1px solid var(--border-light); gap: 6px;
+    }
+
+    .cookie-entry:first-of-type { border-top: none; }
+    .cookie-entry-tag { font-size: 11px; color: var(--text-muted); }
+
+    .cookie-name {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--red); background: var(--red-dim);
+      padding: 1px 6px; border-radius: 99px;
+      flex-shrink: 0; max-width: 120px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .detail-script {
+      background: #fafafa; border: 1px solid var(--border-light);
+      border-radius: 6px; padding: 7px 9px;
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--text-dark); word-break: break-all;
+    }
+
+    .detail-script span {
+      display: block; color: var(--text-muted); margin-bottom: 2px;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .back-empty { text-align: center; padding: 16px 0; font-size: 11px; color: var(--text-muted); }
+
+    /* HISTORY SECTION (dark) */
+    .history-section {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0,0,0,0.08ark);
+    }
+
+    .history-toggle-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .history-toggle-header:hover { background: rgba(0,0,0,0.02); }
+
+    .toggle-chevron { font-family: var(--font-mono); font-size: 9px; color: #6B7280; transition: transform 0.2s; }
+
+    .history-section.expanded .toggle-chevron { transform: rotate(180deg); }
+
+    .history-body { display: none; padding: 0 14px 12px; }
+    .history-section.expanded .history-body { display: block; }
+
+    .history-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.08);
+      cursor: pointer; transition: opacity 0.15s;
+    }
+
+    .history-row:last-child { border-bottom: none; }
+    .history-row:hover { opacity: 0.7; }
+
+    .history-domain {
+      font-size: 9px; font-weight: 500; color: #111111;
+      flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .history-badges { display: flex; gap: 3px; flex-shrink: 0; }
+
+    .h-badge {
+      font-family: var(--font-mono); font-size: 9px;
+      padding: 2px 5px; border-radius: 99px; border: 1px solid;
+    }
+
+    .h-badge-red    { color: var(--red-bright); border-color: rgba(193,18,31,0.3); background: rgba(193,18,31,0.08); }
+    .h-badge-orange { color: var(--orange); border-color: rgba(255,150,0,0.3); background: rgba(255,150,0,0.08); }
+
+    .history-time { font-family: var(--font-mono); font-size: 9px; color: #6B7280; white-space: nowrap; }
+
+    .sh-empty { font-size: 9px; color: #6B7280; text-align: center; padding: 10px 0; }
+
+    .view-all-btn {
+      display: block; width: 100%; margin-top: 10px;
+      padding: 7px; border-radius: 6px;
+      background: transparent; border: 1px solid rgba(0,0,0,0.08);
+      color: #6B7280;
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      text-align: center;
+    }
+
+    .view-all-btn:hover { border-color: var(--red); color: #111111; background: rgba(193,18,31,0.06); }
+
+    /* SESSION STATS (light) */
+    .session-section {
+      background: var(--mid);
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .session-section .mono-label { color: #8B0000; font-weight: 700; }
+
+    .session-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 0; border-bottom: 1px solid var(--border-light); font-size: 12px;
+    }
+
+    .session-row:last-child { border-bottom: none; }
+    .session-key { color: var(--text-muted); }
+    .session-val { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--text-dark); line-height: 1; }
+
+    /* FOOTER */
+    .footer {
+      background: #ffffff; border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 9px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .footer-brand { font-family: var(--font-body); font-size: 15px; font-weight: 700; color: #111111; letter-spacing: -0.1px; }
+    .footer-ver { font-family: var(--font-mono); font-size: 9px; color: #6B7280; }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <div class="header">
-    <div class="header-left">
-      <div>
-        <h1>🛡️ ClickSafe</h1>
-        <div class="header-sub">Security Report</div>
+    <div class="header-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm-1 14l-3-3 1.41-1.41L11 12.17l4.59-4.58L17 9l-6 6z"/>
+        </svg>
       </div>
+      <span class="brand-name">ClickSafe</span>
     </div>
-    <button class="settings-btn" id="settings-btn" title="Settings">⚙️</button>
+    <div class="header-right">
+      <span class="conn-pill checking" id="conn-pill">
+        <span class="conn-dot pulsing"></span>
+        <span id="conn-text">Checking</span>
+      </span>
+      <span class="conn-pill backend-checking" id="backend-pill" title="ClickSafe backend status">
+        <span class="conn-dot pulsing" id="backend-dot"></span>
+        <span id="backend-text">API</span>
+      </span>
+      <button class="icon-btn" id="dashboard-btn" title="Dashboard">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </button>
+      <button class="icon-btn" id="settings-btn2" title="Settings">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96a7.04 7.04 0 00-1.62-.94l-.36-2.54a.48.48 0 00-.48-.41h-3.84a.48.48 0 00-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 9.87a.48.48 0 00.12.61l2.03 1.58c-.04.31-.06.63-.06.94 0 .31.02.63.06.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 00-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/></svg>
+      </button>
+    </div>
   </div>
 
+  <!-- SCORE -->
   <div class="score-section">
-    <div class="gauge-wrap">
-      <svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
-        <circle class="gauge-bg"  cx="38" cy="38" r="32"/>
-        <circle class="gauge-arc" id="gauge-arc"
-          cx="38" cy="38" r="32"
-          stroke-dasharray="201.1"
-          stroke-dashoffset="201.1"
-          stroke="#16a34a"/>
-      </svg>
-      <div class="gauge-text">
-        <span class="gauge-number" id="gauge-number">—</span>
-        <span class="gauge-label">/100</span>
+    <div class="mono-label">Privacy Score</div>
+    <div class="score-layout">
+      <div class="score-ring-wrap">
+        <div class="score-ring">
+          <svg viewBox="0 0 86 86" xmlns="http://www.w3.org/2000/svg">
+            <circle class="g-track" cx="43" cy="43" r="35"/>
+            <circle class="g-fill" id="score-arc" cx="43" cy="43" r="35"
+              stroke="#ffffff"
+              stroke-dasharray="219.9"
+              stroke-dashoffset="219.9"/>
+          </svg>
+          <div class="score-ring-center">
+            <div class="score-num" id="score-num">—</div>
+            <div class="score-denom">/100</div>
+          </div>
+        </div>
+        <div class="score-verdict" id="score-verdict">Scanning</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">Companies</div>
+          <div class="stat-val" id="stat-companies">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Scripts</div>
+          <div class="stat-val" id="stat-trackers">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Cookies</div>
+          <div class="stat-val" id="stat-cookie-trackers">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Mixed</div>
+          <div class="stat-val" id="stat-mixed">0</div>
+        </div>
       </div>
     </div>
-    <div class="score-info">
-      <h2>Privacy Score</h2>
-      <div class="score-verdict" id="score-verdict">Scanning…</div>
-      <div class="score-desc"   id="score-desc">Analyzing page security…</div>
+  </div>
+
+  <!-- STREAK -->
+  <div class="streak-section">
+    <span class="streak-label" id="streak-label">0 pages scanned</span>
+    <div class="streak-bars">
+      <div class="sbar" id="s1"></div>
+      <div class="sbar" id="s2"></div>
+      <div class="sbar" id="s3"></div>
+      <div class="sbar" id="s4"></div>
+      <div class="sbar" id="s5"></div>
+      <div class="sbar" id="s6"></div>
+      <div class="sbar" id="s7"></div>
     </div>
   </div>
 
-  <!-- Quick action buttons -->
-  <div class="btn-row">
-    <button class="btn-action btn-dashboard" id="dashboard-btn">📊 Dashboard</button>
-    <button class="btn-action btn-settings"  id="settings-btn2">⚙️ Settings</button>
+  <!-- SCORE REASON -->
+  <div class="reason-bar" id="reason-bar" style="display:none;">
+    <span class="reason-icon" id="reason-icon">↓</span>
+    <span class="reason-text" id="reason-text"></span>
   </div>
 
-  <div class="section-gap"></div>
+  <!-- WHO'S WATCHING -->
+  <div class="light-section">
+    <div class="section-header">
+      <div class="mono-label" style="margin-bottom:0;" id="flip-label">Who's Watching</div>
+      <button class="detail-btn" id="flip-btn" title="View cookies & tracker scripts">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6h16M4 10h16M4 14h10M4 18h10"/>
+        </svg>
+      </button>
+    </div>
 
-  <div class="section">
-    <div class="section-title">Current Page</div>
-    <div class="page-url" id="page-url">Loading…</div>
-    <span class="badge" id="page-badge">Checking…</span>
-  </div>
+    <div id="face-front">
+      <div id="company-list">
+        <div class="empty-state">
+          <div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;opacity:0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <div class="empty-title">No trackers detected</div>
+          <div class="empty-sub">This page looks clean</div>
+        </div>
+      </div>
+    </div>
 
-  <div class="section-gap"></div>
-
-  <div class="section">
-    <div class="section-title">This Page</div>
-    <div class="stat-row">
-      <span class="stat-label">🍪 Cookie Trackers</span>
-      <span class="stat-value danger" id="stat-cookie-trackers">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">📊 Total Cookies</span>
-      <span class="stat-value" id="stat-total-cookies">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">🔍 Tracker Scripts</span>
-      <span class="stat-value danger" id="stat-trackers">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">⚠️ Mixed Content</span>
-      <span class="stat-value danger" id="stat-mixed">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">🔗 Links Checked</span>
-      <span class="stat-value" id="stat-links">0</span>
+    <div id="face-back" class="detail-view">
+      <div class="detail-list" id="cookie-script-list">
+        <div class="back-empty">No cookies or tracker scripts detected.</div>
+      </div>
     </div>
   </div>
 
-  <div class="section" id="cookie-details-section" style="display:none;">
-    <div class="section-title">Tracking Cookies Detected</div>
-    <div id="cookie-list" style="max-height:220px; overflow-y:auto;"></div>
-  </div>
-
-  <div class="section-gap"></div>
-
-  <div class="section">
-    <div class="section-title">Session Total</div>
-    <div class="stat-row">
-      <span class="stat-label">🍪 Cookie Trackers</span>
-      <span class="stat-value danger" id="stat-total-cookie-trackers">0</span>
+  <!-- HISTORY -->
+  <div class="history-section" id="saved-history-section">
+    <div class="history-toggle-header" id="saved-history-toggle">
+      <div class="mono-label" style="margin-bottom:0;">Past Tracker History</div>
+      <span class="toggle-chevron">▼</span>
     </div>
-    <div class="stat-row">
-      <span class="stat-label">🔍 Tracker Scripts</span>
-      <span class="stat-value danger" id="stat-total-trackers">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">⚠️ Mixed Content</span>
-      <span class="stat-value danger" id="stat-total-mixed">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">🔗 Links Checked</span>
-      <span class="stat-value" id="stat-total-links">0</span>
+    <div class="history-body">
+      <div id="history-mini-list">
+        <div class="sh-empty">No history yet — browse some sites</div>
+      </div>
+      <button class="view-all-btn" id="sh-view-all-btn">View full history in Dashboard →</button>
     </div>
   </div>
 
-  <div class="footer">ClickSafe v1.3.0</div>
+  <!-- SESSION STATS -->
+  <div class="session-section">
+    <div class="mono-label">This Session</div>
+    <div class="session-row">
+      <span class="session-key">Companies that tracked you</span>
+      <span class="session-val" id="stat-total-companies">0</span>
+    </div>
+    <div class="session-row">
+      <span class="session-key">Tracker scripts found</span>
+      <span class="session-val" id="stat-total-trackers">0</span>
+    </div>
+    <div class="session-row">
+      <span class="session-key">Tracking cookies found</span>
+      <span class="session-val" id="stat-total-cookie-trackers">0</span>
+    </div>
+    <div class="session-row">
+      <span class="session-key">Links checked</span>
+      <span class="session-val" id="stat-total-links">0</span>
+    </div>
+  </div>
 
+  <!-- FOOTER -->
+  <div class="footer">
+    <span class="footer-brand">ClickSafe</span>
+    <span class="footer-ver">v1.5.0</span>
+  </div>
+
+  <script src="../utils/helpers.js"></script>
+  <script src="../utils/auth.js"></script>
   <script src="sidepanel.js"></script>
-  <script>
-    document.getElementById("dashboard-btn")?.addEventListener("click", () => {
-      chrome.tabs.create({ url: chrome.runtime.getURL("pages/dashboard/dashboard.html") });
-    });
-    document.getElementById("settings-btn2")?.addEventListener("click", () => {
-      chrome.tabs.create({ url: chrome.runtime.getURL("pages/settings/settings.html") });
-    });
-  </script>
 </body>
 </html>

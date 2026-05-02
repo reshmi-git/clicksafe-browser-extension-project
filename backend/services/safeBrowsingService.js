@@ -53,7 +53,11 @@ async function checkUrl(url) {
 
   } catch (error) {
     console.error("[ClickSafe] Safe Browsing full check error:", error.message);
-    return { safe: false, threat: "API_UNAVAILABLE" };
+    // Fail open — Google's API being temporarily unreachable is not evidence
+    // that a URL is dangerous. Returning safe:false here causes false-positive
+    // warning modals in the extension. Match the signal background.js uses
+    // when the backend itself is down: safe:true + unavailable:true.
+    return { safe: true, threat: "API_UNAVAILABLE", unavailable: true };
   }
 }
 
@@ -107,7 +111,8 @@ async function confirmHash(fullHashHex, threatType) {
 
   } catch (error) {
     console.error("[ClickSafe] Hash confirmation error:", error.message);
-    return { safe: false, threat: "API_UNAVAILABLE" };
+    // Fail open — same reasoning as checkUrl above.
+    return { safe: true, threat: "API_UNAVAILABLE", unavailable: true };
   }
 }
 

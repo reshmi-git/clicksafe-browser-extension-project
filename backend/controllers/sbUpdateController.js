@@ -135,10 +135,10 @@ async function getSbPrefixes(req, res, next) {
 
   } catch (error) {
     console.error("[ClickSafe] SB prefix fetch error:", error.message);
-    // Don't crash the extension — return empty so it falls back to full URL checks
+    // Don't crash the extension — return empty so it falls back to full URL checks.
+    // Do NOT forward error.message to the client — it may contain API error details.
     return res.status(500).json({
-      error: "Could not fetch Safe Browsing prefix list",
-      detail: error.message
+      error: "Could not fetch Safe Browsing prefix list"
     });
   }
 }

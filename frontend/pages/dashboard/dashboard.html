@@ -3,1020 +3,946 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClickSafe — Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <title>ClickSafe - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap');
+
     :root {
-      --bg:        #f4f4f0;
-      --sidebar:   #ffffff;
-      --surface:   #ffffff;
-      --border:    #e6e6e2;
-      --border2:   #d0d0cc;
-      --text:      #18181a;
-      --text2:     #666660;
-      --text3:     #aaaaa4;
-      --accent:    #2563eb;
-      --accent-bg: #eff4ff;
-      --danger:    #dc3545;
-      --danger-bg: #fff1f0;
-      --warn:      #e67e22;
-      --warn-bg:   #fff4ec;
-      --safe:      #27ae60;
-      --safe-bg:   #f0faf4;
-      --purple:    #7c3aed;
-      --purple-bg: #f5f0ff;
-      --teal:      #0891b2;
-      --teal-bg:   #ecfeff;
-      --font:      'Bricolage Grotesque', sans-serif;
-      --mono:      'DM Mono', monospace;
-      --sw:        220px;
-      --r:         10px;
+      --red:          #C1121F;
+      --red-bright:   #C1121F;
+      --red-dim:      #FEE8EA;
+      --red-dim-2:    #FDD4D7;
+      --orange:       #C1121F;
+      --orange-dark:  #8B0000;
+      --orange-bg:    rgba(193,18,31,0.08);
+      --blue:         #9B1C1C;
+      --blue-bg:      rgba(155,28,28,0.08);
+      --green:        #16a34a;
+      --green-dark:   #15803d;
+      --green-bg:     rgba(22,163,74,0.08);
+      --purple:       #7B0D1E;
+      --purple-bg:    rgba(123,13,30,0.08);
+      --mid:          #f8f8f8;
+      --text-dark:    #111111;
+      --text-muted:   #6B7280;
+      --border-light: rgba(0,0,0,0.08);
+      --border-med:   rgba(0,0,0,0.12);
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'Satoshi', system-ui, sans-serif;
+      --font-mono:    'Space Mono', monospace;
+      --r:            10px;
+      --r-sm:         8px;
+      --r-xs:         6px;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; display:flex; }
 
-    /* ── SIDEBAR ── */
-    aside {
-      width:var(--sw); flex-shrink:0;
-      background:var(--sidebar); border-right:1px solid var(--border);
-      height:100vh; position:sticky; top:0;
-      display:flex; flex-direction:column; padding-bottom:24px;
-      overflow-y:auto;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background: #f8f8f8;
+      color: #111111;
+      font-size: 12px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
-    .s-logo {
-      padding:20px 18px; border-bottom:1px solid var(--border);
-      display:flex; align-items:center; gap:10px;
+
+    ::-webkit-scrollbar { width: 3px; height: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 99px; }
+
+    /* -- HEADER - matches sidepanel exactly ------------------- */
+    .header {
+      background: #ffffff;
+      padding: 11px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-    .s-mark {
-      width:30px; height:30px; border-radius:7px;
-      background:var(--text); display:flex; align-items:center;
-      justify-content:center; font-size:14px; flex-shrink:0;
+
+    .header-brand { display: flex; align-items: center; gap: 8px; }
+
+    .brand-icon {
+      width: 27px; height: 27px;
+      background: var(--red-bright);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-    .s-name { font-size:15px; font-weight:700; letter-spacing:-0.02em; }
-    .s-section { padding:18px 12px 6px; }
-    .s-section-lbl {
-      font-size:10px; font-weight:600; letter-spacing:0.08em;
-      text-transform:uppercase; color:var(--text3); padding:0 8px; margin-bottom:4px;
+    .brand-icon svg { width: 14px; height: 14px; fill: white; }
+    .brand-name { font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: -0.2px; color: #111111; }
+
+    .header-right { display: flex; align-items: center; gap: 6px; }
+
+    .conn-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 999px;
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.5px; font-weight: 700;
+      white-space: nowrap; border: 1px solid;
     }
+    .conn-pill.online  { color: #16a34a; border-color: rgba(22,163,74,0.3); background: rgba(22,163,74,0.08); }
+    .conn-pill.offline { color: var(--red-bright); border-color: rgba(193,18,31,0.3); background: rgba(193,18,31,0.08); }
+    .conn-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .conn-dot.pulsing { animation: pulse 1.5s ease-in-out infinite; }
+
+    .icon-btn {
+      width: 27px; height: 27px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.10);
+      background: #f5f5f5;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+    }
+    .icon-btn:hover { background: #eeeeee; border-color: rgba(0,0,0,0.18); }
+    .icon-btn svg { width: 13px; height: 13px; }
+
+    .profile-btn-wrap { position: relative; display: inline-flex; }
+    .profile-dot {
+      position: absolute; top: -3px; right: -3px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #16a34a; border: 1.5px solid #fff;
+      display: none;
+    }
+    .profile-btn-wrap.logged-in .profile-dot { display: block; }
+
+    .clear-btn {
+      padding: 0 10px; height: 27px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.10);
+      background: #f5f5f5;
+      font-family: var(--font-mono); font-size: 12px; color: #6B7280;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .clear-btn:hover { background: #eeeeee; color: #111; }
+
+    .last-updated-pill { font-family: var(--font-mono); font-size: 12px; color: #9CA3AF; }
+
+    /* -- LAYOUT ----------------------------------------------- */
+    .layout { display: flex; flex: 1; min-height: 0; }
+
+    /* -- SIDEBAR ---------------------------------------------- */
+    .sidebar {
+      width: 220px; flex-shrink: 0;
+      background: #ffffff;
+      border-right: 1px solid var(--border-light);
+      display: flex; flex-direction: column;
+      position: sticky; top: 49px;
+      height: calc(100vh - 49px);
+      overflow-y: auto; padding: 14px 10px 16px;
+    }
+
+    .nav-section-lbl {
+      font-family: var(--font-mono);
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #9CA3AF;
+      padding: 0 8px; margin-bottom: 4px; margin-top: 14px;
+    }
+    .nav-section-lbl:first-child { margin-top: 0; }
+
     .nav-item {
-      display:flex; align-items:center; gap:9px; padding:8px 10px;
-      border-radius:7px; font-size:13px; font-weight:500; color:var(--text2);
-      cursor:pointer; text-decoration:none; transition:all 0.15s; margin-bottom:1px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: var(--r-xs);
+      font-size: 12px; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; text-decoration: none; margin-bottom: 2px;
+      transition: all 0.12s; border: none; background: transparent;
+      width: 100%; text-align: left; font-family: var(--font-body);
     }
-    .nav-item:hover { background:var(--bg); color:var(--text); }
-    .nav-item.active { background:var(--text); color:#fff; }
-    .nav-icon { font-size:13px; width:18px; text-align:center; }
+    .nav-item:hover { background: #f5f5f5; color: #374151; }
+    .nav-item.active { background: var(--red-dim); color: var(--red-bright); font-weight: 700; }
+    .nav-item.active:hover { background: var(--red-dim); }
+    .nav-icon { width: 17px; height: 17px; flex-shrink: 0; }
     .nav-badge {
-      margin-left:auto; font-size:10px; font-weight:600;
-      background:var(--danger); color:#fff; padding:1px 6px; border-radius:10px;
+      margin-left: auto; font-family: var(--font-mono);
+      font-size: 12px; font-weight: 700;
+      background: var(--red-bright); color: white;
+      padding: 1px 6px; border-radius: 999px;
     }
-    .s-bottom { margin-top:auto; padding:0 12px; }
-    .s-status {
-      display:flex; align-items:center; gap:8px; padding:10px 11px;
-      border-radius:8px; background:var(--safe-bg); border:1px solid #b7e4c7;
-    }
-    .s-dot {
-      width:7px; height:7px; border-radius:50%; background:var(--safe); flex-shrink:0;
-      animation:pulse 2.5s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { box-shadow:0 0 0 0 rgba(39,174,96,.4); }
-      50%      { box-shadow:0 0 0 4px rgba(39,174,96,0); }
-    }
-    .s-status-txt { font-size:12px; font-weight:600; color:var(--safe); }
 
-    /* ── MAIN ── */
-    .main-wrap { flex:1; min-width:0; display:flex; flex-direction:column; }
-    topbar {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 30px; height:56px;
-      background:var(--surface); border-bottom:1px solid var(--border);
-      position:sticky; top:0; z-index:50;
-    }
-    .crumb { font-size:13px; color:var(--text2); display:flex; align-items:center; gap:6px; }
-    .crumb-sep { color:var(--text3); }
-    .crumb-cur { color:var(--text); font-weight:600; }
-    .tb-right { display:flex; align-items:center; gap:10px; }
-    .ts-lbl { font-size:11px; color:var(--text3); font-family:var(--mono); }
-    .btn {
-      font-family:var(--font); font-size:12px; font-weight:600;
-      padding:6px 13px; border-radius:7px; cursor:pointer; transition:all 0.15s; border:none;
-    }
-    .btn-outline {
-      background:transparent; border:1px solid var(--border2); color:var(--text2);
-    }
-    .btn-outline:hover { border-color:var(--danger); color:var(--danger); background:var(--danger-bg); }
+    .sidebar-bottom { margin-top: auto; padding-top: 12px; }
 
-    .page { flex:1; padding:26px 30px 60px; overflow-y:auto; }
-    .page-title { font-size:21px; font-weight:700; letter-spacing:-0.03em; margin-bottom:2px; }
-    .page-sub   { font-size:12px; color:var(--text2); margin-bottom:22px; }
-
-    /* ── CARDS ── */
-    .card {
-      background:var(--surface); border:1px solid var(--border);
-      border-radius:var(--r); padding:20px 22px;
-      animation:fadeUp .35s ease both;
+    .status-pill {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 11px;
+      background: var(--green-bg);
+      border: 1px solid rgba(74,222,128,0.20);
+      border-radius: var(--r-xs);
     }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(8px); }
-      to   { opacity:1; transform:translateY(0); }
+    .status-dot-pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: statuspulse 2.5s infinite; flex-shrink: 0;
     }
-    .card-title { font-size:13px; font-weight:600; margin-bottom:1px; }
-    .card-sub   { font-size:11px; color:var(--text3); font-family:var(--mono); margin-bottom:14px; }
+    @keyframes statuspulse {
+      0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}
+      50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}
+    }
+    .status-txt { font-size: 12px; font-weight: 600; color: var(--green); }
 
-    /* ── SECTION LABEL ── */
+    /* -- MAIN ------------------------------------------------- */
+    .main { flex: 1; min-width: 0; overflow-y: auto; background: #f8f8f8; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* -- HERO BAND - gradient matching sidepanel score section -- */
+    .page-hero-band {
+      background: linear-gradient(135deg, rgba(189,108,108,0.85) 0%, #0d0d0d 100%);
+      padding: 18px 24px 20px;
+      box-shadow: 0 4px 16px rgba(193,18,31,0.18);
+    }
+
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.7);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 22px; color: #ffffff; line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .hero-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: rgba(0,0,0,0.18);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.18);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    }
+
+    .hero-stat-box {
+      background: #F9F9F9;
+      padding: 14px 16px;
+      transition: background 0.18s;
+    }
+    .hero-stat-box:hover { background: #fff; }
+
+    .hero-stat-box:nth-child(2) { border-radius: 0; }
+    .hero-stat-box:nth-child(3) { border-radius: 0 13px 0 0; }
+    .hero-stat-box:nth-child(4) { border-radius: 0 0 0 13px; }
+    .hero-stat-box:nth-child(5) { border-radius: 0; }
+    .hero-stat-box:nth-child(6) { border-radius: 0 0 13px 0; }
+
+    .hero-stat-box.hero-featured {
+      grid-column: span 3;
+      border-radius: 0 !important;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: linear-gradient(135deg, rgba(189,108,108,0.65) 0%, rgba(0,0,0,0.88) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-stat-box.hero-featured::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(189,108,108,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-stat-box.hero-featured:hover {
+      background: linear-gradient(135deg, rgba(189,108,108,0.72) 0%, rgba(0,0,0,0.92) 100%);
+    }
+    .hero-featured-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .hero-featured-body { position: relative; z-index: 1; }
+
+    .hero-stat-label {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.8px;
+      color: #999; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .hero-stat-box.hero-featured .hero-stat-label {
+      color: rgba(255,255,255,0.42);
+    }
+    .hero-stat-val {
+      font-family: var(--font-display);
+      font-size: 30px; color: #0a0a0a; line-height: 1;
+      margin-bottom: 2px; letter-spacing: -1.5px;
+    }
+    .hero-stat-box.hero-featured .hero-stat-val {
+      font-size: 22px; color: #fff; letter-spacing: -0.5px;
+    }
+    .hero-stat-sub {
+      font-family: var(--font-mono);
+      font-size: 11px; color: #bbb; margin-top: 2px;
+    }
+    .hero-stat-box.hero-featured .hero-stat-sub {
+      color: rgba(255,255,255,0.35);
+    }
+    .hero-stat-accent {
+      display: inline-block;
+      font-size: 9px; font-family: var(--font-mono);
+      letter-spacing: 1px; text-transform: uppercase;
+      color: #E63946;
+      border: 1px solid rgba(230,57,70,0.3);
+      padding: 2px 7px; border-radius: 4px; margin-top: 8px;
+    }
+
+    /* -- SECTION LABEL ---------------------------------------- */
     .sec-lbl {
-      font-size:10px; font-weight:700; letter-spacing:.09em;
-      text-transform:uppercase; color:var(--text3);
-      display:flex; align-items:center; gap:10px;
-      margin:22px 0 12px;
+      font-family: var(--font-mono);
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #8B0000;
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 24px 10px;
     }
-    .sec-lbl::after { content:''; flex:1; height:1px; background:var(--border); }
+    .sec-lbl::after { content:''; flex:1; height:1px; background: rgba(0,0,0,0.08); }
+    .sec-lbl-inner { padding: 12px 0 10px; }
 
-    /* ── GRIDS ── */
-    .g5  { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:11px; margin-bottom:11px; }
-    .g4  { display:grid; grid-template-columns:repeat(4,1fr); gap:11px; margin-bottom:22px; }
-    .g2  { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:11px; }
-    .g3  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:11px; margin-bottom:11px; }
-    .g21 { display:grid; grid-template-columns:2fr 1fr; gap:11px; margin-bottom:11px; }
-    .g12 { display:grid; grid-template-columns:1fr 2fr; gap:11px; margin-bottom:11px; }
+    /* -- CONTENT AREA ----------------------------------------- */
+    .content-pad { padding: 0 24px 32px; }
 
-    /* ── SCORE CARD ── */
-    .score-inner { display:flex; align-items:center; gap:20px; }
-    .gauge { position:relative; flex-shrink:0; width:96px; height:96px; }
-    .gauge svg { width:96px; height:96px; transform:rotate(-90deg); }
-    .g-track { fill:none; stroke:#ecece8; stroke-width:7; }
-    .g-fill  { fill:none; stroke-width:7; stroke-linecap:round;
-               transition:stroke-dashoffset 1.3s cubic-bezier(.34,1.2,.64,1), stroke .4s; }
-    .gauge-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-    .gauge-num    { font-size:22px; font-weight:700; letter-spacing:-.04em; line-height:1; }
-    .gauge-sub    { font-size:9px;  color:var(--text3); font-family:var(--mono); }
-    .score-verdict { font-size:19px; font-weight:700; letter-spacing:-.03em; margin-bottom:2px; }
-    .score-desc    { font-size:11px; color:var(--text2); margin-bottom:12px; }
-    .sb-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
-    .sb-lbl  { font-size:11px; color:var(--text2); width:68px; font-weight:500; }
-    .sb-track{ flex:1; height:3px; background:#ecece8; border-radius:2px; overflow:hidden; }
-    .sb-fill { height:100%; border-radius:2px; transition:width 1.1s ease; }
-    .sb-cnt  { font-size:10px; font-family:var(--mono); color:var(--text3); width:16px; text-align:right; }
-
-    /* ── STAT MINI ── */
-    .stat-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-    .stat-lbl { font-size:12px; font-weight:500; color:var(--text2); }
-    .stat-icon { width:27px; height:27px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:12px; }
-    .stat-val  { font-size:28px; font-weight:700; letter-spacing:-.04em; line-height:1; margin-bottom:3px; }
-    .stat-meta { font-size:10px; color:var(--text3); font-family:var(--mono); }
-    .stat-tag  {
-      display:inline-flex; align-items:center; gap:3px;
-      font-size:10px; font-weight:600; font-family:var(--mono);
-      padding:2px 7px; border-radius:20px; margin-top:7px;
+    /* -- CARDS ------------------------------------------------ */
+    .card {
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: var(--r); padding: 14px 16px;
     }
+    .card-title { font-size: 12px; font-weight: 700; color: #111111; margin-bottom: 2px; letter-spacing: -0.1px; }
+    .card-sub   { font-size: 12px; color: #6B7280; font-weight: 500; margin-bottom: 10px; }
 
-    /* ── CHART WRAPS ── */
+    /* -- GRIDS ------------------------------------------------ */
+    .g4  { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:10px; }
+    .g2  { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+    .g21 { display:grid; grid-template-columns:2fr 1fr; gap:10px; margin-bottom:10px; align-items:stretch; }
+    .g12 { display:grid; grid-template-columns:1.2fr 1fr; gap:10px; margin-bottom:10px; }
+
+    /* -- STAT MINI -------------------------------------------- */
+    .stat-hd  { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+    .stat-lbl { font-size:12px; font-weight:600; color:#374151; }
+    .stat-icon { width:24px; height:24px; border-radius:var(--r-xs); display:flex; align-items:center; justify-content:center; }
+    .stat-val  { font-family:var(--font-display); font-size:28px; line-height:1; margin-bottom:2px; color:#111111; }
+    .stat-meta { font-family:var(--font-mono); font-size:12px; color:#6B7280; }
+
+    /* -- CHART ------------------------------------------------ */
     .chart-h200 { position:relative; height:200px; }
-    .chart-h180 { position:relative; height:180px; }
-    .chart-h160 { position:relative; height:160px; }
-    .chart-h240 { position:relative; height:240px; }
 
-    /* ── STACKED AREA — side KPIs ── */
-    .area-kpi-layout { display:flex; gap:0; }
-    .area-main { flex:1; min-width:0; }
-    .area-kpis {
-      width:130px; flex-shrink:0; border-left:1px solid var(--border);
-      padding-left:16px; display:flex; flex-direction:column; justify-content:space-around;
+    /* -- CALENDAR / HEATMAP ----------------------------------- */
+    .cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .cal-btn {
+      background:#f5f5f5; border:1px solid rgba(0,0,0,0.12);
+      border-radius:var(--r-xs); color:#6B7280;
+      display:inline-flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:all .15s; padding:3px 8px;
     }
-    
-    .kpi-period { font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:2px; }
-    .kpi-val    { font-size:17px; font-weight:700; letter-spacing:-.03em; }
-    .kpi-delta  { font-size:10px; font-family:var(--mono); font-weight:600; }
-    .delta-up   { color:var(--safe); }
-    .delta-dn   { color:var(--danger); }
-
-    /* ── HEATMAP ── */
-    .hm-days { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:4px; }
-    .hm-day  { font-size:9px; color:var(--text3); font-family:var(--mono); text-align:center; }
-    .hm-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
-    .hm-cell {
-      aspect-ratio:1; border-radius:4px; background:#eeeee9;
-      cursor:pointer; position:relative; transition:transform .15s;
+    .cal-btn:hover { border-color:var(--red); color:var(--red); }
+    .cal-month-lbl { font-size:12px; font-weight:600; color:#111111; }
+    .cal-dow-row { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:4px; }
+    .cal-dow-row span { text-align:center; font-family:var(--font-mono); font-size:12px; color:#6B7280; text-transform:uppercase; }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); grid-auto-rows:1fr; gap:4px; flex:1; }
+    .cal-cell {
+      border-radius:5px; min-height:26px;
+      background:rgba(0,0,0,0.06); cursor:pointer; position:relative;
+      transition:transform .15s; border:1px solid transparent;
+      display:flex; align-items:center; justify-content:center;
     }
-    .hm-cell:hover { transform:scale(1.15); z-index:5; }
-    .hm-tip {
-      position:absolute; bottom:calc(100%+5px); left:50%;
-      transform:translateX(-50%);
-      background:var(--text); color:#fff;
-      font-size:10px; font-family:var(--mono);
-      padding:3px 7px; border-radius:4px;
+    .cal-cell:hover { transform:scale(1.15); z-index:5; }
+    .cal-cell:hover .tooltip { opacity:1; }
+    .cal-cell-num { font-family:var(--font-mono); font-size:12px; color:rgba(0,0,0,0.4); pointer-events:none; }
+    .cal-cell.other-month { opacity:0.4; }
+    .cal-cell.today { border-color:var(--orange-dark); }
+    .tooltip {
+      position:absolute; bottom:calc(100%+5px); left:50%; transform:translateX(-50%);
+      background:#f0f0f0; color:#111111; border:1px solid rgba(0,0,0,0.12);
+      font-family:var(--font-mono); font-size:12px;
+      padding:3px 7px; border-radius:var(--r-xs);
       white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s; z-index:20;
     }
-    .hm-cell:hover .hm-tip { opacity:1; }
-    .hm-legend { display:flex; align-items:center; gap:5px; margin-top:10px; justify-content:flex-end; }
-    .hm-legend span { font-size:9px; color:var(--text3); font-family:var(--mono); }
-    .hm-legend-cells { display:flex; gap:3px; }
-    .hm-lc { width:10px; height:10px; border-radius:2px; }
+    .hm-legend { display:flex; align-items:center; gap:7px; margin-top:10px; justify-content:flex-end; }
+    .hm-legend span { font-family:var(--font-mono); font-size:12px; color:#6B7280; }
+    .hm-lc { width:12px; height:12px; border-radius:3px; }
 
-    /* ── RADAR ── */
-    .radar-layout { display:flex; align-items:center; gap:16px; }
-    .radar-legend { display:flex; flex-direction:column; gap:8px; min-width:100px; }
-    .rl-item { display:flex; align-items:center; gap:7px; font-size:11px; color:var(--text2); }
-    .rl-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    /* -- DOMAIN ROWS ------------------------------------------ */
+    .domain-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(0,0,0,0.08); }
+    .domain-row:last-child { border-bottom:none; }
+    .domain-name { font-size:12px; font-weight:600; color:#111111; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .domain-bar-wrap { width:160px; height:3px; background:rgba(0,0,0,0.08); border-radius:3px; overflow:hidden; }
+    .domain-bar-fill { height:100%; border-radius:3px; transition:width .9s ease; }
+    .domain-count { font-family:var(--font-mono); font-size:12px; font-weight:700; color:#6B7280; width:20px; text-align:right; }
 
-    /* ── LOLLIPOP ── */
-    .lollipop-wrap { padding:4px 0; }
-    .lollipop-row  { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-    .lollipop-lbl  { font-size:11px; color:var(--text2); width:90px; text-align:right; flex-shrink:0; font-family:var(--mono); }
-    .lollipop-track { flex:1; height:1px; background:var(--border); position:relative; }
-    .lollipop-line  { position:absolute; top:0; height:1px; }
-    .lollipop-dot   {
-      position:absolute; width:10px; height:10px; border-radius:50%;
-      top:50%; transform:translate(-50%,-50%);
-      border:2px solid #fff;
-    }
-    .lollipop-val  { font-size:10px; font-family:var(--mono); color:var(--text3); width:28px; }
-
-    /* ── FLOATING BAR (MRR-style) ── */
-    .fbar-chart-wrap { position:relative; height:180px; }
-
-    /* ── DATA TABLE ── */
-    .data-table { width:100%; border-collapse:collapse; margin-top:14px; }
-    .data-table th {
-      font-size:9px; font-weight:600; letter-spacing:.07em; text-transform:uppercase;
-      color:var(--text3); font-family:var(--mono);
-      padding:0 10px 8px; text-align:right; border-bottom:1px solid var(--border);
-    }
-    .data-table th:first-child { text-align:left; }
-    .data-table td {
-      padding:7px 10px; font-size:11px; font-family:var(--mono);
-      border-bottom:1px solid var(--border); color:var(--text); text-align:right;
-    }
-    .data-table td:first-child { text-align:left; color:var(--text2); }
-    .data-table tr:last-child td { border-bottom:none; }
-    .data-table tr:hover td { background:var(--bg); }
-
-    /* ── DOMAIN BARS ── */
-    .dom-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); }
-    .dom-row:last-child { border-bottom:none; }
-    .dom-num  { font-size:10px; font-family:var(--mono); color:var(--text3); width:14px; }
-    .dom-name { font-size:11px; font-family:var(--mono); color:var(--text); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .dom-bar-wrap { width:70px; height:3px; background:#eeeee9; border-radius:2px; overflow:hidden; }
-    .dom-bar-fill { height:100%; border-radius:2px; transition:width .9s ease; }
-    .dom-cnt { font-size:10px; font-family:var(--mono); color:var(--text3); width:20px; text-align:right; }
-
-    /* ── FEATURE STATUS ── */
-    .feat-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+    /* -- FEATURE ROWS ----------------------------------------- */
+    .feat-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(0,0,0,0.08); }
     .feat-row:last-child { border-bottom:none; }
-    .feat-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
-    .feat-dot.on  { background:var(--safe); }
-    .feat-dot.off { background:var(--text3); }
-    .feat-name { font-size:12px; color:var(--text); flex:1; font-weight:500; }
-    .feat-val  { font-size:10px; font-family:var(--mono); color:var(--text3); }
+    .status-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .status-dot.on  { background:var(--green); box-shadow:0 0 0 2px var(--green-bg); }
+    .status-dot.off { background:var(--text-muted); }
+    .feat-name { font-size:12px; font-weight:600; color:#111111; flex:1; }
+    .feat-val  { font-family:var(--font-mono); font-size:12px; color:#6B7280; }
 
-    /* ── LOG TABLE ── */
-    .log-hd  { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
-    .fil-row { display:flex; gap:5px; flex-wrap:wrap; }
-    .fil-chip {
-      padding:3px 11px; border-radius:20px; font-size:10px; font-weight:600;
-      cursor:pointer; font-family:var(--font);
-      background:transparent; border:1px solid var(--border2); color:var(--text2);
-      transition:all .15s;
+    /* -- DARK PATTERNS ---------------------------------------- */
+    .log-hd { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:10px; }
+    .dp-filters { display:flex; gap:5px; flex-wrap:wrap; }
+    .dp-filter {
+      padding:3px 10px; border-radius:999px;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      cursor:pointer; border:1px solid rgba(0,0,0,0.12);
+      background:transparent; color:#6B7280; transition:all .15s;
     }
-    .fil-chip:hover  { border-color:var(--accent); color:var(--accent); }
-    .fil-chip.active { background:var(--text); border-color:var(--text); color:#fff; }
+    .dp-filter:hover { border-color:var(--red); color:var(--red); }
+    .dp-filter.active { background:#111111; border-color:#111111; color:#ffffff; }
+    .log-scroll { overflow-x:auto; max-height:380px; overflow-y:auto; }
     .log-tbl { width:100%; border-collapse:collapse; }
     .log-tbl th {
-      font-size:9px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
-      color:var(--text3); font-family:var(--mono); padding:0 10px 9px; text-align:left;
-      border-bottom:1px solid var(--border);
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      letter-spacing:0.8px; text-transform:uppercase; color:#6B7280;
+      padding:0 10px 8px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.08);
     }
-    .log-tbl td { padding:9px 10px; font-size:11px; border-bottom:1px solid var(--border); color:var(--text); }
+    .log-tbl td { padding:8px 10px; font-size:12px; border-bottom:1px solid rgba(0,0,0,0.08); color:#111111; }
     .log-tbl tr:last-child td { border-bottom:none; }
-    .log-tbl tr:hover td { background:var(--bg); }
-    .ptag {
-      display:inline-flex; padding:2px 8px; border-radius:4px;
-      font-size:9px; font-weight:600; letter-spacing:.03em; font-family:var(--font);
+    .log-tbl tr:hover td { background:#fef2f2; }
+
+    .pattern-tag {
+      display:inline-flex; padding:2px 8px; border-radius:999px;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      white-space:nowrap; border:1px solid transparent;
     }
-    .ptag-urgency   { background:var(--danger-bg); color:var(--danger); }
-    .ptag-shaming   { background:var(--purple-bg); color:var(--purple); }
-    .ptag-countdown { background:var(--warn-bg);   color:var(--warn); }
-    .ptag-checkbox  { background:var(--accent-bg); color:var(--accent); }
-    .ptag-cookie    { background:var(--safe-bg);   color:var(--safe); }
-    .ptag-unknown   { background:var(--bg);        color:var(--text2); }
-    .log-scroll { overflow-x:auto; max-height:300px; overflow-y:auto; }
+    .tag-urgency   { background:var(--red-dim);   color:var(--red);    border-color:rgba(193,18,31,0.3); }
+    .tag-shaming   { background:var(--purple-bg); color:var(--purple); border-color:rgba(123,13,30,0.3); }
+    .tag-countdown { background:var(--orange-bg); color:var(--orange); border-color:rgba(193,18,31,0.3); }
+    .tag-checkbox  { background:var(--blue-bg);   color:var(--blue);   border-color:rgba(155,28,28,0.3); }
+    .tag-cookie    { background:var(--green-bg);  color:var(--green);  border-color:rgba(74,222,128,0.3); }
+    .tag-unknown   { background:rgba(0,0,0,0.06); color:var(--text-muted); }
 
-    .empty { text-align:center; padding:36px; color:var(--text3); font-size:11px; font-family:var(--mono); }
-    .empty-icon { font-size:22px; margin-bottom:8px; }
+    /* -- HISTORY ---------------------------------------------- */
+    .history-filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; align-items:center; }
+    .hist-filter {
+      padding:4px 12px; border-radius:999px;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      cursor:pointer; border:1px solid rgba(0,0,0,0.12);
+      background:transparent; color:#6B7280; transition:all .15s;
+    }
+    .hist-filter:hover { border-color:var(--red); color:var(--red); }
+    .hist-filter.active { background:#111111; border-color:#111111; color:#ffffff; }
+    .hist-search {
+      flex:1; min-width:140px; max-width:260px;
+      padding:4px 12px; border-radius:999px;
+      font-family:var(--font-mono); font-size:12px;
+      border:1px solid rgba(0,0,0,0.12); background:#f5f5f5;
+      color:#111111; outline:none; transition:border-color .15s;
+    }
+    .hist-search:focus { border-color:var(--red); }
+    .hist-search::placeholder { color:#9CA3AF; }
 
-    ::-webkit-scrollbar { width:4px; height:4px; }
-    ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+    .history-card {
+      background:#ffffff; border:1px solid rgba(0,0,0,0.08);
+      border-radius:var(--r-sm); margin-bottom:7px; overflow:hidden;
+      transition:border-color .15s;
+    }
+    .history-card:hover { border-color:rgba(193,18,31,0.3); }
+    .history-card-header { display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; }
+    .history-card-favicon {
+      width:28px; height:28px; border-radius:6px;
+      background:#f5f5f5; border:1px solid rgba(0,0,0,0.08);
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      color:#6B7280; overflow:hidden; flex-shrink:0;
+    }
+    .history-card-favicon img { width:16px; height:16px; object-fit:contain; }
+    .history-card-info { flex:1; min-width:0; }
+    .history-card-domain { font-size:12px; font-weight:700; color:#111111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .history-card-time   { font-family:var(--font-mono); font-size:12px; color:#6B7280; margin-top:1px; }
+    .history-card-badges { display:flex; gap:4px; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end; }
 
-    /* stagger cards */
-    .g5 .card:nth-child(1){animation-delay:.03s}
-    .g5 .card:nth-child(2){animation-delay:.07s}
-    .g5 .card:nth-child(3){animation-delay:.11s}
-    .g5 .card:nth-child(4){animation-delay:.15s}
-    .g5 .card:nth-child(5){animation-delay:.19s}
+    .hbadge {
+      display:inline-flex; align-items:center; gap:3px;
+      padding:2px 7px; border-radius:999px;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      border:1px solid transparent;
+    }
+    .hbadge-red    { background:var(--red-dim);   color:var(--red);    border-color:rgba(193,18,31,0.3); }
+    .hbadge-orange { background:var(--orange-bg); color:var(--orange); border-color:rgba(193,18,31,0.3); }
+    .hbadge-purple { background:var(--purple-bg); color:var(--purple); border-color:rgba(123,13,30,0.3); }
+    .hbadge-blue   { background:var(--blue-bg);   color:var(--blue);   border-color:rgba(155,28,28,0.3); }
+
+    .history-card-body { padding:0 14px 12px; border-top:1px solid rgba(0,0,0,0.08); display:none; }
+    .history-card.expanded .history-card-body { display:block; }
+    .expand-icon { font-family:var(--font-mono); font-size:12px; color:#6B7280; transition:transform .2s; flex-shrink:0; }
+    .history-card.expanded .expand-icon { transform:rotate(180deg); }
+
+    .tracker-sub-section { margin-top:8px; }
+    .tracker-sub-title {
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      color:#6B7280; text-transform:uppercase; letter-spacing:.8px; margin-bottom:5px;
+    }
+    .tracker-pill-list { display:flex; flex-wrap:wrap; gap:4px; }
+    .tracker-pill {
+      display:inline-flex; align-items:center; gap:4px;
+      padding:3px 8px; border-radius:999px;
+      font-size:12px; font-weight:600;
+      background:#f5f5f5; border:1px solid rgba(0,0,0,0.08); color:#111111;
+    }
+    .tracker-pill-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+
+    /* -- COMPANIES -------------------------------------------- */
+    .company-info-card {
+      background:#ffffff; border:1px solid rgba(0,0,0,0.08);
+      border-radius:var(--r-sm); margin-bottom:7px; overflow:hidden;
+    }
+    .company-info-header { display:flex; align-items:center; gap:10px; padding:12px 14px; cursor:pointer; }
+    .company-avatar-lg {
+      width:36px; height:36px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      flex-shrink:0; border:1px solid transparent;
+    }
+    .company-avatar-lg.t1 { background:var(--red-dim-2); color:var(--red);    border-color:rgba(193,18,31,0.25); }
+    .company-avatar-lg.t2 { background:var(--orange-bg); color:var(--orange); border-color:rgba(193,18,31,0.25); }
+    .company-avatar-lg.t3 { background:var(--blue-bg);   color:var(--blue);   border-color:rgba(155,28,28,0.25); }
+    .company-info-meta { flex:1; min-width:0; }
+    .company-info-name { font-size:15px; font-weight:700; color:#111111; }
+    .company-info-what { font-size:12px; color:#6B7280; font-weight:500; margin-top:1px; }
+    .company-info-count {
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      color:var(--red); background:var(--red-dim);
+      border:1px solid rgba(193,18,31,0.2);
+      padding:2px 8px; border-radius:999px; flex-shrink:0;
+    }
+    .tier-badge-lg {
+      padding:2px 9px; border-radius:999px;
+      font-family:var(--font-mono); font-size:12px; font-weight:700;
+      border:1px solid transparent; flex-shrink:0;
+    }
+    .tier-badge-lg.t1 { background:var(--red);    color:white; }
+    .tier-badge-lg.t2 { background:var(--orange-bg); color:var(--orange); border-color:rgba(193,18,31,0.3); }
+    .tier-badge-lg.t3 { background:var(--blue-bg);   color:var(--blue);   border-color:rgba(155,28,28,0.3); }
+    .company-info-body { padding:0 14px 14px; border-top:1px solid rgba(0,0,0,0.08); display:none; }
+    .company-info-card.expanded .company-info-body { display:block; }
+    .company-info-card.expanded .expand-icon { transform:rotate(180deg); }
+    .data-use-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
+    .data-use-item { background:#f5f5f5; border:1px solid rgba(0,0,0,0.07); border-radius:var(--r-sm); padding:8px 10px; }
+    .data-use-label { font-family:var(--font-mono); font-size:12px; font-weight:700; color:#6B7280; text-transform:uppercase; letter-spacing:.8px; margin-bottom:3px; }
+    .data-use-value { font-size:12px; font-weight:500; color:#374151; line-height:1.5; }
+    .company-sites-list { margin-top:10px; }
+    .company-site-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid var(--border-light); font-size:12px; color:#6B7280; }
+    .company-site-row:last-child { border-bottom:none; }
+    .company-site-row span { color:#111111; font-weight:600; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* -- SCORE HISTORY ---------------------------------------- */
+    .score-history-card {
+      background:#ffffff; border:1px solid rgba(0,0,0,0.08);
+      border-radius:var(--r-sm); margin-bottom:7px; overflow:hidden; transition:border-color .15s;
+    }
+    .score-history-card:hover { border-color:rgba(193,18,31,0.3); }
+    .score-history-header { display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; }
+    .score-history-ring { position:relative; width:40px; height:40px; flex-shrink:0; }
+    .score-history-ring svg { width:40px; height:40px; transform:rotate(-90deg); }
+    .score-history-ring-center { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:15px; color:#111111; }
+    .score-history-info { flex:1; min-width:0; }
+    .score-history-domain { font-size:12px; font-weight:700; color:#111111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .score-history-url { font-family:var(--font-mono); font-size:12px; color:#6B7280; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+    .score-history-time { font-family:var(--font-mono); font-size:12px; color:#6B7280; white-space:nowrap; flex-shrink:0; }
+    .score-history-body { padding:10px 14px 12px; border-top:1px solid rgba(0,0,0,0.08); display:none; }
+    .score-history-card.expanded .score-history-body { display:block; }
+    .score-history-card.expanded .expand-icon { transform:rotate(180deg); }
+    .score-why-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:10px; }
+    .score-why-box { background:#f5f5f5; border:1px solid rgba(0,0,0,0.07); border-radius:var(--r-xs); padding:6px 9px; }
+    .score-why-label { font-family:var(--font-mono); font-size:12px; font-weight:700; color:#6B7280; text-transform:uppercase; letter-spacing:.6px; margin-bottom:2px; }
+    .score-why-val { font-family:var(--font-display); font-size:18px; color:#111111; }
+    .score-why-impact { font-family:var(--font-mono); font-size:12px; font-weight:700; margin-top:1px; }
+    .score-verdict-row { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--r-xs); border:1px solid transparent; }
+    .score-verdict-num { font-family:var(--font-display); font-size:28px; line-height:1; }
+    .score-verdict-label { font-size:15px; font-weight:700; }
+    .score-verdict-desc { font-size:12px; font-weight:500; margin-top:1px; }
+
+    /* -- EMPTY ------------------------------------------------ */
+    .empty-state { text-align:center; padding:24px; color:#6B7280; }
+    .empty-icon  { font-size:20px; margin-bottom:6px; }
+    .empty-text  { font-size:12px; font-weight:500; }
+
+    #donut-legend { display:flex; flex-direction:column; gap:6px; flex:1; }
   </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside>
-  <div class="s-logo">
-    <div class="s-mark">🛡️</div>
-    <span class="s-name">ClickSafe</span>
+<!-- HEADER - white, minimal, matches sidepanel -->
+<div class="header">
+  <div class="header-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm-1 14l-3-3 1.41-1.41L11 12.17l4.59-4.58L17 9l-6 6z"/>
+      </svg>
+    </div>
+    <span class="brand-name">ClickSafe</span>
   </div>
-  <div class="s-section">
-    <div class="s-section-lbl">Main</div>
-    <a class="nav-item active"><span class="nav-icon">▦</span> Overview</a>
-    <a class="nav-item" href="#"><span class="nav-icon">⚡</span> Threats<span class="nav-badge" id="badge-threats">0</span></a>
-    <a class="nav-item" href="#"><span class="nav-icon">🕵️</span> Dark Patterns</a>
-    <a class="nav-item" href="#"><span class="nav-icon">🌐</span> Domains</a>
-  </div>
-  <div class="s-section">
-    <div class="s-section-lbl">Insights</div>
-    <a class="nav-item" href="#"><span class="nav-icon">📊</span> Analytics</a>
-    <a class="nav-item" href="#"><span class="nav-icon">📋</span> Activity Log</a>
-  </div>
-  <div class="s-section">
-    <div class="s-section-lbl">System</div>
-    <a class="nav-item" href="settings.html"><span class="nav-icon">⚙️</span> Settings</a>
-  </div>
-  <div class="s-bottom">
-    <div class="s-status">
-      <div class="s-dot"></div>
-      <span class="s-status-txt">Protection Active</span>
+  <div class="header-right">
+    <div class="profile-btn-wrap" id="profile-btn-wrap">
+      <button class="icon-btn" id="profile-btn" title="Account">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#6B7280"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      </button>
+      <span class="profile-dot"></span>
     </div>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<div class="main-wrap">
-  <topbar>
-    <div class="crumb">
-      <span>ClickSafe</span><span class="crumb-sep">/</span>
-      <span class="crumb-cur">Overview</span>
-    </div>
-    <div class="tb-right">
-      <span class="ts-lbl" id="last-updated">—</span>
-      <button class="btn btn-outline" id="btn-clear">Clear Data</button>
-    </div>
-  </topbar>
-
-  <div class="page">
-    <div class="page-title">Security Overview</div>
-    <div class="page-sub">Real-time protection · current session</div>
-
-    <!-- ROW 1: Score + 4 stats -->
-    <div class="g5">
-      <div class="card">
-        <div class="score-inner">
-          <div class="gauge">
-            <svg viewBox="0 0 96 96"><circle class="g-track" cx="48" cy="48" r="40"/>
-              <circle class="g-fill" id="gauge-arc" cx="48" cy="48" r="40"
-                stroke-dasharray="251.3" stroke-dashoffset="251.3" stroke="#27ae60"/>
-            </svg>
-            <div class="gauge-center">
-              <span class="gauge-num" id="score-num">—</span>
-              <span class="gauge-sub">/100</span>
-            </div>
-          </div>
-          <div>
-            <div class="score-verdict" id="score-verdict">Scanning…</div>
-            <div class="score-desc"   id="score-desc">Analyzing session</div>
-            <div class="sb-row"><span class="sb-lbl">Trackers</span><div class="sb-track"><div class="sb-fill" id="sb-t" style="width:0%;background:var(--danger);"></div></div><span class="sb-cnt" id="sv-t">0</span></div>
-            <div class="sb-row"><span class="sb-lbl">Cookies</span> <div class="sb-track"><div class="sb-fill" id="sb-c" style="width:0%;background:var(--warn);"></div></div><span class="sb-cnt" id="sv-c">0</span></div>
-            <div class="sb-row"><span class="sb-lbl">Mixed</span>   <div class="sb-track"><div class="sb-fill" id="sb-m" style="width:0%;background:var(--accent);"></div></div><span class="sb-cnt" id="sv-m">0</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="stat-hd"><span class="stat-lbl">Cookie Trackers</span><div class="stat-icon" style="background:var(--danger-bg)">🍪</div></div>
-        <div class="stat-val" style="color:var(--danger)" id="val-cookies">0</div>
-        <div class="stat-meta">session total</div>
-        <div class="stat-tag" style="background:var(--danger-bg);color:var(--danger)">detected</div>
-      </div>
-
-      <div class="card">
-        <div class="stat-hd"><span class="stat-lbl">Tracker Scripts</span><div class="stat-icon" style="background:var(--warn-bg)">🔍</div></div>
-        <div class="stat-val" style="color:var(--warn)" id="val-trackers">0</div>
-        <div class="stat-meta">session total</div>
-        <div class="stat-tag" style="background:var(--warn-bg);color:var(--warn)">session</div>
-      </div>
-
-      <div class="card">
-        <div class="stat-hd"><span class="stat-lbl">Dark Patterns</span><div class="stat-icon" style="background:var(--purple-bg)">🚨</div></div>
-        <div class="stat-val" style="color:var(--purple)" id="val-dp">0</div>
-        <div class="stat-meta">all time</div>
-        <div class="stat-tag" style="background:var(--purple-bg);color:var(--purple)">caught</div>
-      </div>
-
-      <div class="card">
-        <div class="stat-hd"><span class="stat-lbl">Threats Blocked</span><div class="stat-icon" style="background:var(--danger-bg)">🛑</div></div>
-        <div class="stat-val" style="color:var(--danger)" id="val-blocked">0</div>
-        <div class="stat-meta">all time</div>
-        <div class="stat-tag" style="background:var(--safe-bg);color:var(--safe)">✓ safe</div>
-      </div>
-    </div>
-
-    <!-- ROW 2: secondary stats -->
-    <div class="g4">
-      <div class="card" style="padding:15px 18px">
-        <div class="stat-hd" style="margin-bottom:6px"><span class="stat-lbl">HTTPS Redirects</span><div class="stat-icon" style="background:var(--safe-bg)">🔒</div></div>
-        <div class="stat-val" style="font-size:22px;color:var(--safe)" id="val-https">0</div>
-        <div class="stat-meta">all time</div>
-      </div>
-      <div class="card" style="padding:15px 18px">
-        <div class="stat-hd" style="margin-bottom:6px"><span class="stat-lbl">Links Checked</span><div class="stat-icon" style="background:var(--accent-bg)">🔗</div></div>
-        <div class="stat-val" style="font-size:22px;color:var(--accent)" id="val-links">0</div>
-        <div class="stat-meta">session total</div>
-      </div>
-      <div class="card" style="padding:15px 18px">
-        <div class="stat-hd" style="margin-bottom:6px"><span class="stat-lbl">Downloads Scanned</span><div class="stat-icon" style="background:var(--teal-bg)">⬇️</div></div>
-        <div class="stat-val" style="font-size:22px;color:var(--teal)" id="val-downloads">0</div>
-        <div class="stat-meta">all time</div>
-      </div>
-      <div class="card" style="padding:15px 18px">
-        <div class="stat-hd" style="margin-bottom:6px"><span class="stat-lbl">Mixed Content</span><div class="stat-icon" style="background:var(--warn-bg)">⚠️</div></div>
-        <div class="stat-val" style="font-size:22px;color:var(--warn)" id="val-mixed">0</div>
-        <div class="stat-meta">session total</div>
-      </div>
-    </div>
-
-    <!-- ═══ SECTION: ACTIVITY ═══ -->
-    <div class="sec-lbl">Activity</div>
-
-    <!-- STACKED AREA (like "Comments by Gender") + side KPIs (like Chartmogul right panel) -->
-    <div class="g21" style="margin-bottom:11px;">
-      <div class="card">
-        <div class="card-title">Threat Activity — Last 30 Days</div>
-        <div class="card-sub">Trackers · dark patterns · mixed content</div>
-        <div class="area-kpi-layout">
-          <div class="area-main">
-            <div class="chart-h200"><canvas id="area-chart"></canvas></div>
-          </div>
-          <div class="area-kpis" id="area-kpis">
-            <!-- filled by JS -->
-          </div>
-        </div>
-      </div>
-
-      <!-- HEATMAP -->
-      <div class="card">
-        <div class="card-title">7-Day Heatmap</div>
-        <div class="card-sub">Daily threat intensity</div>
-        <div class="hm-days" id="hm-days"></div>
-        <div class="hm-grid" id="hm-grid"></div>
-        <div class="hm-legend">
-          <span>Low</span>
-          <div class="hm-legend-cells">
-            <div class="hm-lc" style="background:#eeeee9;"></div>
-            <div class="hm-lc" style="background:rgba(220,53,69,.2);"></div>
-            <div class="hm-lc" style="background:rgba(220,53,69,.45);"></div>
-            <div class="hm-lc" style="background:rgba(220,53,69,.7);"></div>
-            <div class="hm-lc" style="background:rgba(220,53,69,1);"></div>
-          </div>
-          <span>High</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ SECTION: BREAKDOWN ═══ -->
-    <div class="sec-lbl">Breakdown</div>
-
-    <!-- FLOATING BAR (like MRR movements) + data table below -->
-    <div class="card" style="margin-bottom:11px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0">
-        <div>
-          <div class="card-title">Threat Type Movements</div>
-          <div class="card-sub">Daily counts by category — last 14 days</div>
-        </div>
-        <div style="display:flex;gap:14px;font-size:10px;font-family:var(--mono);color:var(--text3);margin-top:4px;" id="fbar-legend"></div>
-      </div>
-      <div class="fbar-chart-wrap"><canvas id="fbar-chart"></canvas></div>
-      <!-- mini data table like Chartmogul -->
-      <div style="overflow-x:auto">
-        <table class="data-table" id="data-table">
-          <thead><tr id="data-table-head"></tr></thead>
-          <tbody id="data-table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- RADAR + LOLLIPOP + DONUT -->
-    <div class="g3" style="margin-bottom:11px;">
-
-      <!-- RADAR (like "Comments by Age and Sex") -->
-      <div class="card">
-        <div class="card-title">Threat Pattern Radar</div>
-        <div class="card-sub">This session vs. all-time</div>
-        <div class="radar-layout">
-          <div style="flex:1;min-width:0;height:190px;position:relative"><canvas id="radar-chart"></canvas></div>
-          <div class="radar-legend" id="radar-legend"></div>
-        </div>
-      </div>
-
-      <!-- LOLLIPOP (like "Recurring Revenue Growth Rate" dot plot) -->
-      <div class="card">
-        <div class="card-title">Protection Coverage</div>
-        <div class="card-sub">Threats caught per feature</div>
-        <div class="lollipop-wrap" id="lollipop-wrap" style="margin-top:6px;"></div>
-      </div>
-
-      <!-- DONUT with inline legend -->
-      <div class="card">
-        <div class="card-title">Distribution</div>
-        <div class="card-sub">By threat type</div>
-        <div style="position:relative;width:130px;height:130px;margin:0 auto 12px">
-          <canvas id="donut-chart"></canvas>
-          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
-            <span style="font-size:20px;font-weight:700;letter-spacing:-.04em" id="donut-total">0</span>
-            <span style="font-size:9px;color:var(--text3);font-family:var(--mono)">total</span>
-          </div>
-        </div>
-        <div id="donut-legend"></div>
-      </div>
-    </div>
-
-    <!-- ═══ SECTION: DOMAINS & PROTECTION ═══ -->
-    <div class="sec-lbl">Domains & Protection</div>
-
-    <div class="g2" style="margin-bottom:11px;">
-      <div class="card">
-        <div class="card-title">Top Tracking Domains</div>
-        <div class="card-sub" style="margin-bottom:10px">Most active this session</div>
-        <div id="domain-list"><div class="empty"><div class="empty-icon">🔍</div>No data yet — browse some sites</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Protection Status</div>
-        <div class="card-sub" style="margin-bottom:10px">Active features</div>
-        <div>
-          <div class="feat-row"><div class="feat-dot on"></div><span class="feat-name">Auto-HTTPS Redirect</span><span class="feat-val" id="fv-https">—</span></div>
-          <div class="feat-row"><div class="feat-dot on"></div><span class="feat-name">Cookie Detection</span><span class="feat-val" id="fv-cookies">—</span></div>
-          <div class="feat-row"><div class="feat-dot on"></div><span class="feat-name">Link Safety</span><span class="feat-val" id="fv-links">—</span></div>
-          <div class="feat-row"><div class="feat-dot on"></div><span class="feat-name">Download Scan</span><span class="feat-val" id="fv-downloads">—</span></div>
-          <div class="feat-row"><div class="feat-dot on"></div><span class="feat-name">Dark Patterns</span><span class="feat-val" id="fv-dp">—</span></div>
-          <div class="feat-row"><div class="feat-dot on"></div><span class="feat-name">HTTPS Monitor</span><span class="feat-val" id="fv-mixed">—</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ SECTION: LOG ═══ -->
-    <div class="sec-lbl">Dark Pattern Log</div>
-
-    <div class="card" style="margin-bottom:60px">
-      <div class="log-hd">
-        <div><div class="card-title">Detected Patterns</div><div class="card-sub" style="margin-bottom:0">All logged manipulation attempts</div></div>
-        <div class="fil-row" id="dp-filters">
-          <button class="fil-chip active" data-type="all">All</button>
-          <button class="fil-chip" data-type="Fake Urgency">Urgency</button>
-          <button class="fil-chip" data-type="Confirm Shaming">Shaming</button>
-          <button class="fil-chip" data-type="Fake Countdown Timer">Countdown</button>
-          <button class="fil-chip" data-type="Cookie Banner Manipulation">Cookie</button>
-        </div>
-      </div>
-      <div class="log-scroll">
-        <table class="log-tbl">
-          <thead><tr><th>Type</th><th>Site</th><th>Detected Text</th><th>Time</th></tr></thead>
-          <tbody id="dp-log-body"><tr><td colspan="4"><div class="empty"><div class="empty-icon">✨</div>Nothing logged yet</div></td></tr></tbody>
-        </table>
-      </div>
-    </div>
-
+    <a href="../settings/settings.html" class="icon-btn" title="Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    </a>
+    <button class="clear-btn" id="btn-clear">Clear Data</button>
   </div>
 </div>
 
-<script>
-// ── constants ──────────────────────────────────────────────
-const CIRC = 251.3;
-let charts = {};
-let allDpLog = [], activeFilter = 'all';
+<div class="layout">
 
-const COLORS = {
-  trackers:    '#2563eb',
-  cookies:     '#e67e22',
-  darkpatterns:'#7c3aed',
-  mixed:       '#0891b2',
-  blocked:     '#dc3545',
-  safe:        '#27ae60',
-};
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="nav-section-lbl">Main</div>
+    <button class="nav-item active" data-page="overview">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" data-page="tracker-history">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Tracker History
+      <span class="nav-badge" id="badge-threats">0</span>
+    </button>
+    <button class="nav-item" data-page="score-history">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+      Score History
+    </button>
+    <button class="nav-item" data-page="companies">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+      Companies
+    </button>
 
-// ── boot ──────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  loadAll();
-  initFilters();
-  document.getElementById('btn-clear').addEventListener('click', clearAll);
-});
+    <div class="nav-section-lbl">Reports</div>
+    <button class="nav-item" data-page="analytics">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+      Analytics
+    </button>
+    <button class="nav-item" data-page="dark-patterns">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      Dark Patterns
+    </button>
 
-function loadAll() {
-  chrome.storage.local.get(null, data => {
-    renderOverview(data);
-    renderHeatmap(data);
-    renderAreaChart(data);
-    renderFloatingBar(data);
-    renderRadar(data);
-    renderLollipop(data);
-    renderDonut(data);
-    renderDomains(data);
-    renderFeatureStatus(data);
-    renderDpLog(data);
-    document.getElementById('last-updated').textContent =
-      'Updated ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  });
-}
+    <div class="nav-section-lbl">System</div>
+    <a class="nav-item" href="../settings/settings.html">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      Settings
+    </a>
 
-// ── OVERVIEW ──────────────────────────────────────────────
-function renderOverview(data) {
-  const cookies   = data.totalCookieTrackersFound || 0;
-  const trackers  = data.totalTrackersFound       || 0;
-  const mixed     = data.totalMixedContent        || 0;
-  const links     = data.totalLinksChecked         || 0;
-  const dp        = data.totalDarkPatterns         || 0;
-  const downloads = data.totalDownloadsScanned     || 0;
-  const https     = data.totalHttpsRedirects       || 0;
-  const blocked   = data.totalThreatsBlocked       || 0;
+  </aside>
 
-  $('val-cookies',cookies); $('val-trackers',trackers); $('val-dp',dp);
-  $('val-blocked',blocked); $('val-https',https); $('val-links',links);
-  $('val-downloads',downloads); $('val-mixed',mixed);
-  $('badge-threats', blocked);
+  <div class="main">
 
-  const cap=10;
-  aw('sb-t', Math.min(trackers/cap,1)*100); $('sv-t',trackers);
-  aw('sb-c', Math.min(cookies/cap,1)*100);  $('sv-c',cookies);
-  aw('sb-m', Math.min(mixed/cap,1)*100);    $('sv-m',mixed);
+    <!-- ══ OVERVIEW ══════════════════════════════════════════ -->
+    <div class="page active" id="page-overview">
 
-  $('fv-https',    https+' hits');
-  $('fv-cookies',  cookies+' found');
-  $('fv-links',    links+' scanned');
-  $('fv-downloads',downloads+' checked');
-  $('fv-dp',       dp+' caught');
-  $('fv-mixed',    mixed+' alerts');
+      <!-- Gradient hero band - feat-stat style -->
+      <div class="page-hero-band">
+        <div class="mono-label">Session Total</div>
+        <div class="hero-stat-grid">
 
-  const tabKeys = Object.keys(data).filter(k=>k.startsWith('tabUrl_'));
-  let isHttps = true;
-  if (tabKeys.length) {
-    const latest = tabKeys.sort((a,b)=>(parseInt(b.split('_')[1])||0)-(parseInt(a.split('_')[1])||0))[0];
-    isHttps = (data[latest]||'').startsWith('https://');
-  }
-  const score = Math.max(0, Math.min(100, Math.round(
-    100 - (!isHttps?30:0) - Math.min(cookies*5,30) - Math.min(trackers*4,20) - Math.min(mixed*5,20)
-  )));
-  renderGauge(score);
-}
+          <!-- Featured dark strip -->
+          <div class="hero-stat-box hero-featured">
+            <div class="hero-featured-icon">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="hero-featured-body">
+              <div class="hero-stat-val" style="font-size:18px;letter-spacing:-0.5px;">Quick Overall Overview</div>
+              <div class="hero-stat-sub" style="margin-top:5px;">Your session stats at a glance</div>
+            </div>
+          </div>
 
-function renderGauge(s) {
-  const arc = document.getElementById('gauge-arc');
-  const color = s>=80?COLORS.safe : s>=50?COLORS.cookies : COLORS.blocked;
-  const lbl   = s>=80?'Well Protected' : s>=50?'Moderate Risk' : 'High Risk';
-  const desc  = s>=80?'Your session looks clean.' : s>=50?'Some trackers detected.' : 'Significant threats found.';
-  arc.style.strokeDashoffset = CIRC*(1-s/100);
-  arc.style.stroke = color;
-  document.getElementById('score-num').textContent = s;
-  document.getElementById('score-num').style.color = color;
-  document.getElementById('score-verdict').textContent = lbl;
-  document.getElementById('score-verdict').style.color = color;
-  document.getElementById('score-desc').textContent = desc;
-}
+          <div class="hero-stat-box">
+            <div class="hero-stat-val" id="dash-cookie-trackers">0</div>
+            <div class="hero-stat-label">Cookie Trackers</div>
+            <div class="hero-stat-sub">session total</div>
+          </div>
 
-// ── HEATMAP ───────────────────────────────────────────────
-function renderHeatmap(data) {
-  const dEl = document.getElementById('hm-days');
-  const gEl = document.getElementById('hm-grid');
-  const lbls = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-  const today = new Date();
-  const cells = [];
-  for (let i=6;i>=0;i--) {
-    const d=new Date(today); d.setDate(d.getDate()-i);
-    const key='heatmap_'+d.toISOString().split('T')[0];
-    const val=(data[key]?.trackers||0)+(data[key]?.darkPatterns||0)+(data[key]?.mixedContent||0);
-    cells.push({date:d,val});
-  }
-  const mx = Math.max(...cells.map(c=>c.val),1);
-  dEl.innerHTML=''; gEl.innerHTML='';
-  cells.forEach(c=>{
-    const dl=document.createElement('div'); dl.className='hm-day';
-    dl.textContent=lbls[c.date.getDay()]; dEl.appendChild(dl);
-    const cell=document.createElement('div'); cell.className='hm-cell';
-    if(c.val>0){
-      const a=0.15+(c.val/mx)*0.85;
-      cell.style.background=`rgba(220,53,69,${a})`;
-    }
-    const tip=document.createElement('div'); tip.className='hm-tip';
-    tip.textContent=c.date.toLocaleDateString('en',{month:'short',day:'numeric'})+' · '+c.val+' events';
-    cell.appendChild(tip); gEl.appendChild(cell);
-  });
-}
+          <div class="hero-stat-box">
+            <div class="hero-stat-val" id="dash-tracker-scripts">0</div>
+            <div class="hero-stat-label">Tracker Scripts</div>
+            <div class="hero-stat-sub">session total</div>
+          </div>
 
-// ── STACKED AREA CHART (30-day) ───────────────────────────
-function renderAreaChart(data) {
-  const days=[], trackers=[], dps=[], mixed=[];
-  const today=new Date();
-  // sum per week for area-kpi
-  let w1t=0, w2t=0, w3t=0, w4t=0;
+          <div class="hero-stat-box">
+            <div class="hero-stat-val" id="dash-dark-patterns">0</div>
+            <div class="hero-stat-label">Dark Patterns</div>
+            <div class="hero-stat-sub">all time</div>
+            <span class="hero-stat-accent">Detected</span>
+          </div>
 
-  for(let i=29;i>=0;i--){
-    const d=new Date(today); d.setDate(d.getDate()-i);
-    const key='heatmap_'+d.toISOString().split('T')[0];
-    const t=data[key]?.trackers||0;
-    const dp=data[key]?.darkPatterns||0;
-    const m=data[key]?.mixedContent||0;
-    days.push(d.toLocaleDateString('en',{month:'short',day:'numeric'}));
-    trackers.push(t); dps.push(dp); mixed.push(m);
-    const wk = Math.floor(i/7);
-    if(wk===3)w4t+=t+dp+m;
-    else if(wk===2)w3t+=t+dp+m;
-    else if(wk===1)w2t+=t+dp+m;
-    else w1t+=t+dp+m;
-  }
+          <div class="hero-stat-box">
+            <div class="hero-stat-val" id="dash-links-hero">0</div>
+            <div class="hero-stat-label">Links Checked</div>
+            <div class="hero-stat-sub">session total</div>
+          </div>
 
-  // side KPIs (like Chartmogul right panel)
-  const kpiEl = document.getElementById('area-kpis');
-  const periods=[
-    {label:'This week',   val:w1t, prev:w2t},
-    {label:'Last week',   val:w2t, prev:w3t},
-    {label:'2 weeks ago', val:w3t, prev:w4t},
-    {label:'3 weeks ago', val:w4t, prev:null},
-  ];
-  kpiEl.innerHTML = periods.map(p=>{
-    const delta = p.prev!==null ? (p.prev?((p.val-p.prev)/p.prev*100).toFixed(1):null) : null;
-    const dCls  = delta!==null ? (parseFloat(delta)>=0?'delta-up':'delta-dn') : '';
-    const dTxt  = delta!==null ? (parseFloat(delta)>=0?'+'+delta+'%':delta+'%') : '';
-    return `<div class="kpi-item">
-      <div class="kpi-period">${p.label}</div>
-      <div class="kpi-val">${p.val}</div>
-      ${dTxt?`<div class="kpi-delta ${dCls}">${dTxt}</div>`:''}
-    </div>`;
-  }).join('');
+          <div class="hero-stat-box">
+            <div class="hero-stat-val" id="dash-downloads-blocked">0</div>
+            <div class="hero-stat-label">Downloads Blocked</div>
+            <div class="hero-stat-sub">all time</div>
+            <span class="hero-stat-accent">Blocked</span>
+          </div>
 
-  const ctx=document.getElementById('area-chart').getContext('2d');
-  if(charts.area) charts.area.destroy();
-  charts.area = new Chart(ctx,{
-    type:'line',
-    data:{
-      labels: days,
-      datasets:[
-        {label:'Trackers',     data:trackers, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.08)', borderWidth:1.5, pointRadius:0, fill:true, tension:0.4},
-        {label:'Dark Patterns',data:dps,      borderColor:'#7c3aed', backgroundColor:'rgba(124,58,237,0.07)', borderWidth:1.5, pointRadius:0, fill:true, tension:0.4},
-        {label:'Mixed Content',data:mixed,    borderColor:'#0891b2', backgroundColor:'rgba(8,145,178,0.06)', borderWidth:1.5, pointRadius:0, fill:true, tension:0.4},
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:true,labels:{color:'#aaaaa4',font:{size:10,family:'DM Mono'},boxWidth:20,boxHeight:2,padding:14}},
-        tooltip:{mode:'index',intersect:false}
-      },
-      scales:{
-        x:{ticks:{color:'#aaaaa4',font:{size:9,family:'DM Mono'},maxTicksLimit:7},grid:{color:'#f0f0eb'}},
-        y:{ticks:{color:'#aaaaa4',font:{size:9,family:'DM Mono'}},grid:{color:'#f0f0eb'},beginAtZero:true}
-      }
-    }
-  });
-}
-
-// ── FLOATING / GROUPED BAR (like MRR movements) ───────────
-function renderFloatingBar(data) {
-  const labels=[], tData=[], dpData=[], mData=[];
-  const today=new Date();
-  for(let i=13;i>=0;i--){
-    const d=new Date(today); d.setDate(d.getDate()-i);
-    const key='heatmap_'+d.toISOString().split('T')[0];
-    labels.push(d.toLocaleDateString('en',{month:'short',day:'numeric'}));
-    tData.push(data[key]?.trackers||0);
-    dpData.push(data[key]?.darkPatterns||0);
-    mData.push(data[key]?.mixedContent||0);
-  }
-
-  // legend
-  const legEl = document.getElementById('fbar-legend');
-  const items=[['Trackers','#2563eb'],['Dark Patterns','#7c3aed'],['Mixed Content','#0891b2']];
-  legEl.innerHTML = items.map(([l,c])=>
-    `<span style="display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c}"></span>${l}</span>`
-  ).join('');
-
-  // data table (like Chartmogul chart data section)
-  const thead = document.getElementById('data-table-head');
-  const tbody = document.getElementById('data-table-body');
-  const last6 = labels.slice(-6);
-  thead.innerHTML = '<th>Metric</th>'+last6.map(l=>`<th>${l}</th>`).join('');
-  tbody.innerHTML = [
-    ['Trackers',  tData, '#2563eb'],
-    ['Dark Pat.', dpData,'#7c3aed'],
-    ['Mixed',     mData, '#0891b2'],
-  ].map(([name,vals,color])=>`
-    <tr>
-      <td style="color:${color};font-weight:600">${name}</td>
-      ${vals.slice(-6).map(v=>`<td>${v}</td>`).join('')}
-    </tr>
-  `).join('');
-
-  const ctx=document.getElementById('fbar-chart').getContext('2d');
-  if(charts.fbar) charts.fbar.destroy();
-  charts.fbar = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels,
-      datasets:[
-        {label:'Trackers',     data:tData,  backgroundColor:'rgba(37,99,235,0.7)',  borderRadius:3, borderSkipped:false},
-        {label:'Dark Patterns',data:dpData, backgroundColor:'rgba(124,58,237,0.65)',borderRadius:3, borderSkipped:false},
-        {label:'Mixed Content',data:mData,  backgroundColor:'rgba(8,145,178,0.6)',  borderRadius:3, borderSkipped:false},
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{mode:'index',intersect:false}
-      },
-      scales:{
-        x:{ticks:{color:'#aaaaa4',font:{size:9,family:'DM Mono'},maxTicksLimit:8},grid:{display:false}},
-        y:{ticks:{color:'#aaaaa4',font:{size:9,family:'DM Mono'}},grid:{color:'#f0f0eb'},beginAtZero:true},
-      }
-    }
-  });
-}
-
-// ── RADAR CHART (like "Comments by Age and Sex") ──────────
-function renderRadar(data) {
-  const sessionVals = [
-    data.totalTrackersFound      || 0,
-    data.totalCookieTrackersFound || 0,
-    data.totalDarkPatterns        || 0,
-    data.totalMixedContent        || 0,
-    data.totalThreatsBlocked      || 0,
-    data.totalHttpsRedirects      || 0,
-  ];
-  // synthetic "all-time" is 1.5× session as placeholder
-  const allTimeVals = sessionVals.map(v => Math.round(v*1.4+2));
-  const labels = ['Trackers','Cookies','Dark Pat.','Mixed','Blocked','HTTPS'];
-
-  const ctx=document.getElementById('radar-chart').getContext('2d');
-  if(charts.radar) charts.radar.destroy();
-  charts.radar = new Chart(ctx,{
-    type:'radar',
-    data:{
-      labels,
-      datasets:[
-        {
-          label:'This Session',
-          data:sessionVals,
-          borderColor:'#2563eb',
-          backgroundColor:'rgba(37,99,235,0.1)',
-          borderWidth:2, pointRadius:3, pointBackgroundColor:'#2563eb',
-        },
-        {
-          label:'All Time Avg',
-          data:allTimeVals,
-          borderColor:'#dc3545',
-          backgroundColor:'rgba(220,53,69,0.07)',
-          borderWidth:1.5, pointRadius:2, pointBackgroundColor:'#dc3545',
-          borderDash:[4,3],
-        }
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{mode:'point'}
-      },
-      scales:{
-        r:{
-          ticks:{display:false, stepSize:1},
-          grid:{color:'#e6e6e2'},
-          pointLabels:{font:{size:10,family:'DM Mono'},color:'#666660'},
-          angleLines:{color:'#e6e6e2'},
-          beginAtZero:true,
-        }
-      }
-    }
-  });
-
-  // legend
-  const legEl=document.getElementById('radar-legend');
-  legEl.innerHTML=[
-    {l:'This Session',c:'#2563eb'},
-    {l:'All Time',c:'#dc3545'}
-  ].map(i=>`<div class="rl-item"><span class="rl-dot" style="background:${i.c}"></span>${i.l}</div>`).join('');
-}
-
-// ── LOLLIPOP (like "Recurring Revenue Growth Rate" dot plot) ──
-function renderLollipop(data) {
-  const features = [
-    {name:'Tracker Block', val:data.totalTrackersFound      ||0, max:20, color:'#2563eb'},
-    {name:'Cookie Guard',  val:data.totalCookieTrackersFound ||0, max:20, color:'#e67e22'},
-    {name:'Dark Patterns', val:data.totalDarkPatterns        ||0, max:20, color:'#7c3aed'},
-    {name:'HTTPS Shield',  val:data.totalHttpsRedirects       ||0, max:20, color:'#27ae60'},
-    {name:'Link Check',    val:data.totalLinksChecked          ||0, max:50, color:'#0891b2'},
-    {name:'Downloads',     val:data.totalDownloadsScanned      ||0, max:20, color:'#dc3545'},
-  ];
-  const el=document.getElementById('lollipop-wrap');
-  el.innerHTML = features.map(f=>{
-    const pct = Math.min((f.val/f.max)*100, 100);
-    return `<div class="lollipop-row">
-      <span class="lollipop-lbl">${f.name}</span>
-      <div class="lollipop-track">
-        <div class="lollipop-line" style="left:0;width:${pct}%;background:${f.color};opacity:0.25;"></div>
-        <div class="lollipop-dot"  style="left:${pct}%;background:${f.color};"></div>
+        </div>
       </div>
-      <span class="lollipop-val">${f.val}</span>
-    </div>`;
-  }).join('');
-}
 
-// ── DONUT ─────────────────────────────────────────────────
-function renderDonut(data) {
-  const vals = {
-    'Trackers': data.totalTrackersFound       ||0,
-    'Cookies':  data.totalCookieTrackersFound  ||0,
-    'Dark Pat': data.totalDarkPatterns         ||0,
-    'Mixed':    data.totalMixedContent         ||0,
-  };
-  const total=Object.values(vals).reduce((a,b)=>a+b,0);
-  $('donut-total',total);
-  const colors=['#2563eb','#e67e22','#7c3aed','#0891b2'];
-  const labels=Object.keys(vals), counts=Object.values(vals);
+      <div class="sec-lbl">Breakdown</div>
+      <div class="content-pad">
+        <div class="g12">
+          <div class="card">
+            <div class="card-title">Top Tracking Domains</div>
+            <div class="card-sub">Most active this session</div>
+            <div id="domain-list">
+              <div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4"><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="8"/></svg></div><div class="empty-text">No data yet - browse some sites</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Distribution</div>
+            <div class="card-sub">By threat type</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 0;">
+              <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+                <canvas id="donut-chart"></canvas>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
+                  <span style="font-family:var(--font-display);font-size:28px;color:#111111" id="donut-total">0</span>
+                  <span style="font-family:var(--font-mono);font-size:12px;color:#6B7280">total</span>
+                </div>
+              </div>
+              <div id="donut-legend" style="width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;"></div>
+            </div>
+          </div>
+        </div>
 
-  const ctx=document.getElementById('donut-chart').getContext('2d');
-  if(charts.donut) charts.donut.destroy();
-  charts.donut=new Chart(ctx,{
-    type:'doughnut',
-    data:{labels,datasets:[{data:counts.map(v=>Math.max(v,0)),backgroundColor:colors,borderWidth:2,borderColor:'#fff',hoverOffset:3}]},
-    options:{
-      cutout:'68%',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw}`}}},
-      animation:{duration:1000}
-    }
-  });
+        <div class="sec-lbl sec-lbl-inner">Activity</div>
+        <div class="g21">
+          <div class="card">
+            <div class="card-title">24-Hour Timeline</div>
+            <div class="card-sub">Threat events in the past 24 hours</div>
+            <div class="chart-h200"><canvas id="timeline-chart"></canvas></div>
+          </div>
+          <div class="card" style="display:flex;flex-direction:column;">
+            <div class="card-title">Monthly Heatmap</div>
+            <div class="card-sub">Daily threat intensity</div>
+            <div class="cal-nav">
+              <button class="cal-btn" id="cal-1-prev"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+              <span class="cal-month-lbl" id="cal-lbl-1"></span>
+              <button class="cal-btn" id="cal-1-next"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+            </div>
+            <div class="cal-dow-row"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+            <div class="cal-grid" id="cal-1"></div>
+            <div class="hm-legend">
+              <span>Low</span>
+              <div style="display:flex;gap:3px">
+                <div class="hm-lc" style="background:rgba(0,0,0,0.06)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,.2)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,.5)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,.8)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,1)"></div>
+              </div>
+              <span>High</span>
+            </div>
+          </div>
+        </div>
 
-  document.getElementById('donut-legend').innerHTML=labels.map((l,i)=>`
-    <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text2);margin-bottom:5px;">
-      <span style="width:8px;height:8px;border-radius:50%;background:${colors[i]};flex-shrink:0;display:inline-block;"></span>
-      <span style="flex:1">${l}</span>
-      <span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${counts[i]}</span>
+        <div class="sec-lbl sec-lbl-inner">More Stats</div>
+        <div class="g4">
+          <div class="card"><div class="stat-hd"><span class="stat-lbl">HTTPS</span><div class="stat-icon" style="background:var(--green-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div><div class="stat-val" id="dash-https">0</div><div class="stat-meta">redirects</div></div>
+          <div class="card"><div class="stat-hd"><span class="stat-lbl">Links</span><div class="stat-icon" style="background:var(--blue-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div></div><div class="stat-val" id="dash-links">0</div><div class="stat-meta">checked</div></div>
+          <div class="card"><div class="stat-hd"><span class="stat-lbl">Downloads</span><div class="stat-icon" style="background:var(--purple-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></div></div><div class="stat-val" id="dash-downloads">0</div><div class="stat-meta">scanned</div></div>
+          <div class="card"><div class="stat-hd"><span class="stat-lbl">Mixed</span><div class="stat-icon" style="background:var(--orange-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div></div><div class="stat-val" id="dash-mixed">0</div><div class="stat-meta">content</div></div>
+        </div>
+
+        <div class="sec-lbl sec-lbl-inner">Protection Status</div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-title">Active Features</div>
+            <div class="card-sub" style="margin-bottom:6px">Current module status</div>
+            <div class="feat-row"><div class="status-dot on" id="fs-https"></div><span class="feat-name">Auto-HTTPS Redirect</span><span class="feat-val" id="fs-https-count">-</span></div>
+            <div class="feat-row"><div class="status-dot on" id="fs-cookies"></div><span class="feat-name">Cookie Detection</span><span class="feat-val" id="fs-cookies-count">-</span></div>
+            <div class="feat-row"><div class="status-dot on" id="fs-links"></div><span class="feat-name">Link Safety</span><span class="feat-val" id="fs-links-count">-</span></div>
+            <div class="feat-row"><div class="status-dot on" id="fs-downloads"></div><span class="feat-name">Download Scan</span><span class="feat-val" id="fs-downloads-count">-</span></div>
+            <div class="feat-row"><div class="status-dot on" id="fs-darkpatterns"></div><span class="feat-name">Dark Patterns</span><span class="feat-val" id="fs-dp-count">-</span></div>
+            <div class="feat-row"><div class="status-dot on"></div><span class="feat-name">HTTPS Monitor</span><span class="feat-val" id="fs-mixed-count">-</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Session Summary</div>
+            <div class="card-sub" style="margin-bottom:6px">All-time totals</div>
+            <div class="feat-row"><span class="feat-name">Cookie Trackers</span><span class="feat-val" style="color:var(--orange);font-weight:700" id="sum-cookies">0</span></div>
+            <div class="feat-row"><span class="feat-name">Tracker Scripts</span><span class="feat-val" style="color:var(--orange);font-weight:700" id="sum-trackers">0</span></div>
+            <div class="feat-row"><span class="feat-name">Dark Patterns</span><span class="feat-val" style="color:var(--orange);font-weight:700" id="sum-dp">0</span></div>
+            <div class="feat-row"><span class="feat-name">Mixed Content</span><span class="feat-val" style="color:var(--orange);font-weight:700" id="sum-mixed">0</span></div>
+            <div class="feat-row"><span class="feat-name">HTTPS Upgrades</span><span class="feat-val" style="color:var(--orange);font-weight:700" id="sum-https">0</span></div>
+            <div class="feat-row"><span class="feat-name">Links Checked</span><span class="feat-val" style="color:var(--orange);font-weight:700" id="sum-links">0</span></div>
+          </div>
+        </div>
+      </div>
     </div>
-  `).join('');
-}
 
-// ── DOMAINS ───────────────────────────────────────────────
-function renderDomains(data) {
-  const domains = data.trackerDomainCounts||{};
-  const sorted  = Object.entries(domains).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const el=document.getElementById('domain-list');
-  if(!sorted.length){ el.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div>No data yet</div>`; return; }
-  const max=sorted[0][1];
-  const colors=['#dc3545','#e67e22','#2563eb','#7c3aed','#27ae60','#0891b2','#999','#aaa'];
-  el.innerHTML=sorted.map(([d,c],i)=>`
-    <div class="dom-row">
-      <span class="dom-num">${i+1}</span>
-      <span class="dom-name">${d}</span>
-      <div class="dom-bar-wrap"><div class="dom-bar-fill" style="width:${(c/max)*100}%;background:${colors[i%colors.length]}"></div></div>
-      <span class="dom-cnt">${c}</span>
+    <!-- ══ SCORE HISTORY ══════════════════════════════════════ -->
+    <div class="page" id="page-score-history">
+      <div class="page-hero-band">
+        <div class="mono-label">Score History</div>
+        <div class="hero-title">Privacy scores for every page you visited</div>
+      </div>
+      <div class="sec-lbl">All Records</div>
+      <div class="content-pad">
+        <div id="score-history-list-page">
+          <div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/></svg></div><div class="empty-text">No scored pages yet - browse some sites</div></div>
+        </div>
+      </div>
     </div>
-  `).join('');
-}
 
-function renderFeatureStatus() {} // counts already wired in renderOverview
+    <!-- ══ TRACKER HISTORY ════════════════════════════════════ -->
+    <div class="page" id="page-tracker-history">
+      <div class="page-hero-band">
+        <div class="mono-label">Tracker History</div>
+        <div class="hero-title">Every site that tracked you, with full details</div>
+      </div>
+      <div class="sec-lbl">Records</div>
+      <div class="content-pad">
+        <div class="history-filters">
+          <button class="hist-filter active" data-hfilter="all">All</button>
+          <button class="hist-filter" data-hfilter="cookies">Cookies</button>
+          <button class="hist-filter" data-hfilter="scripts">Scripts</button>
+          <button class="hist-filter" data-hfilter="mixed">Mixed</button>
+          <input class="hist-search" type="text" id="hist-search-input" placeholder="Search domain…" />
+        </div>
+        <div id="history-list">
+          <div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="empty-text">No tracking history yet - browse some sites</div></div>
+        </div>
+      </div>
+    </div>
 
-// ── DARK PATTERN LOG ─────────────────────────────────────
-function renderDpLog(data) { allDpLog=data.darkPatternLog||[]; renderDpTable(); }
+    <!-- ══ COMPANIES ══════════════════════════════════════════ -->
+    <div class="page" id="page-companies">
+      <div class="page-hero-band">
+        <div class="mono-label">Companies Tracking You</div>
+        <div class="hero-title">What they collect and how they use your data</div>
+      </div>
+      <div class="sec-lbl">All Companies</div>
+      <div class="content-pad">
+        <div id="companies-list">
+          <div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/></svg></div><div class="empty-text">No company data yet - browse some sites</div></div>
+        </div>
+      </div>
+    </div>
 
-function renderDpTable() {
-  const tbody=document.getElementById('dp-log-body');
-  const filtered=activeFilter==='all'?allDpLog:allDpLog.filter(e=>e.type===activeFilter);
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="4"><div class="empty"><div class="empty-icon">✨</div>Nothing logged yet</div></td></tr>`;return;}
-  const tagMap={'Fake Urgency':'urgency','Confirm Shaming':'shaming','Fake Countdown Timer':'countdown','Pre-checked Checkbox':'checkbox','Cookie Banner Manipulation':'cookie'};
-  tbody.innerHTML=[...filtered].reverse().slice(0,80).map(e=>{
-    const cls=tagMap[e.type]||'unknown';
-    const time=e.timestamp?new Date(e.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'—';
-    return `<tr>
-      <td><span class="ptag ptag-${cls}">${e.type||'Unknown'}</span></td>
-      <td style="font-family:var(--mono);font-size:10px">${e.site||'—'}</td>
-      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.text||'—'}</td>
-      <td style="font-family:var(--mono);font-size:10px;color:var(--text3)">${time}</td>
-    </tr>`;
-  }).join('');
-}
+    <!-- ══ ANALYTICS ══════════════════════════════════════════ -->
+    <div class="page" id="page-analytics">
+      <div class="page-hero-band">
+        <div class="mono-label">Analytics</div>
+        <div class="hero-title">Deep-dive into your protection stats</div>
+      </div>
+      <div class="sec-lbl">Charts</div>
+      <div class="content-pad">
+        <div class="g21">
+          <div class="card">
+            <div class="card-title">24-Hour Timeline</div>
+            <div class="card-sub">All threat events in the past 24 hours</div>
+            <div class="chart-h200"><canvas id="timeline-chart-2"></canvas></div>
+          </div>
+          <div class="card" style="display:flex;flex-direction:column;">
+            <div class="card-title">Monthly Heatmap</div>
+            <div class="card-sub">Daily threat intensity</div>
+            <div class="cal-nav">
+              <button class="cal-btn" id="cal-2-prev"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+              <span class="cal-month-lbl" id="cal-lbl-2"></span>
+              <button class="cal-btn" id="cal-2-next"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+            </div>
+            <div class="cal-dow-row"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+            <div class="cal-grid" id="cal-2"></div>
+            <div class="hm-legend">
+              <span>Low</span>
+              <div style="display:flex;gap:3px">
+                <div class="hm-lc" style="background:rgba(0,0,0,0.06)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,.2)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,.5)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,.8)"></div>
+                <div class="hm-lc" style="background:rgba(193,18,31,1)"></div>
+              </div>
+              <span>High</span>
+            </div>
+          </div>
+        </div>
+        <div class="sec-lbl sec-lbl-inner">Top Domains</div>
+        <div class="g12">
+          <div class="card">
+            <div class="card-title">Top Tracking Domains</div>
+            <div class="card-sub">Most active across all sessions</div>
+            <div id="domain-list-2"><div class="empty-state"><div class="empty-text">No data yet</div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Distribution</div>
+            <div class="card-sub">By threat type</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 0;">
+              <div style="position:relative;width:150px;height:150px;">
+                <canvas id="donut-chart-2"></canvas>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
+                  <span style="font-family:var(--font-display);font-size:24px;color:#111111" id="donut-total-2">0</span>
+                  <span style="font-family:var(--font-mono);font-size:12px;color:#6B7280">total</span>
+                </div>
+              </div>
+              <div id="donut-legend-2" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-function initFilters() {
-  document.getElementById('dp-filters').addEventListener('click',e=>{
-    const chip=e.target.closest('.fil-chip'); if(!chip)return;
-    document.querySelectorAll('.fil-chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active'); activeFilter=chip.dataset.type; renderDpTable();
-  });
-}
+    <!-- ══ DARK PATTERNS ══════════════════════════════════════ -->
+    <div class="page" id="page-dark-patterns">
+      <div class="page-hero-band">
+        <div class="mono-label">Dark Pattern Log</div>
+        <div class="hero-title">Websites caught manipulating you</div>
+      </div>
+      <div class="sec-lbl">Detected Patterns</div>
+      <div class="content-pad">
+        <div class="card" style="margin-bottom:40px">
+          <div class="log-hd">
+            <div>
+              <div class="card-title">All Manipulation Attempts</div>
+              <div class="card-sub" style="margin-bottom:0">Logged and categorized</div>
+            </div>
+            <div class="dp-filters" id="dp-filters">
+              <button class="dp-filter active" data-type="all">All</button>
+              <button class="dp-filter" data-type="Fake Urgency">Urgency</button>
+              <button class="dp-filter" data-type="Confirm Shaming">Shaming</button>
+              <button class="dp-filter" data-type="Fake Countdown Timer">Countdown</button>
+              <button class="dp-filter" data-type="Cookie Banner Manipulation">Cookie</button>
+            </div>
+          </div>
+          <div class="log-scroll">
+            <table class="log-tbl">
+              <thead><tr><th>Type</th><th>Site</th><th>Detected Text</th><th>Time</th></tr></thead>
+              <tbody id="dp-log-body">
+                <tr><td colspan="4"><div class="empty-state"><div class="empty-text">Nothing logged yet</div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-function clearAll() {
-  if(!confirm('Clear all ClickSafe data?'))return;
-  chrome.storage.local.clear(()=>loadAll());
-}
+  </div><!-- /.main -->
+</div><!-- /.layout -->
 
-function $(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
-function aw(id,p){setTimeout(()=>{const e=document.getElementById(id);if(e)e.style.width=p+'%';},200);}
-</script>
+<script src="../../assets/js/chart.umd.min.js"></script>
+<script src="../../utils/helpers.js"></script>
+<script src="../../utils/auth.js"></script>
+<script src="companyData.js"></script>
+<script src="charts.js"></script>
+<script src="historyView.js"></script>
+<script src="scoreHistory.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Learn exactly how ClickSafe protects you — real-time monitoring, threat detection, warning system, and privacy layer explained." />
+  <title>How ClickSafe Works — ClickSafe</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body { background: #ffffff; }
+
+    .hiw-hero {
+      padding: 80px 0 56px;
+      background: #f8f8f8;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .hiw-hero-inner { max-width: 620px; }
+    .hiw-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+    .hiw-hero h1 {
+      font-size: clamp(30px, 4.5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      font-family: var(--font-body);
+    }
+    .hiw-hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 500px;
+    }
+
+    .hiw-layout {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .hiw-sidebar {
+      padding: 48px 0;
+      border-right: 1px solid var(--border-light);
+    }
+    .hiw-sidebar-inner {
+      position: sticky;
+      top: 88px;
+    }
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .sidebar-link {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      padding: 7px 0 7px 16px;
+      border: none;
+      background: none;
+      text-align: left;
+      width: 100%;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+      font-family: var(--font-body);
+      line-height: 1.4;
+    }
+    .sidebar-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      height: 16px;
+      width: 2px;
+      background: var(--red);
+      border-radius: 2px;
+      transition: transform 0.2s;
+    }
+    .sidebar-link:hover { color: var(--text-dark); }
+    .sidebar-link.active { color: var(--text-dark); font-weight: 600; }
+    .sidebar-link.active::before { transform: translateY(-50%) scaleY(1); }
+
+    .sidebar-progress {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-light);
+    }
+    .progress-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .progress-bar-bg {
+      height: 2px;
+      background: var(--border-light);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--red);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    .hiw-content {
+      padding: 56px 0 96px 64px;
+      max-width: 720px;
+    }
+
+    .hiw-section {
+      padding-bottom: 64px;
+      margin-bottom: 64px;
+      border-bottom: 1px solid var(--border-light);
+      scroll-margin-top: 100px;
+    }
+    .hiw-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .hiw-section h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+      font-family: var(--font-body);
+    }
+    .hiw-section h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 28px 0 10px;
+      font-family: var(--font-body);
+    }
+    .hiw-section p {
+      font-size: 15.5px;
+      color: #374151;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      font-family: var(--font-body);
+    }
+    .hiw-section p:last-child { margin-bottom: 0; }
+    .hiw-section code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: #374151;
+    }
+
+    .hiw-cta {
+      background: var(--text-dark);
+      border-radius: 12px;
+      padding: 36px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .hiw-cta h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 5px;
+      margin-top: 0;
+    }
+    .hiw-cta p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 0;
+    }
+    .hiw-cta .cta-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+      background: #E63946;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: var(--font-body);
+      transition: opacity 0.15s;
+    }
+    .hiw-cta .cta-btn:hover { opacity: 0.88; }
+
+    @media (max-width: 900px) {
+      .hiw-layout { grid-template-columns: 1fr; padding: 0 20px; }
+      .hiw-sidebar { border-right: none; border-bottom: 1px solid var(--border-light); padding: 24px 0; }
+      .hiw-sidebar-inner { position: static; }
+      .sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+      .sidebar-link { width: auto; padding: 6px 12px; background: #f3f4f6; border-radius: 6px; }
+      .sidebar-link::before { display: none; }
+      .hiw-content { padding: 36px 0 56px; }
+      .hiw-cta { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .hiw-hero { padding: 56px 0 40px; }
+      .hiw-section h2 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <div class="nav-logo">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/>
+        </svg>
+        ClickSafe
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="how-it-works.html" style="color: var(--red);">How it Works</a>
+        <a href="index.html#install">Installation Setup</a>
+        <a href="index.html#about">About</a>
+      </nav>
+      <a href="#install" class="nav-cta">Add to Browser</a>
+    </div>
+  </header>
+
+  <div class="hiw-hero">
+    <div class="container">
+      <div class="hiw-hero-inner">
+        <p class="hiw-eyebrow">
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/></svg>
+          How ClickSafe Works
+        </p>
+        <h1>Protection you can<br>actually understand.</h1>
+        <p>ClickSafe isn't a black box. This is a complete, honest explanation of what the extension does, how each feature works under the hood, and exactly where your data goes — or doesn't.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick description strip -->
+  <div class="hiw-desc-strip">
+    <div class="container hiw-desc-inner">
+      <div class="hiw-desc-card">
+        <div class="hiw-desc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 4v5c0 5-3 9-7 10C8 21 5 17 5 12V7l7-4z" stroke="#E63946" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#E63946" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <strong>100% local by default</strong>
+          <p>Tracker lookups, HTTPS checks, and cookie scans never leave your browser.</p>
+        </div>
+      </div>
+      <div class="hiw-desc-divider"></div>
+      <div class="hiw-desc-card">
+        <div class="hiw-desc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#E63946" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="#E63946" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <strong>Runs before you click</strong>
+          <p>Links and downloads are checked before your browser commits to anything.</p>
+        </div>
+      </div>
+      <div class="hiw-desc-divider"></div>
+      <div class="hiw-desc-card">
+        <div class="hiw-desc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="#E63946" stroke-width="1.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#E63946" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <strong>No account, no tracking</strong>
+          <p>No sign-in. No analytics. No data sold. Just the extension doing its job.</p>
+        </div>
+      </div>
+      <div class="hiw-desc-divider"></div>
+      <div class="hiw-desc-card">
+        <div class="hiw-desc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#E63946" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <strong>Six independent layers</strong>
+          <p>Toggle any feature on or off — each one works without the others.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .hiw-desc-strip {
+    background: #fff;
+    border-bottom: 1px solid var(--border-light);
+    padding: 0;
+  }
+  .hiw-desc-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .hiw-desc-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 28px 24px;
+  }
+  .hiw-desc-icon {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(230,57,70,0.07);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .hiw-desc-card strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+    font-family: var(--font-body);
+  }
+  .hiw-desc-card p {
+    font-size: 12.5px;
+    color: #888;
+    line-height: 1.55;
+    margin: 0;
+    font-family: var(--font-body);
+  }
+  .hiw-desc-divider {
+    width: 1px;
+    height: 52px;
+    background: var(--border-light);
+    flex-shrink: 0;
+  }
+  @media (max-width: 900px) {
+    .hiw-desc-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+    .hiw-desc-divider { display: none; }
+    .hiw-desc-card { border-bottom: 1px solid var(--border-light); }
+    .hiw-desc-card:nth-child(n+5) { border-bottom: none; }
+  }
+  @media (max-width: 540px) {
+    .hiw-desc-inner { grid-template-columns: 1fr; }
+    .hiw-desc-card:last-child { border-bottom: none; }
+  }
+  </style>
+
+
+  <main>
+    <div class="hiw-layout">
+
+      <aside class="hiw-sidebar">
+        <div class="hiw-sidebar-inner">
+          <p class="sidebar-label">On this page</p>
+          <nav class="sidebar-nav" aria-label="Page sections">
+            <button class="sidebar-link active" onclick="scrollToSection('overview')">Overview</button>
+            <button class="sidebar-link" onclick="scrollToSection('monitoring')">Real-time Monitoring</button>
+            <button class="sidebar-link" onclick="scrollToSection('detection')">Threat Detection</button>
+            <button class="sidebar-link" onclick="scrollToSection('warning')">Warning System</button>
+            <button class="sidebar-link" onclick="scrollToSection('privacy')">Privacy Layer</button>
+            <button class="sidebar-link" onclick="scrollToSection('dark-patterns')">Dark Pattern Detection</button>
+            <button class="sidebar-link" onclick="scrollToSection('privacy-score')">Privacy Score</button>
+          </nav>
+          <div class="sidebar-progress">
+            <p class="progress-label">Reading progress</p>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="hiw-content">
+
+        <section class="hiw-section" id="overview">
+          <h2>Overview</h2>
+
+          <p>ClickSafe is a Chrome extension that runs a background service worker alongside every page you visit. It doesn't modify how your browser works, and it doesn't slow down your browsing — it quietly observes what's happening on each tab and intervenes only when something deserves your attention.</p>
+
+          <p>The extension is built around five distinct jobs: enforcing secure connections, identifying trackers embedded in pages, checking whether links and downloads are dangerous, detecting manipulative UI patterns, and computing a per-tab privacy score that reflects the combined result of all four. Each job is independent — you can toggle any of them off from the Settings page without affecting the others.</p>
+
+          <p>When you install ClickSafe, the background service worker starts immediately. It loads a tracker blocklist from a bundled seed file, attempts to fetch an updated list from Disconnect.me's public database, and begins pulling a local copy of Google's Safe Browsing hash prefix data from the ClickSafe backend. By the time you open your first tab, all three systems are ready.</p>
+
+          <h3>What happens when you open a page</h3>
+
+          <p>The moment a page loads, ClickSafe's content script is injected into the page's DOM. It runs a mixed-content scan — checking whether any images, scripts, iframes, or stylesheets are being loaded over unencrypted HTTP on an otherwise secure HTTPS page. That result is sent to the background worker, which stores it against the current tab ID.</p>
+
+          <p>At the same time, the content script begins scanning every third-party hostname it finds — every <code>&lt;script src&gt;</code>, <code>&lt;img src&gt;</code>, <code>&lt;iframe src&gt;</code>, and <code>&lt;link href&gt;</code>. Each hostname is sent to the background worker, which checks it against the in-memory tracker blocklist. Matches are accumulated and pushed back to the side panel, which updates its tracker count in real time.</p>
+
+          <p>None of this involves a network request. The blocklist lives in memory. The mixed-content check reads the DOM directly. Everything happens locally, in milliseconds, with no data leaving your browser.</p>
+        </section>
+
+        <section class="hiw-section" id="monitoring">
+          <h2>Real-time Monitoring</h2>
+
+          <p>ClickSafe monitors three categories of browser activity continuously: the connection security of the pages you visit, the third-party resources those pages load, and the files you download. Each category runs on a different trigger and uses a different mechanism, but they all feed into the same side panel and the same privacy score.</p>
+
+          <h3>HTTPS enforcement</h3>
+
+          <p>HTTPS enforcement is handled at the network layer using Chrome's <code>declarativeNetRequest</code> API, which means it runs before your browser even establishes a connection. A ruleset tells Chrome to redirect any <code>http://</code> request to <code>https://</code> automatically. This is not a content-script interception — it happens at the browser level, and it applies to navigations, subframe loads, and resource requests alike.</p>
+
+          <p>Separately, the content script scans the fully loaded DOM and flags any resources that loaded over HTTP despite the parent page being HTTPS. These are mixed-content resources — a problem because they can be intercepted or tampered with even when the page itself is encrypted. Mixed-content counts are stored per tab and surfaced in the side panel.</p>
+
+          <h3>Tracker detection</h3>
+
+          <p>On extension startup, the background worker reads a bundled <code>trackers.json</code> file containing around 178 high-priority tracker domains as a seed. It then attempts to fetch the full Disconnect.me <code>services.json</code> list from GitHub, which covers over 70,000 known tracking domains across advertising, analytics, social, and fingerprinting categories. Once fetched, the full list is cached in <code>chrome.storage.local</code> for 24 hours so it's available immediately on the next browser session without needing another network request.</p>
+
+          <p>The loaded list is kept as a JavaScript <code>Set</code> in the background worker's memory — which means hostname lookups are O(1). When the content script sends a hostname to check, the background worker does a single <code>has()</code> call and responds immediately. There's no fuzzy matching, no server call, and no logging of what you checked. Resources from the same origin as the page are skipped entirely — only genuine third-party domains are evaluated.</p>
+
+          <h3>Download scanning</h3>
+
+          <p>Download scanning is triggered by Chrome's <code>chrome.downloads.onDeterminingFilename</code> event, which fires before the file is written to disk. When a download begins, the background worker sends the download URL to the ClickSafe backend, which checks it against Google's Safe Browsing database. If the URL is flagged, the download is cancelled and the user sees a warning. If the backend is unreachable, ClickSafe fails closed — the download is cancelled rather than allowed through unchecked.</p>
+        </section>
+
+        <section class="hiw-section" id="detection">
+          <h2>Threat Detection</h2>
+
+          <p>Link checking is the most privacy-sensitive feature in ClickSafe, because it involves evaluating URLs you're about to visit. Most browser security extensions solve this by sending every URL you hover over to a remote server — which means a third party sees your entire browsing history, not just the dangerous parts. ClickSafe uses a different approach: a three-tier cascade that keeps your browsing local wherever possible and only contacts the backend when there's an actual reason to.</p>
+
+          <h3>Tier 1 — Whitelist check</h3>
+
+          <p>Before any processing happens, ClickSafe checks whether the domain you're about to visit is in your personal whitelist. The whitelist is stored in <code>chrome.storage.local</code> and read entirely locally. If the domain matches — either exactly or as a subdomain of a whitelisted entry — the check stops immediately. Nothing is hashed. Nothing is sent anywhere. The link is marked safe and you navigate normally.</p>
+
+          <h3>Tier 2 — Local hash prefix lookup</h3>
+
+          <p>If the domain isn't whitelisted, ClickSafe hashes the full URL using SHA-256 — locally, in the browser — and compares the first four bytes of that hash against a local store of known-threat hash prefixes. This prefix store is fetched from the ClickSafe backend every 30 minutes; the backend in turn retrieves it from Google's Safe Browsing Update API. The store covers four threat categories: malware, social engineering (phishing), unwanted software, and potentially harmful applications.</p>
+
+          <p>If no prefix matches, the URL is clean and you proceed. The original URL never left your browser. If there is a match, it doesn't automatically mean the URL is dangerous — hash prefixes are intentionally short, so false positives are possible. That's what tier 3 is for.</p>
+
+          <h3>Tier 3 — Hash-only server confirmation</h3>
+
+          <p>When a local prefix match occurs, the background worker sends only the full SHA-256 hash — not the original URL — to the ClickSafe backend. The backend forwards this hash to Google's <code>fullHashes:find</code> endpoint, which returns whether the exact hash appears in the threat database. If the full hash matches, the threat is confirmed and a warning is shown. If it doesn't, it was a false positive and you proceed normally.</p>
+
+          <p>The original URL is never transmitted at any tier. In the worst case — a confirmed threat — only a cryptographic hash reaches the backend. There's no way to reconstruct the original URL from a SHA-256 hash, so your browsing history remains private even when server confirmation is required.</p>
+
+          <p>If the local prefix store hasn't been populated yet — for example, on the very first launch before the first 30-minute refresh — ClickSafe falls back to sending the full URL to the backend for a direct check. This is the only scenario in which the original URL leaves the browser, and it resolves itself once the prefix store is populated.</p>
+        </section>
+
+        <section class="hiw-section" id="warning">
+          <h2>Warning System</h2>
+
+          <p>When a threat is confirmed, ClickSafe shows a modal overlay on the current page. The modal displays the URL that triggered the warning, the threat category returned by Safe Browsing — such as "Phishing / Social Engineering" or "Malware" — and three explicit choices: go back to safety, trust the domain, or proceed anyway. ClickSafe never silently blocks navigation. The decision is always yours.</p>
+
+          <h3>Why three options</h3>
+
+          <p>Blocking by default creates friction for false positives and positions the extension as an authority rather than an advisor. Doing nothing is worse. The three-option model treats you as someone capable of making an informed decision once you have the relevant information. "Go back" is the safe default. "Trust this site" adds the domain to your local whitelist so you won't be interrupted again. "Proceed anyway" lets you navigate through the warning with full awareness — useful when you know a site is flagged incorrectly.</p>
+
+          <h3>Download warnings</h3>
+
+          <p>Download warnings work differently. Because the check happens before the file is written to disk, the download is cancelled and a notice appears in the side panel. This is intentional: letting a flagged executable reach your filesystem, even with a warning, creates a risk that a UI prompt can't fully mitigate. If you believe the warning is a false positive, you can whitelist the domain and re-attempt the download.</p>
+        </section>
+
+        <section class="hiw-section" id="privacy">
+          <h2>Privacy Layer</h2>
+
+          <p>Every feature in ClickSafe was designed with a clear data boundary in mind. The question asked during development for each feature was: does this need to leave the browser to work? If the answer was no, it doesn't. If the answer was sometimes, it only leaves the browser in those cases, and only the minimum necessary information is sent.</p>
+
+          <h3>What stays local</h3>
+
+          <p>Tracker detection is entirely local. The Disconnect.me list is fetched once per day and cached; all hostname lookups happen against an in-memory set. Cookie scanning reads your browser's cookie store directly using the <code>chrome.cookies</code> API — no cookie data is sent to any server. Mixed content detection reads the DOM. HTTPS enforcement uses declarative browser rules. The whitelist lives in <code>chrome.storage.local</code> on your device. The privacy score is computed locally using numbers that are themselves computed locally.</p>
+
+          <h3>What touches the backend</h3>
+
+          <p>Two things reach the ClickSafe backend. First, the hash prefix store is fetched every 30 minutes — this is a one-way pull of public threat data, not a transmission of anything about your browsing. Second, when a local prefix match occurs, a single SHA-256 hash is sent for confirmation. That hash cannot be reverse-engineered into the original URL. No session identifiers, no user IDs, and no analytics are attached to these requests.</p>
+
+          <h3>What reaches Google</h3>
+
+          <p>Google Safe Browsing data is accessed exclusively through the ClickSafe backend, which acts as a proxy. Your browser never contacts Google's Safe Browsing API directly. The backend sends hash prefixes and full hashes to Google's API when fetching the prefix store and confirming threats — Google sees the hash data but has no way to associate it with a specific user, since the requests come from the backend server rather than your IP address.</p>
+        </section>
+
+        <section class="hiw-section" id="dark-patterns">
+          <h2>Dark Pattern Detection</h2>
+
+          <p>Dark patterns are UI techniques designed to manipulate your decisions — to get you to subscribe to something you didn't intend to, accept cookie tracking without a real choice, or buy something under the pressure of a fake countdown. They're widespread, effective, and largely invisible unless you know what to look for. ClickSafe's dark pattern detector scans the live DOM and makes them visible.</p>
+
+          <h3>What gets flagged</h3>
+
+          <p>The detector checks for five categories. Fake urgency covers text patterns like "only 2 left", "act now", "selling fast", and "last chance" — language engineered to short-circuit deliberate decision-making by implying artificial scarcity or time pressure. Confirm shaming targets opt-out copy that makes declining feel like a personal failing, such as "No thanks, I hate saving money" — a pattern common in email subscription prompts and pop-up banners.</p>
+
+          <p>Fake countdown timers are identified by scanning the DOM for elements whose class or ID contains words like <code>countdown</code>, <code>timer</code>, or <code>time-left</code>, combined with checking whether those elements contain visible digit characters. Pre-ticked checkboxes are caught by finding <code>&lt;input type="checkbox"&gt;</code> elements that are checked by default and whose associated label text contains marketing keywords like "newsletter", "promotional", or "subscribe" — the classic mechanism for opting you into communications you didn't request.</p>
+
+          <p>Cookie banner manipulation is flagged when a consent banner contains a clearly visible "Accept" button but no equivalent "Reject" or "Decline" option. This is one of the most common dark patterns on the modern web, exploiting the fact that most users click the first available option rather than searching for a way to say no.</p>
+
+          <h3>How detection works</h3>
+
+          <p>The scan runs twice: once immediately at page load, and again 2.5 seconds later to catch elements injected dynamically by JavaScript after the initial render. Detected elements are highlighted with a subtle visual indicator directly on the page — not a popup, not a modal, just an inline tint and tooltip so you can see exactly which element was flagged and why. The total count of detected patterns is reflected in the privacy score and surfaced in the side panel. The feature can be toggled off entirely in Settings if you prefer not to use it.</p>
+        </section>
+
+        <section class="hiw-section" id="privacy-score">
+          <h2>Privacy Score</h2>
+
+          <p>Every page you visit receives a privacy score between 0 and 100. The score is computed by the background service worker after all asynchronous scans settle — there's a 1.5-second debounce to ensure that tracker counts, cookie data, and mixed-content results are all available before the final number is produced. The score drives the animated ring in the side panel and determines whether an in-page privacy banner is shown.</p>
+
+          <h3>How the score is calculated</h3>
+
+          <p>The formula starts at 100 and subtracts deductions based on what was found. Serving the page over HTTP rather than HTTPS deducts 30 points — the single largest penalty, because unencrypted connections expose everything you send and receive on that page. Each tracking cookie detected deducts 5 points, capped at a maximum of 30. Each tracker script or resource deducts 4 points, capped at 20. Each mixed-content resource deducts 5 points, capped at 20. The final score is clamped between 0 and 100.</p>
+
+          <p>A score between 80 and 100 puts the page in good standing — the side panel ring is green and no banner is shown. A score between 50 and 79 indicates moderate risk, shown with an orange ring. A score below 50 is high risk — the ring turns red and an in-page privacy banner appears at the top of the page identifying the primary reason for the low score, whether that's an insecure connection, heavy tracking, or both.</p>
+
+          <h3>What the score is and isn't</h3>
+
+          <p>The score is a snapshot — a summary of the privacy conditions on that specific page at the time of load. It's not a rating of the company that owns the site, and it's not a security certification. A site can score 100 and still have poor privacy practices that aren't detectable from the DOM. What the score does well is give you an immediate, comparable signal across pages: you can open two competing news sites and see, at a glance, which one loads fewer trackers and respects your connection security.</p>
+
+          <div class="hiw-cta">
+            <div>
+              <h3>Ready to browse smarter?</h3>
+              <p>Free to install. No account required. Works in 30 seconds.</p>
+            </div>
+            <a href="index.html#install" class="cta-btn">Add ClickSafe free &rarr;</a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo footer-logo">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/></svg>
+          ClickSafe
+        </div>
+        <p>Real-time browser security for everyone.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener">GitHub</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@clicksafe.dev">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 ClickSafe. Built with care.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const sections = ['overview','monitoring','detection','warning','privacy','dark-patterns','privacy-score'];
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const progressFill = document.getElementById('progress-fill');
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function updateActive() {
+      const offset = 120;
+      let current = sections[0];
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= offset) current = id;
+      });
+      sidebarLinks.forEach((link, i) => {
+        link.classList.toggle('active', sections[i] === current);
+      });
+      const content = document.querySelector('.hiw-content');
+      const lastSec = document.getElementById(sections[sections.length - 1]);
+      if (content && lastSec) {
+        const start = content.getBoundingClientRect().top + window.scrollY;
+        const end = lastSec.getBoundingClientRect().top + window.scrollY + lastSec.offsetHeight - window.innerHeight;
+        const pct = Math.min(100, Math.max(0, ((window.scrollY - start) / (end - start)) * 100));
+        progressFill.style.width = pct + '%';
+      }
+    }
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    updateActive();
+  </script>
+
+</body>
+</html>

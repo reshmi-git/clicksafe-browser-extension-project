@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — ClickSafe</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .privacy-wrap { max-width: 720px; margin: 80px auto; padding: 0 24px 80px; }
+    .privacy-wrap h1 { font-size: 2rem; margin-bottom: 8px; }
+    .privacy-wrap .updated { color: #6b7280; font-size: 14px; margin-bottom: 40px; }
+    .privacy-wrap h2 { font-size: 1.1rem; margin: 32px 0 8px; }
+    .privacy-wrap p, .privacy-wrap li { font-size: 15px; line-height: 1.7; color: #374151; }
+    .privacy-wrap ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">ClickSafe</a>
+      <nav class="nav-links">
+        <a href="features.html">Features</a>
+        <a href="how-it-works.html">How it Works</a>
+      </nav>
+      <a href="#install" class="nav-cta">Add to Browser</a>
+    </div>
+  </header>
+
+  <main class="privacy-wrap">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: May 2025</p>
+
+    <p>ClickSafe is a browser extension designed to protect your privacy. This policy explains what data the extension accesses, what it does with it, and what it never does.</p>
+
+    <h2>What ClickSafe accesses</h2>
+    <ul>
+      <li>URLs of links you hover over, to check them against a local hash-prefix list before any network request is made.</li>
+      <li>URLs of files you download, to verify them against Google Safe Browsing.</li>
+      <li>Cookies set on pages you visit, to identify tracking cookies and factor them into your privacy score.</li>
+      <li>Page content (DOM), to detect dark patterns such as fake urgency timers and pre-ticked checkboxes.</li>
+    </ul>
+
+    <h2>What ClickSafe never does</h2>
+    <ul>
+      <li>Never sends the full URL of every page you visit to any server.</li>
+      <li>Never stores your browsing history remotely.</li>
+      <li>Never sells or shares any data with third parties.</li>
+      <li>Never uses your data for advertising.</li>
+    </ul>
+
+    <h2>How link checking works (and why it's private)</h2>
+    <p>ClickSafe uses a three-tier approach. First, it checks a local hash-prefix list stored in your browser — no network request is made at this stage. Only if a local match is found does it send a full hash (not the URL itself) to our backend for confirmation against Google Safe Browsing. Your full URL is never transmitted unless you explicitly click through a warning.</p>
+
+    <h2>Backend and caching</h2>
+    <p>Our backend receives hashed URL data only when a potential threat is detected locally. Results are cached for 24 hours so repeat checks don't generate additional requests. The backend does not log IP addresses beyond what is required for rate limiting.</p>
+
+    <h2>Local storage</h2>
+    <p>ClickSafe stores your settings, whitelist, and cached safety results in <code>chrome.storage.local</code> — this data never leaves your device except as described above.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy? Email us at <a href="mailto:support@clicksafe.dev">support@clicksafe.dev</a>.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="footer-logo">ClickSafe</span>
+      <div class="footer-links">
+        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener">GitHub</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@clicksafe.dev">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

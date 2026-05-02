@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Every feature ClickSafe uses to protect your browser — explained clearly." />
+  <title>Features — ClickSafe</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body { background: #ffffff; }
+
+    /* ── HERO ── */
+    .feat-hero {
+      padding: 0 0 80px;
+      background: linear-gradient(
+        to bottom,
+        #0d0d0d 0%,
+        #0d0d0d 30%,
+        #1a1a1a 48%,
+        #2e2a27 62%,
+        #EDE7DF 100%
+      );
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feat-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 56px;
+      align-items: center;
+      padding-top: 140px;
+    }
+
+    .feat-hero-left {
+      position: relative;
+    }
+    .feat-hero-left::before {
+      content: '';
+      position: absolute;
+      inset: -60px -40px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 22px 22px;
+      mask-image: radial-gradient(ellipse 90% 85% at 25% 50%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 85% at 25% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .feat-hero-left > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Left ── */
+    .feat-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.35);
+      margin-bottom: 14px;
+    }
+
+    .feat-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4.2vw, 52px);
+      font-weight: 400;
+      line-height: 1.07;
+      letter-spacing: -1.5px;
+      color: #F2EBE1;
+      margin-bottom: 16px;
+    }
+    .feat-hero h1 em {
+      font-style: italic;
+      color: #F2EBE1;
+    }
+
+    .feat-hero-desc {
+      font-size: 16px;
+      color: rgba(245,240,232,0.5);
+      line-height: 1.7;
+      max-width: 400px;
+      margin-bottom: 26px;
+    }
+
+    .feat-pill-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .feat-pill {
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(245,240,232,0.45);
+      text-decoration: none;
+      transition: all 0.2s;
+      background: rgba(255,255,255,0.05);
+      letter-spacing: 0.1px;
+    }
+    .feat-pill:hover {
+      border-color: rgba(230,57,70,0.5);
+      color: rgba(245,240,232,0.95);
+      background: rgba(230,57,70,0.08);
+    }
+
+    /* ── Right: stat grid ── */
+    .feat-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    }
+
+    .feat-stat {
+      background: #F9F9F9;
+      padding: 24px 22px;
+      transition: background 0.18s;
+    }
+    .feat-stat:hover { background: #fff; }
+
+    .feat-stat:nth-child(1) { border-radius: 19px 0 0 0; }
+    .feat-stat:nth-child(2) { border-radius: 0 19px 0 0; }
+    .feat-stat:nth-child(5) { border-radius: 0 0 0 19px; }
+    .feat-stat:nth-child(6) { border-radius: 0 0 19px 0; }
+
+    .feat-stat.featured {
+      grid-column: span 2;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 24px 22px;
+      background:
+        linear-gradient(135deg, rgba(189,108,108,0.65) 0%, rgba(0,0,0,0.88) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .feat-stat.featured::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(189,108,108,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .feat-stat.featured:hover {
+      background:
+        linear-gradient(135deg, rgba(189,108,108,0.65) 0%, rgba(0,0,0,0.92) 100%);
+    }
+
+    .feat-stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feat-stat-num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 400;
+      color: #0a0a0a;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -2px;
+    }
+    .feat-stat-num sup {
+      font-size: 20px;
+      vertical-align: super;
+      letter-spacing: 0;
+    }
+
+    .feat-stat.featured .feat-stat-num {
+      font-size: 30px;
+      color: #fff;
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feat-stat-label {
+      font-size: 13px;
+      color: #999;
+      line-height: 1.4;
+      font-family: var(--font-body);
+    }
+    .feat-stat.featured .feat-stat-label {
+      color: rgba(255,255,255,0.42);
+      position: relative;
+      z-index: 1;
+    }
+
+    .feat-stat-body { position: relative; z-index: 1; }
+
+    .feat-stat-accent {
+      display: inline-block;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #E63946;
+      border: 1px solid rgba(230,57,70,0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+
+    /* ── FEATURE ROWS ── */
+    .features-wrap {
+      padding: 0;
+      background: #f8f8f8;
+    }
+
+    .feat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 80px;
+      padding: 80px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      scroll-margin-top: 80px;
+    }
+    .feat-row:last-child { border-bottom: none; }
+
+    .feat-row.reverse { direction: rtl; }
+    .feat-row.reverse > * { direction: ltr; }
+
+    /* ── UPDATED: bigger, bolder feature tag ── */
+    .feat-tag {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+    }
+
+    .feat-text h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.3px;
+      color: #0a0a0a;
+      margin-bottom: 20px;
+    }
+    .feat-text h2 em { font-style: italic; color: #0a0a0a; }
+
+    /* ── UPDATED: paragraph text now black ── */
+    .feat-text p {
+      font-size: 16px;
+      color: #0a0a0a;
+      line-height: 1.85;
+      margin-bottom: 28px;
+    }
+
+    /* chips */
+    .feat-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: #f8f8f8;
+      color: #444;
+      border: 1px solid var(--border-light);
+    }
+    .chip-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    /* illustration */
+    .feat-illus {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feat-illus img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      border-radius: 16px;
+      display: block;
+    }
+
+    /* ── CTA ── */
+    .feat-cta {
+      background: var(--dark);
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .feat-cta-glow {
+      position: absolute;
+      width: 500px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(230,57,70,0.18) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .feat-cta-inner { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; }
+    .feat-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 46px);
+      color: var(--text-light);
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+    .feat-cta h2 em { color: #E63946; font-style: italic; }
+    .feat-cta p { font-size: 15px; color: var(--text-light-muted); margin-bottom: 28px; }
+    .feat-cta-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(245,240,232,0.25);
+      margin-top: 14px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .feat-hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .feat-stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .feat-stat:nth-child(1),
+      .feat-stat:nth-child(2),
+      .feat-stat:nth-child(5),
+      .feat-stat:nth-child(6) { border-radius: 0; }
+    }
+    @media (max-width: 860px) {
+      .feat-row { grid-template-columns: 1fr; gap: 40px; padding: 64px 0; }
+      .feat-row.reverse { direction: ltr; }
+      .feat-illus { order: -1; }
+    }
+    @media (max-width: 580px) {
+      .feat-hero { padding: 100px 0 60px; }
+      .feat-stat.featured { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar scrolled" id="navbar" style="background: transparent; box-shadow: none;">
+    <div class="container nav-inner">
+      <div class="nav-logo" style="color: rgba(245,240,232,0.9);">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/>
+        </svg>
+        ClickSafe
+      </div>
+      <nav class="nav-links">
+        <a href="index.html" style="color: rgba(245,240,232,0.6);">Home</a>
+        <a href="features.html" style="color: var(--red);">Features</a>
+        <a href="how-it-works.html" style="color: rgba(245,240,232,0.6);">How it Works</a>
+        <a href="index.html#install" style="color: rgba(245,240,232,0.6);">Installation Setup</a>
+        <a href="index.html#about" style="color: rgba(245,240,232,0.6);">About</a>
+      </nav>
+      <a href="#install" class="nav-cta" style="color: rgba(245,240,232,0.8); border-color: rgba(245,240,232,0.2);">Add to Browser</a>
+    </div>
+  </header>
+
+  <section class="feat-hero">
+    <div class="container">
+      <div class="feat-hero-inner">
+
+        <!-- Left -->
+        <div class="feat-hero-left reveal">
+          <p class="feat-eyebrow">ClickSafe / Features</p>
+          <h1>Every feature.<br><em>Explained.</em></h1>
+          <p class="feat-hero-desc">Six layers of silent protection, each doing a specific job — none of them sharing your data unless absolutely necessary.</p>
+          <div class="feat-pill-nav">
+            <a href="#https" class="feat-pill">HTTPS Enforcement</a>
+            <a href="#trackers" class="feat-pill">Tracker Blocking</a>
+            <a href="#links" class="feat-pill">Link Safety</a>
+            <a href="#downloads" class="feat-pill">Download Guard</a>
+            <a href="#darkpatterns" class="feat-pill">Dark Patterns</a>
+            <a href="#score" class="feat-pill">Privacy Score</a>
+          </div>
+        </div>
+
+        <!-- Right: stat grid -->
+        <div class="feat-hero-right reveal reveal-delay">
+          <div class="feat-stat-grid">
+
+            <!-- Featured dark strip -->
+            <div class="feat-stat featured">
+              <div class="feat-stat-icon">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="feat-stat-body">
+                <div class="feat-stat-num">4 active shields</div>
+                <div class="feat-stat-label">Running silently on every page you visit</div>
+              </div>
+            </div>
+
+            <div class="feat-stat">
+              <div class="feat-stat-num">70k<sup>+</sup></div>
+              <div class="feat-stat-label">Trackers in blocklist</div>
+            </div>
+
+            <div class="feat-stat">
+              <div class="feat-stat-num">&lt;1ms</div>
+              <div class="feat-stat-label">Detection speed</div>
+            </div>
+
+            <div class="feat-stat">
+              <div class="feat-stat-num">0</div>
+              <div class="feat-stat-label">URLs ever sent to a server</div>
+              <span class="feat-stat-accent">Privacy-first</span>
+            </div>
+
+            <div class="feat-stat">
+              <div class="feat-stat-num">MV3</div>
+              <div class="feat-stat-label">Chrome compliant</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <main class="features-wrap">
+    <div class="container">
+
+      <!-- 1. HTTPS — text left, image right -->
+      <div class="feat-row reveal" id="https">
+        <div class="feat-text">
+          <p class="feat-tag">01 / HTTPS Enforcement</p>
+          <p>ClickSafe uses Chrome's declarativeNetRequest API to silently upgrade HTTP connections to HTTPS before your browser even makes a request. You never navigate to an unencrypted page if a secure version exists — no interception, no slowdown, just a safer connection by default.</p>
+          <div class="feat-chips">
+            <span class="chip"><span class="chip-dot"></span>Network-layer redirect</span>
+            <span class="chip"><span class="chip-dot"></span>Zero latency overhead</span>
+            <span class="chip"><span class="chip-dot"></span>Mixed content flagged</span>
+          </div>
+        </div>
+        <div class="feat-illus">
+          <img src="assets/features/https.svg" alt="HTTPS enforcement illustration" />
+        </div>
+      </div>
+
+      <!-- 2. TRACKERS — image left, text right -->
+      <div class="feat-row reverse reveal" id="trackers">
+        <div class="feat-text">
+          <p class="feat-tag">02 / Tracker Blocking</p>
+          <p>ClickSafe loads 70,000+ known tracking domains on startup — covering advertising, analytics, social media, and fingerprinting networks. Every third-party hostname on a page is checked against this in-memory list in microseconds. No server call, no lookup fee, no delay.</p>
+          <div class="feat-chips">
+            <span class="chip"><span class="chip-dot"></span>70k+ domains</span>
+            <span class="chip"><span class="chip-dot"></span>O(1) lookup</span>
+            <span class="chip"><span class="chip-dot"></span>24hr cache</span>
+            <span class="chip"><span class="chip-dot"></span>Disconnect.me list</span>
+          </div>
+        </div>
+        <div class="feat-illus">
+          <img src="assets/features/trackers.svg" alt="Tracker blocking illustration" />
+        </div>
+      </div>
+
+      <!-- 3. LINK SAFETY — text left, image right -->
+      <div class="feat-row reveal" id="links">
+        <div class="feat-text">
+          <p class="feat-tag">03 / Link Safety</p>
+          <p>Before you click anything, ClickSafe runs a three-tier check — whitelist lookup, local SHA-256 hash prefix match, and only if there's a potential hit, a hash-only confirmation with the backend. Your actual URL never leaves the browser in normal operation.</p>
+          <div class="feat-chips">
+            <span class="chip"><span class="chip-dot"></span>SHA-256 local hash</span>
+            <span class="chip"><span class="chip-dot"></span>30-min prefix refresh</span>
+            <span class="chip"><span class="chip-dot"></span>URL never transmitted</span>
+            <span class="chip"><span class="chip-dot"></span>Phishing · Malware</span>
+          </div>
+        </div>
+        <div class="feat-illus">
+          <img src="assets/features/link-safety.svg" alt="Link safety illustration" />
+        </div>
+      </div>
+
+      <!-- 4. DOWNLOAD GUARD — image left, text right -->
+      <div class="feat-row reverse reveal" id="downloads">
+        <div class="feat-text">
+          <p class="feat-tag">04 / Download Guard</p>
+          <p>Every file you download is intercepted the moment Chrome starts the transfer — before a single byte is written to your system. ClickSafe checks the download URL against Safe Browsing and cancels immediately if it's flagged. If the check can't complete, it fails safe.</p>
+          <div class="feat-chips">
+            <span class="chip"><span class="chip-dot"></span>Pre-disk interception</span>
+            <span class="chip"><span class="chip-dot"></span>Fails closed</span>
+            <span class="chip"><span class="chip-dot"></span>Safe Browsing API</span>
+          </div>
+        </div>
+        <div class="feat-illus">
+          <img src="assets/features/download-guard.svg" alt="Download guard illustration" />
+        </div>
+      </div>
+
+      <!-- 5. DARK PATTERNS — text left, image right -->
+      <div class="feat-row reveal" id="darkpatterns">
+        <div class="feat-text">
+          <p class="feat-tag">05 / Dark Pattern Detection</p>
+          <p>ClickSafe scans every page for five types of manipulative UI — fake urgency, confirm shaming, countdown timers, pre-ticked checkboxes, and deceptive cookie banners. Detected elements are highlighted directly on the page so you see exactly what's trying to trick you, without any pop-ups or interruptions.</p>
+          <div class="feat-chips">
+            <span class="chip"><span class="chip-dot"></span>Fake urgency</span>
+            <span class="chip"><span class="chip-dot"></span>Confirm shaming</span>
+            <span class="chip"><span class="chip-dot"></span>Cookie manipulation</span>
+            <span class="chip"><span class="chip-dot"></span>Pre-ticked boxes</span>
+          </div>
+        </div>
+        <div class="feat-illus">
+          <img src="assets/features/dark-patterns.svg" alt="Dark pattern detection illustration" />
+        </div>
+      </div>
+
+      <!-- 6. PRIVACY SCORE — image left, text right -->
+      <div class="feat-row reverse reveal" id="score">
+        <div class="feat-text">
+          <p class="feat-tag">06 / Privacy Score</p>
+          <p>After every scan settles, ClickSafe computes a 0–100 privacy score for the page — deducting points for HTTP connections, tracking cookies, tracker scripts, and mixed content. The score drives the animated ring in the side panel and triggers a banner when a page falls below 50.</p>
+          <div class="feat-chips">
+            <span class="chip"><span class="chip-dot"></span>Per-tab scoring</span>
+            <span class="chip"><span class="chip-dot"></span>Live ring indicator</span>
+            <span class="chip"><span class="chip-dot"></span>Banner below 50</span>
+            <span class="chip"><span class="chip-dot"></span>1.5s debounce</span>
+          </div>
+        </div>
+        <div class="feat-illus">
+          <img src="assets/features/privacy-score.svg" alt="Privacy score illustration" />
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo footer-logo">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/></svg>
+          ClickSafe
+        </div>
+        <p>Real-time browser security for everyone.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener">GitHub</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@clicksafe.dev">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 ClickSafe. Built with care.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+  </script>
+
+</body>
+</html>

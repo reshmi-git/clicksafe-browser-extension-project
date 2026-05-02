@@ -29,9 +29,6 @@
       "js": [
         "content/content.js"
       ],
-      "css": [
-        "content/styles/output.css"
-      ],
       "run_at": "document_idle"
     }
   ],
@@ -46,7 +43,8 @@
     "sidePanel",
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess",
-    "webNavigation"
+    "webNavigation",
+    "alarms"
   ],
   "declarative_net_request": {
     "rule_resources": [
@@ -58,19 +56,29 @@
     ]
   },
   "host_permissions": [
-    "<all_urls>"
+    "<all_urls>",
+    "https://*.onrender.com/"
   ],
   "web_accessible_resources": [
     {
       "resources": [
         "content/modal/modal.html",
         "pages/settings/settings.html",
+        "pages/onboarding/onboarding.html",
+        "pages/onboarding/onboarding.js",
+        "utils/auth.js",
         "data/trackers.json",
         "assets/logo/16.png",
         "assets/logo/48.png",
         "assets/logo/128.png",
         "assets/logo/16-red.png",
-        "pages/dashboard/dashboard.html"
+        "pages/dashboard/dashboard.html",
+        "pages/dashboard/companyData.js",
+        "pages/dashboard/charts.js",
+        "pages/dashboard/historyView.js",
+        "pages/dashboard/scoreHistory.js",
+        "assets/js/chart.umd.min.js",
+        "assets/js/lucide.min.js"
       ],
       "matches": [
         "<all_urls>"

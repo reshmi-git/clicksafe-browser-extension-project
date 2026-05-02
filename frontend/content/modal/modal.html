@@ -1,53 +1,191 @@
 <!-- ClickSafe Warning Modal -->
-<div id="clicksafe-modal-overlay" style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Arial, sans-serif;
-">
-  <div id="clicksafe-modal-box" style="
-    background: white;
-    border-radius: 12px;
-    padding: 32px;
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+  @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark:             #0d0d0d;
+    --dark-2:           #141414;
+    --dark-3:           #1a1a1a;
+    --red:              #bd6c6c;
+    --red-bright:       #E63946;
+    --text-light:       #F2EBE1;
+    --text-light-muted: rgba(245,240,232,0.65);
+    --border-dark:      rgba(255,255,255,0.07);
+    --font-mono:        'Space Mono', monospace;
+    --font-body:        'Satoshi', system-ui, sans-serif;
+  }
+
+  body { background: transparent; font-family: var(--font-body); }
+
+  #clicksafe-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  #clicksafe-modal-box {
+    background: var(--dark-2);
+    border: 1px solid rgba(230, 57, 70, 0.25);
+    border-radius: 14px;
+    padding: 32px 28px 28px;
     max-width: 420px;
-    width: 90%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    width: 100%;
+    box-shadow:
+      0 0 0 1px rgba(230,57,70,0.08),
+      0 24px 64px rgba(0, 0, 0, 0.6),
+      0 0 40px rgba(230, 57, 70, 0.07);
     text-align: center;
-  ">
-    <div style="font-size: 48px; margin-bottom: 12px;" id="clicksafe-modal-icon">⚠️</div>
-    <h2 style="color: #dc2626; margin: 0 0 8px 0; font-size: 20px;" id="clicksafe-modal-title">
-      Dangerous Link Detected!
-    </h2>
-    <p style="color: #6b7280; margin: 0 0 8px 0; font-size: 14px;" id="clicksafe-modal-threat"></p>
-    <p style="color: #374151; margin: 0 0 24px 0; font-size: 14px;" id="clicksafe-modal-url"
-      style="word-break: break-all;"></p>
+    animation: modal-in 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
 
-    <div style="display: flex; gap: 12px; justify-content: center;">
-      <button id="clicksafe-go-back" style="
-        background: #16a34a;
-        color: white;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-        font-weight: bold;
-      ">Go Back (Safe)</button>
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.94) translateY(8px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);   }
+  }
 
-      <button id="clicksafe-proceed" style="
-        background: #f3f4f6;
-        color: #6b7280;
-        border: 1px solid #d1d5db;
-        padding: 10px 24px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-      ">Proceed Anyway (Risky)</button>
+  #clicksafe-modal-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 18px;
+    background: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #clicksafe-modal-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    margin-bottom: 8px;
+  }
+
+  #clicksafe-modal-title {
+    font-family: var(--font-body);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  #clicksafe-modal-threat {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--red);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  #clicksafe-modal-url {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-light-muted);
+    background: var(--dark-3);
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 24px;
+    word-break: break-all;
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: var(--border-dark);
+    margin-bottom: 20px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  #clicksafe-go-back {
+    flex: 1;
+    background: var(--red-bright);
+    color: #fff;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  #clicksafe-go-back:hover  { opacity: 0.88; }
+  #clicksafe-go-back:active { transform: scale(0.97); }
+
+  #clicksafe-proceed {
+    flex: 1;
+    background: transparent;
+    color: var(--text-light-muted);
+    border: 1px solid var(--border-dark);
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, transform 0.1s;
+  }
+  #clicksafe-proceed:hover  { border-color: rgba(255,255,255,0.15); color: var(--text-light); }
+  #clicksafe-proceed:active { transform: scale(0.97); }
+
+  #clicksafe-modal-footer {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4px;
+    color: var(--text-light-muted);
+    margin-top: 16px;
+    opacity: 0.5;
+  }
+</style>
+
+<div id="clicksafe-modal-overlay">
+  <div id="clicksafe-modal-box">
+
+    <div id="clicksafe-modal-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+           fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+        <path d="M12 9v4"/><path d="M12 17h.01"/>
+      </svg>
     </div>
+
+    <div id="clicksafe-modal-label">THREAT DETECTED</div>
+    <h2  id="clicksafe-modal-title">Dangerous Link Detected!</h2>
+    <p   id="clicksafe-modal-threat"></p>
+    <p   id="clicksafe-modal-url"></p>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-actions">
+      <button id="clicksafe-go-back">← Go Back (Safe)</button>
+      <button id="clicksafe-proceed">Proceed Anyway</button>
+    </div>
+
+    <p id="clicksafe-modal-footer">POWERED BY CLICKSAFE · GOOGLE SAFE BROWSING</p>
   </div>
 </div>
+
+<script src="modal.js"></script>

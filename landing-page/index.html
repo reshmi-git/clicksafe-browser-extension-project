@@ -3,304 +3,690 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClickSafe — Browse Boldly. Click Safely.</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>ClickSafe — Browse Without Fear</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    /* GLOBAL HEADER RHYTHM */
+    .section-label { margin-bottom: 8px; }
+    .section-title { margin-bottom: 10px; }
+    .section-sub   { margin-bottom: 0; }
+
+    /* PROBLEM */
+    .problem-section { background: #ffffff; padding: 60px 0; }
+    .problem-list    { margin-top: 20px; }
+    .problem-item    { padding: 10px 0; }
+
+    /* HOW IT WORKS */
+    .how-section { background: #ffffff; padding: 60px 0 24px; }
+    .how-section .section-label    { color: rgba(230,57,70,0.85); }
+    .how-section .section-title    { color: #111111; }
+    .how-section .section-title em { color: var(--red-bright); }
+    .how-section .section-sub      { color: #6B7280; }
+
+    .steps-timeline {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      margin-top: 28px;
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .step-card { background: #ffffff; padding: 28px; transition: background 0.2s; }
+    .step-card:hover { background: #fdfcfc; }
+    .step-card + .step-card { border-left: 1px solid var(--border-light); }
+
+    .step-card-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--red);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .step-card-icon {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: rgba(189,108,108,0.07);
+      border: 1px solid rgba(189,108,108,0.14);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .step-card h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+    .step-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin: 0; }
+    .step-card-detail {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-light);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(107,114,128,0.5);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .steps-timeline { grid-template-columns: 1fr; }
+      .step-card + .step-card { border-left: none; border-top: 1px solid var(--border-light); }
+    }
+
+    /* FEATURES RIBBON */
+    .features-section { background: #ffffff !important; padding-top: 0; padding-bottom: 0; }
+    .features-section .section-label    { color: var(--red); }
+    .features-section .section-title    { color: var(--text-dark); }
+    .features-section .section-title em { color: var(--red-bright); }
+    .features-section .section-sub      { color: var(--text-muted); }
+
+    .features-footer-link { text-align: center; padding: 28px 0 16px; }
+    .features-footer-link a {
+      font-size: 14px; color: var(--text-muted); text-decoration: none;
+      border-bottom: 1px solid var(--border-light); padding-bottom: 3px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .features-footer-link a:hover { color: var(--red); border-color: rgba(189,108,108,0.3); }
+
+    /* CTA */
+    .cta-section { padding: 70px 0; }
+
+    /* FAQ */
+    .faq-section { background: #ffffff; padding: 60px 0; }
+    .faq-header { margin-bottom: 32px; }
+    .faq-label { color: var(--red) !important; }
+    .faq-title { color: var(--text-dark); margin-top: 4px; }
+    .faq-title em { color: var(--red-bright); font-style: italic; }
+    .faq-sub { color: var(--text-muted); margin-bottom: 0; }
+
+    .faq-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .faq-right { flex: 1; order: 2; }
+    .faq-left {
+      flex: 0 0 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      order: 1;
+    }
+    .faq-left img {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+    }
+
+    .faq-item { border-bottom: 1px solid var(--border-light); }
+    .faq-item:first-child { border-top: 1px solid var(--border-light); }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 16px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-dark);
+      text-align: left;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--red-bright); }
+    .faq-q[aria-expanded="true"] { color: var(--red-bright); }
+
+    .faq-arrow {
+      font-size: 18px;
+      line-height: 1;
+      color: var(--red-bright);
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+    .faq-q[aria-expanded="true"] .faq-arrow { transform: rotate(90deg); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding-left: 28px;
+    }
+    .faq-a.open { max-height: 160px; padding-bottom: 16px; }
+    .faq-a p { font-size: 14px; color: var(--text-muted); line-height: 1.75; margin: 0; }
+
+    @media (max-width: 900px) {
+      .faq-wrapper { flex-direction: column-reverse; gap: 32px; }
+      .faq-left { flex: none; width: 180px; }
+    }
+
+    /* BENTO GRID */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 14px;
+      margin-top: 40px;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .bento-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+    .bento-card:nth-child(2) { grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: 20px; }
+    .bento-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+    .bento-card:nth-child(4) { grid-column: 1; grid-row: 2; }
+    .bento-card:nth-child(5) { grid-column: 2; grid-row: 2; min-height: 260px; }
+    .bento-card:nth-child(6) { grid-column: 3; grid-row: 2; }
+
+    .bento-card:nth-child(2) .bento-left-col { flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+
+    .bento-card {
+      border-radius: 18px;
+      padding: 26px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-card:hover { transform: translateY(-3px); }
+
+    .bc-dark { background: #111111; border: 1px solid rgba(255,255,255,0.07); }
+    .bc-dark:hover { box-shadow: 0 0 30px rgba(230,57,70,0.2), 0 8px 32px rgba(0,0,0,0.4); }
+    .bc-dark h3 { color: #f2ebe1; }
+    .bc-dark p { color: rgba(245,240,232,0.5); }
+
+    .bc-red { background: #E63946; border: none; }
+    .bc-red:hover { box-shadow: 0 8px 32px rgba(230,57,70,0.4); }
+    .bc-red h3 { color: #fff; }
+    .bc-red p { color: rgba(255,255,255,0.75); }
+
+    .bc-light { background: #f5f5f5; border: 1px solid rgba(0,0,0,0.06); }
+    .bc-light:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+
+    .bc-gradient { background: linear-gradient(135deg, #1a1a1a 0%, #2d0a0d 100%); border: 1px solid rgba(230,57,70,0.2); }
+    .bc-gradient:hover { box-shadow: 0 0 30px rgba(230,57,70,0.25), 0 8px 32px rgba(0,0,0,0.4); }
+    .bc-gradient h3 { color: #f2ebe1; }
+    .bc-gradient p { color: rgba(245,240,232,0.55); }
+
+    .bento-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; color: rgba(230,57,70,0.7); margin-bottom: 12px; text-transform: uppercase; }
+    .bc-num-dark { color: rgba(0,0,0,0.3) !important; }
+
+    .bc-stat { font-family: var(--font-mono); font-size: 52px; font-weight: 700; color: #E63946; line-height: 1; margin-bottom: 14px; letter-spacing: -2px; }
+    .bc-bignum { font-family: var(--font-mono); font-size: 36px; font-weight: 700; color: rgba(255,255,255,0.9); line-height: 1; letter-spacing: -1px; }
+    .bc-red .bento-num { color: rgba(255,255,255,0.6); }
+
+    .bento-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 400; margin-bottom: 8px; letter-spacing: -0.2px; line-height: 1.2; }
+    .bento-card p { font-size: 13px; line-height: 1.65; margin: 0 0 14px; }
+    .bc-dark-text { color: #111111 !important; }
+    .bc-muted-text { color: rgba(0,0,0,0.5) !important; }
+
+    .bc-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(230,57,70,0.7); margin-top: auto; }
+    .bc-gradient .bc-tag { color: rgba(245,240,232,0.4); }
+    .bc-tag-dark { color: rgba(0,0,0,0.35) !important; }
+    .bc-list-dark li { color: rgba(0,0,0,0.6) !important; }
+
+    .bc-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+    .bc-pills span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 20px; }
+    .bc-pills-dark span { color: rgba(0,0,0,0.6); background: rgba(0,0,0,0.08); }
+
+    .bc-list { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-direction: column; gap: 10px; }
+    .bc-list li { font-size: 13px; color: rgba(245,240,232,0.6); padding-left: 16px; position: relative; }
+    .bc-list li::before { content: '›'; position: absolute; left: 0; color: #E63946; font-size: 16px; line-height: 1; }
+
+    .bc-icon-splash { width: 60px; height: 60px; background: rgba(230,57,70,0.08); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .bc-icon-wrap { width: 52px; height: 52px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .bc-ring-wrap { margin-bottom: 14px; }
+
+    @media (max-width: 900px) {
+      .bento-grid { grid-template-columns: 1fr 1fr; }
+      .bento-card:nth-child(1),
+      .bento-card:nth-child(2),
+      .bento-card:nth-child(3),
+      .bento-card:nth-child(4),
+      .bento-card:nth-child(5),
+      .bento-card:nth-child(6) { grid-column: auto; grid-row: auto; display: block; }
+    }
+    @media (max-width: 580px) {
+      .bento-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="nav-container">
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
       <div class="nav-logo">
-        <div class="logo-icon">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <path d="M14 2L4 7v8c0 5.5 4.3 10.7 10 12 5.7-1.3 10-6.5 10-12V7L14 2z" fill="#1a7a4a" opacity="0.2"/>
-            <path d="M14 2L4 7v8c0 5.5 4.3 10.7 10 12 5.7-1.3 10-6.5 10-12V7L14 2z" stroke="#1a7a4a" stroke-width="1.5" fill="none"/>
-            <path d="M10 14l3 3 5-5" stroke="#1a7a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="logo-text">ClickSafe</span>
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/>
+        </svg>
+        ClickSafe
       </div>
-      <ul class="nav-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#safety-check">Safety Check</a></li>
-        <li><a href="#how-it-works">How it Works</a></li>
-        <li><a href="#pricing">Pricing <span class="free-badge">Free</span></a></li>
-      </ul>
-      <a href="#" class="btn-primary nav-cta">Add to Chrome</a>
-      <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <span></span><span></span><span></span>
-      </button>
+      <nav class="nav-links">
+        <a href="features.html">Features</a>
+        <a href="how-it-works.html">How it Works</a>
+        <a href="#install">Installation Setup</a>
+        <a href="#about">About</a>
+      </nav>
+      <a href="#install" class="nav-cta">Add to Browser</a>
     </div>
-  </nav>
+  </header>
 
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-bg-grid"></div>
-    <div class="container hero-flex">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5v4c0 2.75 2.15 5.35 5 6 2.85-.65 5-3.25 5-6v-4L7 1z" fill="#1a7a4a"/></svg>
-          Trusted by 10,000+ users
-        </div>
-        <h1 class="hero-title">Browse Boldly.<br><span class="accent-text">Click Safely.</span></h1>
-        <p class="hero-subtitle">ClickSafe tells you if a site is safe or tracking cookies, in real-time. Instantly identify malicious links and regain control of your digital footprint.</p>
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+
+      <div class="hero-left reveal">
+        <h1 class="hero-h1">
+          Browse the web<br>without <em>fear.</em>
+        </h1>
+        <p class="hero-desc">
+          ClickSafe watches every link, download, and tracker in real time —
+          and only speaks up when something's actually wrong.
+        </p>
         <div class="hero-actions">
-          <a href="#" class="btn-primary btn-large">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1.5L3 5v6c0 4.1 3.2 8 7 9 3.8-1 7-4.9 7-9V5L10 1.5z" fill="white" opacity="0.9"/><path d="M7 10l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Add to Chrome — It's Free
+          <a href="#install" class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M4 7l4 4 4-4M2 12h12" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download Free
           </a>
-          <a href="#how-it-works" class="btn-ghost">
-            See how it works
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat"><strong>85/100</strong><span>Avg Safety Score</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat"><strong>12+</strong><span>Trackers Blocked</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat"><strong>Real-time</strong><span>Link Scanning</span></div>
+          <a href="how-it-works.html" class="btn-ghost">See how it works</a>
         </div>
       </div>
 
-      <div class="hero-mockup">
-        <div class="browser-frame">
-          <div class="browser-chrome">
-            <div class="browser-dots">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-yellow"></span>
-              <span class="dot dot-green"></span>
-            </div>
-            <div class="browser-tab active-tab">ClickSafe</div>
-          </div>
-          <div class="browser-bar">
-            <span class="url-lock">🔒</span>
-            <span class="url-text">example.com</span>
-          </div>
-          <div class="browser-body">
-            <div class="site-preview">
-              <div class="site-header-bar"></div>
-              <div class="site-content-lines">
-                <div class="line l1"></div>
-                <div class="line l2"></div>
-                <div class="line l3"></div>
+      <div class="hero-right reveal reveal-delay"></div>
+
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem-section" id="features">
+    <div class="container">
+      <div class="problem-wrapper">
+
+        <div class="problem-left">
+          <h2 class="section-title">
+            The web isn't as<br>safe as it <em>looks.</em>
+          </h2>
+          <p class="section-sub">
+            You don't get hacked because you're careless.
+            Threats are engineered to look completely normal.
+          </p>
+          <div class="problem-list">
+            <div class="problem-item reveal">
+              <div class="problem-num">01</div>
+              <div class="problem-body">
+                <strong>Fake Links</strong>
+                <p>Designed to look real. One click hands over your credentials instantly.</p>
               </div>
             </div>
-            <div class="clicksafe-popup">
-              <div class="popup-header">
-                <div class="popup-logo">
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v5c0 3.1 2.4 6 6 7 3.6-.9 6-3.9 6-7V4L8 1z" stroke="#1a7a4a" stroke-width="1.2" fill="none"/><path d="M5.5 8l2 2 3-3.5" stroke="#1a7a4a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  ClickSafe
-                </div>
-                <span class="popup-settings">⚙</span>
+            <div class="problem-item reveal">
+              <div class="problem-num">02</div>
+              <div class="problem-body">
+                <strong>Malicious Downloads</strong>
+                <p>One wrong file can compromise your entire machine &mdash; silently.</p>
               </div>
-              <div class="popup-site">Website: [example.com]</div>
-              <div class="popup-status-safe">
-                <span class="green-dot"></span> Safe
-              </div>
-              <div class="popup-row">
-                <span class="popup-label">Overall Safety Score:</span>
-                <span class="popup-score">85/100</span>
-              </div>
-              <div class="popup-row">
-                <span class="popup-label">Cookies Detected: 4</span>
-                <span class="popup-link">View Details</span>
-              </div>
-              <div class="popup-row">
-                <span class="popup-label">Third-Party Trackers: Blocked 12</span>
+            </div>
+            <div class="problem-item reveal">
+              <div class="problem-num">03</div>
+              <div class="problem-body">
+                <strong>Hidden Trackers</strong>
+                <p>You didn't consent, but dozens of scripts already know who you are.</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="mockup-glow"></div>
+
+        <div class="problem-right reveal reveal-delay">
+          <img src="assets/home-page/problem.svg" alt="Threat illustration" />
+        </div>
+
       </div>
     </div>
   </section>
 
-  <section class="features" id="features">
+  <!-- FEATURES BENTO -->
+  <section class="how-section" id="how">
     <div class="container">
-      <div class="features-header">
-        <div class="section-label-bar"></div>
-        <span class="section-label-text">Features</span>
+      <div style="max-width:860px; margin: 0 auto 0 80px;">
+        <p class="section-label" style="color:rgba(230,57,70,0.85);">— Six layers of protection</p>
+        <h2 class="section-title" style="color:#111111;">Everything ClickSafe does,<br><em>quietly</em></h2>
       </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon icon-blue">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="#2563eb" stroke-width="1.5"/><circle cx="11" cy="11" r="3" fill="#2563eb"/><path d="M11 3v2M11 17v2M3 11h2M17 11h2" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <h3>Cookie Transparency</h3>
-            <p>See which cookies sites are dropping before you browse.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon icon-green">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L3 5.5v7c0 4.1 3.4 7.9 8 9 4.6-1.1 8-4.9 8-9v-7L11 2z" stroke="#16a34a" stroke-width="1.5" fill="none"/><path d="M8 11l2 2 4-4" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <h3>Real-time Safety Rating</h3>
-            <p>Instantly know a site's security score and malicious risks.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon icon-orange">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 4l1.5 5h5l-4 3 1.5 5L11 14l-4 3 1.5-5-4-3h5L11 4z" stroke="#ea580c" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
-          </div>
-          <div>
-            <h3>Phishing Protection</h3>
-            <p>Instant alerts if a site mimics login pages or scams.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon icon-teal">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="8" width="14" height="10" rx="2" stroke="#0d9488" stroke-width="1.5"/><path d="M8 8V6a3 3 0 016 0v2" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <h3>Anti-Tracker Blocking</h3>
-            <p>Stop hidden scripts from tracking your online activity.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="safety-check-section" id="safety-check">
-    <div class="container">
-      <div class="sc-inner">
-        <div class="sc-text">
-          <div class="section-label-text">Safety Check</div>
-          <h2>Test Any URL Instantly</h2>
-          <p>Paste any link below and we'll check it against our real-time safety database — no extension needed.</p>
-          <ul class="sc-list">
-            <li><span class="check-icon">✓</span> Google Safe Browsing integration</li>
-            <li><span class="check-icon">✓</span> Phishing &amp; malware detection</li>
-            <li><span class="check-icon">✓</span> Instant results in milliseconds</li>
+      <div class="bento-grid">
+
+        <!-- 1 — HTTPS: light card -->
+        <div class="bento-card bc-light reveal">
+          <div class="bento-num bc-num-dark">01</div>
+          <div class="bc-stat">100%</div>
+          <h3 class="bc-dark-text">HTTPS Enforcement</h3>
+          <p class="bc-muted-text">Every connection silently upgraded before your browser even asks.</p>
+          <div class="bc-tag bc-tag-dark">Zero latency · Network-layer</div>
+        </div>
+
+        <!-- 2 — Tracker Blocking: gradient dark -->
+        <div class="bento-card bc-gradient reveal">
+          <div class="bento-left-col">
+            <div class="bento-num">02</div>
+            <div class="bc-bignum">70k+</div>
+          </div>
+          <div>
+            <h3>Tracker Blocking</h3>
+            <p>Domains blocked in-memory. O(1) lookup, no server call, no delay.</p>
+            <div class="bc-pills"><span>Disconnect.me</span><span>O(1) lookup</span></div>
+          </div>
+        </div>
+
+        <!-- 3 — Link Safety: light card with icon splash -->
+        <div class="bento-card bc-light reveal">
+          <div class="bento-num bc-num-dark">03</div>
+          <div class="bc-icon-splash">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 4v5c0 5-3 9-7 10C8 21 5 17 5 12V7l7-4z" fill="rgba(230,57,70,0.12)" stroke="#E63946" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#E63946" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="bc-dark-text">Link Safety</h3>
+          <p class="bc-muted-text">SHA-256 hash check before every click. Your URL never leaves the browser.</p>
+          <div class="bc-pills bc-pills-dark"><span>Phishing</span><span>Malware</span><span>SHA-256</span></div>
+        </div>
+
+        <!-- 4 — Download Guard: dark gradient -->
+        <div class="bento-card bc-gradient reveal">
+          <div class="bento-num">04</div>
+          <div class="bc-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 2v8M4 7l4 4 4-4M2 14h12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="12" y="12" width="10" height="10" rx="2" stroke="white" stroke-width="1.5"/></svg>
+          </div>
+          <h3>Download Guard</h3>
+          <p>Every file intercepted before a single byte hits disk. Fails closed.</p>
+          <div class="bc-tag">Pre-disk interception</div>
+        </div>
+
+        <!-- 5 — Dark Pattern: light card -->
+        <div class="bento-card bc-light reveal">
+          <div class="bento-num bc-num-dark">05</div>
+          <h3 class="bc-dark-text">Dark Pattern<br>Detection</h3>
+          <ul class="bc-list bc-list-dark">
+            <li>Fake urgency timers</li>
+            <li>Confirm shaming</li>
+            <li>Pre-ticked checkboxes</li>
+            <li>Cookie manipulation</li>
           </ul>
         </div>
-        <div class="sc-widget">
-          <h3>Check a Link</h3>
-          <div class="url-input-group">
-            <input type="url" id="urlInput" placeholder="https://example.com" class="url-input" />
-            <button class="btn-check" id="checkBtn">
-              <span id="checkBtnText">Check</span>
-              <div class="spinner hidden" id="spinner"></div>
-            </button>
+
+        <!-- 6 — Privacy Score: gradient dark -->
+        <div class="bento-card bc-gradient reveal">
+          <div class="bento-num">06</div>
+          <div class="bc-ring-wrap">
+            <svg viewBox="0 0 80 80" width="80" height="80">
+              <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(230,57,70,0.12)" stroke-width="8"/>
+              <circle cx="40" cy="40" r="30" fill="none" stroke="#E63946" stroke-width="8"
+                stroke-dasharray="150 39" stroke-linecap="round" transform="rotate(-90 40 40)"/>
+              <text x="40" y="45" text-anchor="middle" font-size="16" font-weight="700" fill="#f2ebe1" font-family="Space Mono, monospace">82</text>
+            </svg>
           </div>
-          <div class="sc-result hidden" id="scResult">
-            <div id="resultStatus"></div>
-            <div id="resultDetails" class="result-details"></div>
+          <h3>Privacy Score</h3>
+          <p>Live 0–100 score per page. Drops on trackers, HTTP, mixed content.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE DESC STRIP -->
+  <section class="features-section" id="features-ribbon">
+    <div class="feat-desc-strip">
+      <div class="feat-desc-inner">
+
+        <div class="feat-desc-card">
+          <div class="feat-desc-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" stroke="#E63946" stroke-width="1.5"/></svg>
           </div>
-          <p class="sc-note">Uses the same engine as the ClickSafe extension.</p>
+          <div>
+            <strong>Link Protection</strong>
+            <p>Every URL is hash-checked before your browser commits. Your history never leaves the device.</p>
+          </div>
         </div>
+        <div class="feat-desc-divider"></div>
+
+        <div class="feat-desc-card">
+          <div class="feat-desc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 4v5c0 5-3 9-7 10C8 21 5 17 5 12V7l7-4z" stroke="#E63946" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#E63946" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <strong>Download Scanning</strong>
+            <p>Files are intercepted and malware-checked before a single byte hits disk. Fails closed if unsure.</p>
+          </div>
+        </div>
+        <div class="feat-desc-divider"></div>
+
+        <div class="feat-desc-card">
+          <div class="feat-desc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="#E63946" stroke-width="1.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#E63946" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <strong>HTTPS Monitor</strong>
+            <p>Upgrades connections at the network layer. Flags mixed content the moment it appears in the DOM.</p>
+          </div>
+        </div>
+        <div class="feat-desc-divider"></div>
+
+        <div class="feat-desc-card">
+          <div class="feat-desc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#E63946" stroke-width="1.5"/><path d="M8 12s1 2 4 2 4-2 4-2M9 9h.01M15 9h.01" stroke="#E63946" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <strong>Tracker Block</strong>
+            <p>70k+ scripts matched against a local blocklist. O(1) lookup, no server call, no delay.</p>
+          </div>
+        </div>
+        <div class="feat-desc-divider"></div>
+
+        <div class="feat-desc-card">
+          <div class="feat-desc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="#E63946" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="#E63946" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <strong>Dark Patterns</strong>
+            <p>Fake timers, pre-ticked boxes, and confirm-shaming flagged inline — right on the page.</p>
+          </div>
+        </div>
+        <div class="feat-desc-divider"></div>
+
+        <div class="feat-desc-card">
+          <div class="feat-desc-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#E63946" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <strong>Privacy Score</strong>
+            <p>A live 0–100 score per tab. Drops on trackers, HTTP, and mixed content — computed entirely local.</p>
+          </div>
+        </div>
+
       </div>
     </div>
-  </section>
 
-  <section class="how-it-works" id="how-it-works">
-    <div class="container">
-      <div class="section-header-center">
-        <div class="section-label-text">How it Works</div>
-        <h2>Up and running in 30 seconds</h2>
-        <p>Three simple steps to browse safely forever.</p>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <h3>Install the Extension</h3>
-          <p>Click "Add to Chrome" — it's completely free. Works instantly with no account required.</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <h3>Browse Normally</h3>
-          <p>ClickSafe works silently in the background, scanning every page you visit in real-time.</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <h3>Stay Protected</h3>
-          <p>Get instant alerts for dangerous sites, blocked trackers, and full cookie transparency.</p>
-        </div>
-      </div>
+    <div class="container features-footer-link">
+      <a href="features.html">See all six features in detail &rarr;</a>
     </div>
+
+    <style>
+    .features-section { background: #fff; padding-top: 0; padding-bottom: 0; }
+    .feat-desc-strip { border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); margin-top: 0; background: #fff; }
+    .feat-desc-inner { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr; align-items: stretch; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .feat-desc-card { display: flex; align-items: flex-start; gap: 14px; padding: 32px 20px; }
+    .feat-desc-icon { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: rgba(230,57,70,0.07); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .feat-desc-card strong { display: block; font-size: 13.5px; font-weight: 700; color: #111; margin-bottom: 5px; font-family: var(--font-body); }
+    .feat-desc-card p { font-size: 12.5px; color: #888; line-height: 1.6; margin: 0; font-family: var(--font-body); }
+    .feat-desc-divider { width: 1px; background: var(--border-light); align-self: stretch; margin: 20px 0; }
+    .features-footer-link { text-align: center; padding: 32px 0 56px; }
+    .features-footer-link a { font-size: 14px; color: var(--text-muted, #888); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 3px; transition: color 0.2s, border-color 0.2s; }
+    .features-footer-link a:hover { color: #E63946; border-color: rgba(230,57,70,0.3); }
+    @media (max-width: 1100px) {
+      .feat-desc-inner { grid-template-columns: 1fr 1fr 1fr; }
+      .feat-desc-divider { display: none; }
+      .feat-desc-card { border-bottom: 1px solid var(--border-light); }
+      .feat-desc-card:nth-last-child(-n+3):not(.feat-desc-divider) { border-bottom: none; }
+    }
+    @media (max-width: 680px) {
+      .feat-desc-inner { grid-template-columns: 1fr 1fr; }
+      .feat-desc-card:nth-last-child(-n+2):not(.feat-desc-divider) { border-bottom: none; }
+    }
+    @media (max-width: 420px) {
+      .feat-desc-inner { grid-template-columns: 1fr; }
+      .feat-desc-card:last-of-type { border-bottom: none; }
+    }
+    </style>
   </section>
 
-  <section class="future-features">
+  <!-- FAQ -->
+  <section class="faq-section" id="faq">
     <div class="container">
-      <div class="section-header-center">
-        <div class="section-label-text">Future Features</div>
-        <h2>More Security Coming Soon</h2>
-        <p>More security tools, including VPN and safe link sharing, coming soon!</p>
-      </div>
-      <div class="future-grid">
-        <div class="future-card">
-          <div class="future-icon">🔐</div>
-          <h3>Built-in VPN</h3>
-          <p>Encrypt your traffic and hide your IP while browsing the web.</p>
-          <span class="coming-soon-badge">Coming Soon</span>
-        </div>
-        <div class="future-card">
-          <div class="future-icon">🔗</div>
-          <h3>Safe Link Sharing</h3>
-          <p>Share links with safety scores so your friends know what they're clicking.</p>
-          <span class="coming-soon-badge">Coming Soon</span>
-        </div>
-        <div class="future-card">
-          <div class="future-icon">📊</div>
-          <h3>Privacy Dashboard</h3>
-          <p>Full analytics on your browsing patterns and trackers blocked over time.</p>
-          <span class="coming-soon-badge">Coming Soon</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="cta-banner">
-    <div class="container">
-      <div class="cta-content">
-        <span class="cta-star">✦</span>
-        <h2>Get Peace of Mind. Install ClickSafe Today.</h2>
-        <a href="#" class="btn-primary btn-large btn-white">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1.5L3 5v6c0 4.1 3.2 8 7 9 3.8-1 7-4.9 7-9V5L10 1.5z" fill="#1a7a4a" opacity="0.9"/><path d="M7 10l2.5 2.5 3.5-4" stroke="#1a7a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Add to Chrome — It's Free
-        </a>
+      <div class="faq-header reveal">
+        <h2 class="section-title faq-title">Got <em>questions?</em></h2>
       </div>
-    </div>
-  </section>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="nav-logo">
-            <div class="logo-icon">
-              <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><path d="M14 2L4 7v8c0 5.5 4.3 10.7 10 12 5.7-1.3 10-6.5 10-12V7L14 2z" fill="#1a7a4a" opacity="0.2"/><path d="M14 2L4 7v8c0 5.5 4.3 10.7 10 12 5.7-1.3 10-6.5 10-12V7L14 2z" stroke="#1a7a4a" stroke-width="1.5" fill="none"/><path d="M10 14l3 3 5-5" stroke="#1a7a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="faq-wrapper">
+
+        <div class="faq-right">
+          <div class="faq-list">
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> Is ClickSafe really free?
+              </button>
+              <div class="faq-a">
+                <p>Yes, completely. No freemium tricks, no premium tier hiding the good stuff. ClickSafe is open source and free forever.</p>
+              </div>
             </div>
-            <span class="logo-text">ClickSafe</span>
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> Does it slow down my browser?
+              </button>
+              <div class="faq-a">
+                <p>Not noticeably. ClickSafe uses local hash matching for most checks — no network calls per page. Adds less than 2ms of overhead per navigation.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> Do I need to create an account?
+              </button>
+              <div class="faq-a">
+                <p>Nope. No sign-up, no email, no account — ever. Just install it and it works. There's nothing to log into and nothing to manage.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> Does ClickSafe collect my browsing history?
+              </button>
+              <div class="faq-a">
+                <p>Never. Your URLs are checked locally inside the browser and never sent to our servers. We don't log, sell, or even see what sites you visit.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> Which browsers does it support?
+              </button>
+              <div class="faq-a">
+                <p>Chrome and Edge are fully supported. Firefox support is in active development. Safari is on the roadmap but further out due to extension API differences.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> What happens when a threat is detected?
+              </button>
+              <div class="faq-a">
+                <p>You get a clear warning before the page loads. You always have the option to proceed — ClickSafe warns, it never blocks without your say-so.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal">
+              <button class="faq-q" aria-expanded="false">
+                <span class="faq-arrow">›</span> Can I contribute or self-host it?
+              </button>
+              <div class="faq-a">
+                <p>Absolutely. Full source is on GitHub under MIT license. PRs are welcome — check the contributing guide in the repo.</p>
+              </div>
+            </div>
+
           </div>
-          <p>Browse boldly, click safely. Real-time protection for the modern web.</p>
         </div>
-        <div class="footer-links">
-          <div class="footer-col">
-            <h4>Product</h4>
-            <a href="#features">Features</a>
-            <a href="#safety-check">Safety Check</a>
-            <a href="#how-it-works">How it Works</a>
-          </div>
-          <div class="footer-col">
-            <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-          </div>
+
+        <div class="faq-left reveal">
+          <img src="assets/home-page/faq.svg" alt="FAQ illustration" />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="install">
+    <div class="container">
+      <div class="cta-box reveal">
+        <div class="cta-glow"></div>
+        <h2 class="section-title cta-title">
+          Start browsing safely<br>in under <em>60 seconds.</em>
+        </h2>
+        <div style="display:flex; justify-content:center; margin-top: 28px;">
+          <a href="#install" class="btn-primary btn-lg">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M4 7l4 4 4-4M2 12h12" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Add to Browser
+          </a>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>© 2025 ClickSafe. All rights reserved.</p>
+    </div>
+  </section>
+
+  <footer class="footer" id="about">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo footer-logo">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/></svg>
+          ClickSafe
+        </div>
+        <p>Real-time browser security for everyone.</p>
       </div>
+      <div class="footer-links">
+        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener">GitHub</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@clicksafe.dev">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 ClickSafe.</p>
     </div>
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.faq-q').forEach(b => {
+          b.setAttribute('aria-expanded', 'false');
+          b.nextElementSibling.classList.remove('open');
+        });
+        if (!isOpen) {
+          btn.setAttribute('aria-expanded', 'true');
+          btn.nextElementSibling.classList.add('open');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

@@ -3,6 +3,23 @@
 //  Injected into every web page.
 //  Handles: HTTPS Monitor, Tracker Detection (blocklist-based),
 //           Link Hover Preview (debounced), Dark Pattern Detector,
+
+// ── Extension context guard ───────────────────────────────────
+// After an extension reload/update the old content script is still
+// alive on existing tabs but chrome.runtime is invalidated.
+// All chrome.runtime calls must go through this wrapper.
+function isContextValid() {
+  try { return !!chrome.runtime?.id; } catch { return false; }
+}
+function safeSendMessage(msg, cb) {
+  if (!isContextValid()) return;
+  try {
+    chrome.runtime.sendMessage(msg, function(response) {
+      if (chrome.runtime.lastError) return; // suppress "context invalidated" etc.
+      if (cb) cb(response);
+    });
+  } catch { /* extension was reloaded — silently swallow */ }
+}
 //           Real-Time Privacy Banner
 // ============================================================
 
@@ -41,7 +58,7 @@ function scanForMixedContent() {
     console.log(`[ClickSafe] ⚠️ Mixed content found: ${mixedResources.length} HTTP resource(s) on HTTPS page`);
     console.table(mixedResources);
 
-    chrome.runtime.sendMessage({
+    safeSendMessage({
       type: "MIXED_CONTENT_DETECTED",
       data: {
         pageUrl: window.location.href,
@@ -67,58 +84,54 @@ setTimeout(scanForMixedContent, 0);
 //  No hardcoded list — asks background to do the lookup.
 // ============================================================
 
-async function checkHostname(hostname) {
+// Batch all hostnames into ONE message instead of one sendMessage per element.
+// Previously: 130 elements = 130 round-trips to the service worker per scan.
+// Now: all hostnames sent in a single CHECK_TRACKERS message, background
+// checks each against the blocklist and returns a Set of hits.
+async function checkHostnames(hostnameUrlPairs) {
+  if (!hostnameUrlPairs.length) return [];
   return new Promise(resolve => {
-    chrome.runtime.sendMessage({ type: "CHECK_TRACKER", hostname }, response => {
-      if (chrome.runtime.lastError) { resolve(false); return; }
-      resolve(response?.isTracker || false);
+    const hostnames = hostnameUrlPairs.map(p => p.hostname);
+    safeSendMessage({ type: "CHECK_TRACKERS", hostnames }, response => {
+      if (chrome.runtime.lastError || !response?.trackers) { resolve([]); return; }
+      const hitSet = new Set(response.trackers);
+      resolve(hostnameUrlPairs.filter(p => hitSet.has(p.hostname)));
     });
   });
 }
 
 async function scanForTrackingScripts() {
-  const foundTrackers = [];
-  const scripts = Array.from(document.querySelectorAll("script[src]"));
+  // Collect all candidate hostname+url pairs, deduped by hostname
+  const seen = new Set();
+  const candidates = [];
+  const currentHost = window.location.hostname;
 
-  // Check all script srcs in parallel against the blocklist
-  await Promise.all(scripts.map(async el => {
-    try {
-      const hostname = new URL(el.src).hostname;
-      const hit = await checkHostname(hostname);
-      if (hit) foundTrackers.push({ tracker: hostname, url: el.src });
-    } catch (_) {}
-  }));
-
-  // Also scan link/image/iframe sources
-  const resources = [
-    ...Array.from(document.querySelectorAll("img[src]")),
-    ...Array.from(document.querySelectorAll("iframe[src]")),
-    ...Array.from(document.querySelectorAll("link[href]")),
-  ];
-
-  await Promise.all(resources.map(async el => {
-    const src = el.src || el.href;
+  const addEl = (src) => {
     if (!src) return;
     try {
       const hostname = new URL(src).hostname;
-      // Skip same-origin resources — they're not third-party trackers
-      if (hostname === window.location.hostname) return;
-      const hit = await checkHostname(hostname);
-      if (hit) foundTrackers.push({ tracker: hostname, url: src });
+      if (hostname === currentHost) return;  // skip same-origin
+      if (seen.has(hostname)) return;        // dedup — no point checking twice
+      seen.add(hostname);
+      candidates.push({ hostname, url: src });
     } catch (_) {}
-  }));
+  };
+
+  document.querySelectorAll("script[src]").forEach(el => addEl(el.src));
+  document.querySelectorAll("img[src]").forEach(el => addEl(el.src));
+  document.querySelectorAll("iframe[src]").forEach(el => addEl(el.src));
+  document.querySelectorAll("link[href]").forEach(el => addEl(el.href));
+
+  // Single round-trip to the service worker for all hostnames
+  const hits = await checkHostnames(candidates);
+  const foundTrackers = hits.map(p => ({ tracker: p.hostname, url: p.url }));
 
   if (foundTrackers.length > 0) {
     console.log(`[ClickSafe] 🍪 Tracking scripts found: ${foundTrackers.length}`);
     console.table(foundTrackers);
-
-    chrome.runtime.sendMessage({
+    safeSendMessage({
       type: "TRACKERS_DETECTED",
-      data: {
-        pageUrl: window.location.href,
-        trackers: foundTrackers,
-        timestamp: new Date().toISOString()
-      }
+      data: { pageUrl: window.location.href, trackers: foundTrackers, timestamp: new Date().toISOString() }
     });
   } else {
     console.log("[ClickSafe] ✅ No tracking scripts detected on this page");
@@ -127,7 +140,26 @@ async function scanForTrackingScripts() {
 
 // Run tracker scan on page load
 setTimeout(scanForTrackingScripts, 0);
-setTimeout(scanForTrackingScripts, 3000);  // ADD: re-scan after 3s for lazy-loaded scripts
+
+// Re-scan only when a script/img/iframe/link node is actually added.
+// Debounced at 600ms so rapid injections (ads, SPA route changes) are batched
+// into one scan instead of firing hundreds of full-DOM sweeps per second.
+const TRACKER_RELEVANT_TAGS = new Set(['SCRIPT', 'IMG', 'IFRAME', 'LINK']);
+let _trackerDebounceTimer = null;
+
+const _trackerObserver = new MutationObserver((mutations) => {
+  const hasRelevantNode = mutations.some(m =>
+    Array.from(m.addedNodes).some(n => n.nodeType === 1 && TRACKER_RELEVANT_TAGS.has(n.tagName))
+  );
+  if (!hasRelevantNode) return;
+  clearTimeout(_trackerDebounceTimer);
+  _trackerDebounceTimer = setTimeout(scanForTrackingScripts, 600);
+});
+
+_trackerObserver.observe(document.body || document.documentElement, {
+  childList: true,
+  subtree: true
+});
 
 
 // ============================================================
@@ -137,8 +169,65 @@ setTimeout(scanForTrackingScripts, 3000);  // ADD: re-scan after 3s for lazy-loa
 //  only confirmed threats reach the modal.
 // ============================================================
 
-const checkedUrls = {};  // url -> true (safe) | false (unsafe)
+// Issue 1 fix: cap checkedUrls so it never grows unboundedly on link-heavy pages.
+// LRU-lite: when the map hits MAX_CHECKED_URLS entries, evict the oldest 20%
+// before inserting the new entry.
+const MAX_CHECKED_URLS = 500;
+const checkedUrls = new Map();  // url -> true (safe) | false (unsafe)
+
+function setCheckedUrl(url, value) {
+  if (checkedUrls.size >= MAX_CHECKED_URLS) {
+    // Evict oldest ~20 % of entries (insertion order)
+    const evictCount = Math.ceil(MAX_CHECKED_URLS * 0.2);
+    const iter = checkedUrls.keys();
+    for (let i = 0; i < evictCount; i++) {
+      const key = iter.next().value;
+      if (key !== undefined) checkedUrls.delete(key);
+    }
+  }
+  checkedUrls.set(url, value);
+}
+
+// Load the whitelist from settings (same key background.js uses).
+// Previously used a separate 'whitelistedSites' key that never synced
+// with background.js's currentSettings.whitelist — fixes that mismatch.
+let whitelistedSites = [];
+chrome.storage.local.get(['settings'], (result) => {
+  whitelistedSites = result.settings?.whitelist || [];
+});
+// Keep in sync when settings change (e.g. user edits whitelist in settings page)
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.settings?.newValue?.whitelist) {
+    whitelistedSites = changes.settings.newValue.whitelist;
+  }
+});
 const pendingUrls = {};  // url -> true (request in-flight)
+
+// Offline cooldown: when the backend is unreachable, skip API calls for 30s
+// to avoid hammering failed requests on every link hover.
+const OFFLINE_COOLDOWN_MS = 30_000;
+let offlineSince = null;  // timestamp (ms) of last API_UNAVAILABLE response, or null
+
+function isOfflineCooldownActive() {
+  if (offlineSince === null) return false;
+  if (Date.now() - offlineSince < OFFLINE_COOLDOWN_MS) return true;
+  offlineSince = null;  // cooldown expired, allow retries again
+  return false;
+}
+
+function markBackendOffline() {
+  if (offlineSince === null) {
+    console.log("[ClickSafe] Backend unreachable — pausing link checks for 30s.");
+  }
+  offlineSince = Date.now();
+}
+
+function markBackendOnline() {
+  if (offlineSince !== null) {
+    console.log("[ClickSafe] Backend reachable again — resuming link checks.");
+  }
+  offlineSince = null;
+}
 
 function debounce(fn, delay) {
   let timer;
@@ -150,21 +239,29 @@ function debounce(fn, delay) {
 
 function handleLinkHover(url) {
   if (!url || url.startsWith("javascript:") || url.startsWith("#") || url.startsWith("mailto:")) return;
-  if (checkedUrls[url] === true) return;
+  if (whitelistedSites.includes(window.location.hostname)) return;
+  if (checkedUrls.get(url) === true) return;
   if (pendingUrls[url]) return;
+  // Skip during offline cooldown — backend is known to be unreachable
+  if (isOfflineCooldownActive()) return;
 
   pendingUrls[url] = true;
 
-  chrome.runtime.sendMessage({ type: "CHECK_LINK", url }, function (response) {
+  safeSendMessage({ type: "CHECK_LINK", url }, function (response) {
     delete pendingUrls[url];
-    if (chrome.runtime.lastError) return;
     if (response && !response.safe) {
-      checkedUrls[url] = false;
+      checkedUrls.set(url, false);
+      markBackendOnline();
       showWarningModal({ type: "link", url, threat: response.threat });
     } else if (response) {
-      // safe: true covers both confirmed-safe AND api-unavailable (unavailable: true)
-      // We don't mark unavailable URLs as checked so they get re-tried next hover
-      if (!response.unavailable) checkedUrls[url] = true;
+      if (response.unavailable) {
+        // Backend is down — activate cooldown, don't cache this URL
+        markBackendOffline();
+      } else {
+        // Confirmed safe response from a live backend
+        markBackendOnline();
+        setCheckedUrl(url, true);
+      }
     }
   });
 }
@@ -188,6 +285,15 @@ function showWarningModal({ type, url, filename, threat }) {
   const existing = document.getElementById("clicksafe-modal-container");
   if (existing) existing.remove();
 
+  // Issue 3 fix: escape all server-supplied strings before DOM insertion.
+  // threat, url, and filename are external data — interpolating them raw
+  // into innerHTML is a stored-XSS vector.
+  function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str ?? '';
+    return d.innerHTML;
+  }
+
   // Create modal container
   const container = document.createElement("div");
   container.id = "clicksafe-modal-container";
@@ -208,6 +314,11 @@ function showWarningModal({ type, url, filename, threat }) {
   const icon = type === "download" ? "🚨" : "⚠️";
   const title = type === "download" ? "Dangerous Download Blocked" : "Dangerous Link Detected";
 
+  // Use escaped values in innerHTML
+  const safeTitle   = escapeHtml(title);
+  const safeThreat  = escapeHtml(threat);
+  const safeTarget  = escapeHtml(target);
+
   container.innerHTML = `
     <div style="
       background: white; border-radius: 12px; padding: 28px;
@@ -215,13 +326,19 @@ function showWarningModal({ type, url, filename, threat }) {
       text-align: center;
     ">
       <div style="font-size: 48px; margin-bottom: 12px;">${icon}</div>
-      <h2 style="margin: 0 0 8px; font-size: 18px; color: #dc2626;">${title}</h2>
+      <h2 style="margin: 0 0 8px; font-size: 18px; color: #dc2626;">${safeTitle}</h2>
       <p style="margin: 0 0 16px; font-size: 13px; color: #6b7280;">
-        Threat: <strong>${threat}</strong>
+        Threat: <strong>${safeThreat}</strong>
       </p>
       <p style="margin: 0 0 20px; font-size: 12px; color: #9ca3af; word-break: break-all;">
-        ${target}
+        ${safeTarget}
       </p>
+      <div style="margin-bottom: 14px;">
+        <label style="font-size: 12px; color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <input type="checkbox" id="clicksafe-dont-warn" style="cursor: pointer;">
+          Don't warn me again for this site
+        </label>
+      </div>
       <div style="display: flex; gap: 10px; justify-content: center;">
         <button id="clicksafe-go-back" style="
           background: #dc2626; color: white; border: none;
@@ -239,14 +356,46 @@ function showWarningModal({ type, url, filename, threat }) {
 
   document.body.appendChild(container);
 
-  // Button actions
-  document.getElementById("clicksafe-go-back").addEventListener("click", () => {
-    container.remove();
-  });
+  // Shared: save the site to whitelist if "don't warn" is checked.
+  // Writes to settings.whitelist so background.js's currentSettings
+  // sees the same data (fixes the whitelistedSites key mismatch bug).
+  function maybeSaveWhitelist() {
+    const dontWarn = document.getElementById("clicksafe-dont-warn")?.checked;
+    if (dontWarn) {
+      const hostname = window.location.hostname;
+      chrome.storage.local.get(['settings'], (result) => {
+        const settings = result.settings || {};
+        const list = settings.whitelist || [];
+        if (!list.includes(hostname)) list.push(hostname);
+        const updated = { ...settings, whitelist: list };
+        chrome.storage.local.set({ settings: updated });
+        safeSendMessage({ type: 'SETTINGS_UPDATED', settings: updated });
+        // Also update the local cache so hovered links on this page stop being checked
+        whitelistedSites = list;
+      });
+    }
+  }
 
-  document.getElementById("clicksafe-proceed").addEventListener("click", () => {
+  // Go Back — dismiss and stay on current page
+  function handleDismiss() {
+    maybeSaveWhitelist();
     container.remove();
-  });
+  }
+
+  // Proceed Anyway — navigate to the flagged URL (link) or allow download (download)
+  function handleProceed() {
+    maybeSaveWhitelist();
+    container.remove();
+    if (type === 'link' && url) {
+      window.location.href = url;
+    }
+    // For downloads, the download was already cancelled by background.js.
+    // We can't resume it from content.js, so we just dismiss and let the
+    // user re-initiate the download if they choose.
+  }
+
+  document.getElementById("clicksafe-go-back").addEventListener("click", handleDismiss);
+  document.getElementById("clicksafe-proceed").addEventListener("click", handleProceed);
 }
 
 // Make showWarningModal available globally for background.js messages
@@ -263,6 +412,15 @@ const BANNER_ID = 'clicksafe-privacy-banner';
 
 function showPrivacyBanner({ score, topReason, total }) {
   if (document.getElementById(BANNER_ID)) return;
+
+  // score and total are integers (safe). topReason is a string built by
+  // background.js that may embed a tracker domain name — escape it.
+  function escBanner(str) {
+    const d = document.createElement('div');
+    d.textContent = str ?? '';
+    return d.innerHTML;
+  }
+  const safeTopReason = escBanner(topReason);
 
   const isRed    = score < 35;
   const bgColor  = isRed ? '#fef2f2' : '#fffbeb';
@@ -313,7 +471,7 @@ function showPrivacyBanner({ score, topReason, total }) {
         ">ClickSafe · ${label}</span>
         <span style="font-size: 13px; color: ${text};">
           Privacy score <strong style="color:${iconText};">${score}/100</strong>
-          &nbsp;·&nbsp; ${topReason}
+          &nbsp;·&nbsp; ${safeTopReason}
         </span>
       </div>
 
@@ -348,15 +506,55 @@ function hidePrivacyBanner() {
 //  FEATURE 6: DARK PATTERN DETECTOR
 // ============================================================
 
+// Keywords that indicate a pre-ticked checkbox is marketing-related.
+// Defined here (outside runDarkPatternDetector) so the MutationObserver
+// handler and the change-event listener can reuse the same list without
+// re-creating the array on every mutation.
+const PRETICK_KEYWORDS = [
+  "newsletter","marketing","promotional","offers","updates","emails",
+  "subscribe","news","deals","partner","third party","third-party"
+];
+
 const DARK_PATTERNS = {
   fakeUrgency: {
     label: "Fake Urgency", color: "#f97316",
     bgColor: "rgba(249,115,22,0.08)",
-    patterns: [
-      /only\s+\d+\s+left/i, /hurry[\s!]/i, /limited\s+time/i,
-      /offer\s+expires/i, /selling\s+fast/i, /almost\s+gone/i,
-      /\d+\s+people\s+(are\s+)?(viewing|watching)/i, /act\s+now/i,
-      /don'?t\s+miss\s+out/i, /last\s+chance/i, /ends\s+soon/i, /today\s+only/i,
+    // Scored keyword system — matched weights are summed; flag when >= scoreThreshold.
+    // High-weight phrases (>= threshold) fire on their own; low-weight words
+    // accumulate so creative phrasing like "Only a few remain!" still scores.
+    scoreThreshold: 0.8,
+    keywords: [
+      // High-confidence phrases — each fires alone
+      { re: /only\s+\d+\s+left/i,                         w: 0.9 },
+      { re: /\d+\s+people\s+(are\s+)?(viewing|watching)/i, w: 0.9 },
+      { re: /offer\s+expires/i,                             w: 0.9 },
+      { re: /selling\s+fast/i,                              w: 0.9 },
+      { re: /almost\s+gone/i,                               w: 0.9 },
+      { re: /act\s+now/i,                                   w: 0.9 },
+      { re: /don'?t\s+miss\s+out/i,                        w: 0.9 },
+      { re: /last\s+chance/i,                               w: 0.9 },
+      { re: /ends\s+soon/i,                                 w: 0.9 },
+      { re: /today\s+only/i,                                w: 0.9 },
+      { re: /limited\s+time/i,                              w: 0.9 },
+      { re: /hurry[\s!]/i,                                  w: 0.9 },
+      { re: /won'?t\s+last/i,                               w: 0.9 },
+      // Individual words — accumulate toward threshold
+      { re: /\bonly\b/i,     w: 0.3 },
+      { re: /\bleft\b/i,     w: 0.3 },
+      { re: /\blimited\b/i,  w: 0.4 },
+      { re: /\bexpires?\b/i, w: 0.6 },
+      { re: /\bhurry\b/i,    w: 0.5 },
+      { re: /\bremains?\b/i, w: 0.4 },
+      { re: /\bends?\b/i,    w: 0.3 },
+      { re: /\bsoon\b/i,     w: 0.2 },
+      { re: /\blast\b/i,     w: 0.3 },
+      { re: /\bchance\b/i,   w: 0.3 },
+      { re: /\balmost\b/i,   w: 0.2 },
+      { re: /\btoday\b/i,    w: 0.3 },
+      { re: /\bmiss\b/i,     w: 0.3 },
+      { re: /\bfew\b/i,      w: 0.2 },
+      { re: /\boffer\b/i,    w: 0.3 },
+      { re: /\bdeal\b/i,     w: 0.3 },
     ]
   },
   confirmShaming: {
@@ -391,58 +589,162 @@ function runDarkPatternDetector() {
 
   const textEls = document.querySelectorAll("p,span,div,h1,h2,h3,h4,h5,strong,em,b,label,a,button");
   textEls.forEach(el => {
+    // Issue 2 fix: skip elements already highlighted — re-reading innerText on
+    // every 800ms debounce tick forces a reflow over the entire element set.
+    if (el.dataset.clicksafeHighlighted) return;
     if (el.children.length > 3) return;
     const text = el.innerText?.trim();
     if (!text || text.length > 300) return;
 
-    DARK_PATTERNS.fakeUrgency.patterns.forEach(p => {
-      if (p.test(text)) { highlightElement(el, DARK_PATTERNS.fakeUrgency); detected.push({ type: "Fake Urgency", text: text.substring(0, 80) }); }
-    });
+    // Scored keyword system: sum weights of all matched keywords/phrases.
+    // Fires when total >= scoreThreshold — catches creative phrasing that
+    // exact regexes miss (e.g. "Only a few remain!" scores 0.3+0.4+0.2 = 0.9).
+    let urgencyScore = 0;
+    for (const { re, w } of DARK_PATTERNS.fakeUrgency.keywords) {
+      if (re.test(text)) urgencyScore += w;
+      if (urgencyScore >= DARK_PATTERNS.fakeUrgency.scoreThreshold) break; // no need to keep summing
+    }
+    if (urgencyScore >= DARK_PATTERNS.fakeUrgency.scoreThreshold) {
+      highlightElement(el, DARK_PATTERNS.fakeUrgency);
+      detected.push({ type: "Fake Urgency", text: text.substring(0, 80) });
+    }
     DARK_PATTERNS.confirmShaming.patterns.forEach(p => {
       if (p.test(text)) { highlightElement(el, DARK_PATTERNS.confirmShaming); detected.push({ type: "Confirm Shaming", text: text.substring(0, 80) }); }
     });
   });
 
+  // A standalone digit is not enough — video players, delivery trackers,
+  // and real sale timers all match class="timer" and contain digits.
+  // Require (a) a colon-separated time format AND (b) urgency language
+  // in a nearby ancestor or sibling (up to 2 levels up).
+  const COUNTDOWN_URGENCY = /offer|deal|expires?|sale|discount|ends?|hurry|limited|only|saving/i;
+
+  function hasNearbyUrgency(el) {
+    let node = el.parentElement;
+    for (let depth = 0; depth < 2 && node; depth++, node = node.parentElement) {
+      // Check the ancestor's own direct text
+      const ownText = Array.from(node.childNodes)
+        .filter(n => n.nodeType === Node.TEXT_NODE)
+        .map(n => n.textContent).join(' ');
+      if (COUNTDOWN_URGENCY.test(ownText)) return true;
+      // Check siblings at this level
+      for (const sibling of node.children) {
+        if (sibling !== (depth === 0 ? el : el.parentElement) &&
+            COUNTDOWN_URGENCY.test(sibling.innerText || '')) return true;
+      }
+    }
+    return false;
+  }
+
   DARK_PATTERNS.fakeCountdown.selectors.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
-      if (/\d/.test(el.innerText)) {
-        highlightElement(el, DARK_PATTERNS.fakeCountdown);
-        detected.push({ type: "Fake Countdown Timer", text: el.innerText?.substring(0, 80) });
-      }
+      if (el.dataset.clicksafeHighlighted) return;
+      const text = el.innerText || '';
+      // Must look like a timer (e.g. 23:59 or 1:02:45) — not just any digit
+      if (!/\d{1,2}:\d{2}/.test(text)) return;
+      // Must have urgency language nearby — lone timers are legitimate
+      if (!hasNearbyUrgency(el)) return;
+      highlightElement(el, DARK_PATTERNS.fakeCountdown);
+      detected.push({ type: "Fake Countdown Timer", text: text.substring(0, 80) });
     });
   });
 
   document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+    if (cb.dataset.clicksafeHighlighted) return;  // already caught by observer
     const label = findCheckboxLabel(cb);
     const labelText = label?.innerText?.toLowerCase() || "";
-    const keywords = ["newsletter","marketing","promotional","offers","updates","emails","subscribe","news","deals","partner","third party","third-party"];
-    if (keywords.some(kw => labelText.includes(kw))) {
+    if (PRETICK_KEYWORDS.some(kw => labelText.includes(kw))) {
       highlightElement(label || cb, DARK_PATTERNS.preTickedCheckbox);
       detected.push({ type: "Pre-ticked Checkbox", text: labelText.substring(0, 80) });
     }
   });
 
   const allBtns = Array.from(document.querySelectorAll('button,a[role="button"],[class*="cookie"] button,[id*="cookie"] button'));
-  let hasAccept = false, hasReject = false, acceptBtn = null;
+  let acceptBtn = null, rejectBtn = null;
   allBtns.forEach(btn => {
     const t = btn.innerText?.trim();
     if (!t) return;
-    if (DARK_PATTERNS.cookieManipulation.acceptPatterns.some(p => p.test(t))) { hasAccept = true; acceptBtn = btn; }
-    if (DARK_PATTERNS.cookieManipulation.rejectPatterns.some(p => p.test(t))) { hasReject = true; }
+    if (!acceptBtn && DARK_PATTERNS.cookieManipulation.acceptPatterns.some(p => p.test(t))) acceptBtn = btn;
+    if (!rejectBtn && DARK_PATTERNS.cookieManipulation.rejectPatterns.some(p => p.test(t))) rejectBtn = btn;
   });
-  if (hasAccept && !hasReject && acceptBtn) {
+
+  if (acceptBtn && !rejectBtn) {
+    // Classic case: no way to decline at all
     highlightElement(acceptBtn, DARK_PATTERNS.cookieManipulation);
     detected.push({ type: "Cookie Banner Manipulation", text: "Accept button with no Reject option" });
+  } else if (acceptBtn && rejectBtn) {
+    // Both exist — check visual asymmetry nudging users toward Accept.
+    // Signal 1: Accept is significantly larger (area ratio > 2.5x)
+    const aRect = acceptBtn.getBoundingClientRect();
+    const rRect = rejectBtn.getBoundingClientRect();
+    const aArea = aRect.width * aRect.height;
+    const rArea = rRect.width * rRect.height;
+    const sizeAsymmetry = rArea > 0 && aArea / rArea > 2.5;
+
+    // Signal 2: Accept has a coloured bg; Reject is transparent/ghosted.
+    // Parse computed backgroundColor to relative luminance (null = transparent).
+    function bgLuminance(el) {
+      const bg = getComputedStyle(el).backgroundColor;
+      const m  = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+      if (!m) return null;
+      if (m[4] !== undefined && +m[4] < 0.1) return null; // transparent
+      return 0.2126 * +m[1] + 0.7152 * +m[2] + 0.0722 * +m[3];
+    }
+    const aLum = bgLuminance(acceptBtn);
+    const rLum = bgLuminance(rejectBtn);
+    // Accept is coloured/dark (lum < 200); Reject is ghosted (transparent or near-white)
+    const colorAsymmetry = aLum !== null && aLum < 200 && (rLum === null || rLum > 230);
+
+    if (sizeAsymmetry || colorAsymmetry) {
+      const reason = sizeAsymmetry && colorAsymmetry
+        ? "Accept button is larger and more prominent than Reject"
+        : sizeAsymmetry
+          ? "Accept button is significantly larger than Reject"
+          : "Accept button is visually prominent; Reject is hidden/ghosted";
+      highlightElement(acceptBtn, DARK_PATTERNS.cookieManipulation);
+      detected.push({ type: "Cookie Banner Manipulation", text: reason });
+    }
   }
 
   if (detected.length > 0) {
     showDarkPatternBadge(detected.length);
-    chrome.runtime.sendMessage({
+    safeSendMessage({
       type: "DARK_PATTERNS_DETECTED",
       data: { pageUrl: window.location.href, patterns: detected, count: detected.length, timestamp: new Date().toISOString() }
     });
   }
 }
+
+// Issue 4 fix: keep a registry of live tooltips so they can be swept on
+// SPA navigation.  WeakRef lets the element be GC-ed naturally; the registry
+// is cleaned up either by the navigation listener below or lazily during the
+// next sweep if the element has already been collected.
+const _tooltipRegistry = [];   // [ { elRef: WeakRef, tooltip: HTMLElement } ]
+
+function _sweepOrphanedTooltips() {
+  for (let i = _tooltipRegistry.length - 1; i >= 0; i--) {
+    const { elRef, tooltip } = _tooltipRegistry[i];
+    const el = elRef.deref();
+    // Remove tooltip if source element was GC-ed or is no longer in the DOM
+    if (!el || !document.body.contains(el)) {
+      tooltip.remove();
+      _tooltipRegistry.splice(i, 1);
+    }
+  }
+}
+
+// Sweep on every SPA-style navigation (history.pushState / replaceState / popstate)
+function _patchHistoryForTooltipCleanup() {
+  const _wrap = (original) => function (...args) {
+    const result = original.apply(this, args);
+    _sweepOrphanedTooltips();
+    return result;
+  };
+  history.pushState    = _wrap(history.pushState);
+  history.replaceState = _wrap(history.replaceState);
+  window.addEventListener('popstate', _sweepOrphanedTooltips);
+}
+_patchHistoryForTooltipCleanup();
 
 function highlightElement(el, pattern) {
   if (el.dataset.clicksafeHighlighted) return;
@@ -476,6 +778,10 @@ function highlightElement(el, pattern) {
 
   document.body.appendChild(tooltip);
 
+  // Issue 4 fix: register so the sweep can remove this tooltip if the source
+  // element disappears (e.g. SPA route change removes it from the DOM).
+  _tooltipRegistry.push({ elRef: new WeakRef(el), tooltip });
+
   el.addEventListener("mouseenter", function(e) {
     // Position tooltip near the cursor
     const x = e.clientX + 12;
@@ -500,6 +806,69 @@ function highlightElement(el, pattern) {
   el.addEventListener("mouseleave", function() {
     tooltip.style.setProperty("opacity", "0", "important");
   });
+
+  // ── Dismiss button ──────────────────────────────────────────
+  // Shown on hover alongside the tooltip. Clicking it removes the highlight,
+  // removes the tooltip, and reports the dismissal to the backend as a
+  // potential false positive.
+  const dismissBtn = document.createElement("span");
+  dismissBtn.title = "Not a dark pattern? Click to dismiss and report";
+  dismissBtn.style.cssText = [
+    "position:absolute!important",
+    "top:-7px!important",
+    "right:-7px!important",
+    "width:16px!important",
+    "height:16px!important",
+    "background:#1e293b!important",
+    "color:#94a3b8!important",
+    "border:1px solid rgba(255,255,255,0.15)!important",
+    "border-radius:50%!important",
+    "font-size:9px!important",
+    "line-height:14px!important",
+    "text-align:center!important",
+    "cursor:pointer!important",
+    "z-index:2147483646!important",
+    "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif!important",
+    "font-weight:700!important",
+    "display:none!important",           // hidden until hover
+    "pointer-events:auto!important",
+    "user-select:none!important"
+  ].join(";");
+  dismissBtn.textContent = "✕";
+  el.appendChild(dismissBtn);
+
+  el.addEventListener("mouseenter", function() {
+    dismissBtn.style.setProperty("display", "block", "important");
+  });
+  el.addEventListener("mouseleave", function() {
+    dismissBtn.style.setProperty("display", "none", "important");
+  });
+
+  dismissBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    // Remove the highlight styling
+    el.style.removeProperty("background-color");
+    el.style.removeProperty("border-radius");
+    el.style.removeProperty("cursor");
+    delete el.dataset.clicksafeHighlighted;
+
+    // Remove tooltip and dismiss button from DOM
+    tooltip.remove();
+    dismissBtn.remove();
+
+    // Report to background script → backend
+    try {
+      safeSendMessage({
+        type:        "DARK_PATTERN_DISMISSED",
+        domain:      window.location.hostname,
+        pageUrl:     window.location.href,
+        patternType: pattern.label,
+        patternText: (el.innerText || "").trim().substring(0, 160),
+      });
+    } catch (_) { /* content script context may be invalidated */ }
+  });
 }
 
 function findCheckboxLabel(cb) {
@@ -507,6 +876,54 @@ function findCheckboxLabel(cb) {
   const p = cb.closest("label"); if (p) return p;
   const s = cb.nextElementSibling; if (s?.tagName === "LABEL") return s;
   return null;
+}
+
+// ── JS-ticked checkbox helpers ────────────────────────────────
+// These are called from the MutationObserver (attribute mutations + newly
+// added nodes) and the document 'change' listener, so they must run fast
+// and be safe to call multiple times on the same element.
+
+/**
+ * Check a single checkbox element. If it is checked, visible, unprocessed,
+ * and its label contains a marketing keyword, flag it immediately without
+ * waiting for the next full runDarkPatternDetector sweep.
+ */
+function checkNodeForPreTickedCheckbox(cb) {
+  if (!_darkPatternsEnabled) return;
+  if (!cb || cb.type !== 'checkbox' || !cb.checked) return;
+  if (cb.dataset.clicksafeHighlighted) return;  // already flagged
+  const label     = findCheckboxLabel(cb);
+  const labelText = (label?.innerText || '').toLowerCase();
+  if (!PRETICK_KEYWORDS.some(kw => labelText.includes(kw))) return;
+
+  highlightElement(label || cb, DARK_PATTERNS.preTickedCheckbox);
+  showDarkPatternBadge(1);
+  safeSendMessage({
+    type: "DARK_PATTERNS_DETECTED",
+    data: {
+      pageUrl:   window.location.href,
+      patterns:  [{ type: "Pre-ticked Checkbox", text: labelText.substring(0, 80) }],
+      count:     1,
+      timestamp: new Date().toISOString()
+    }
+  });
+}
+
+/**
+ * Walk a list of newly-added DOM nodes and check any checkboxes inside them.
+ * Called synchronously from the MutationObserver childList handler so boxes
+ * that arrive in the DOM already checked are caught before the 800ms debounce.
+ */
+function scanAddedNodesForCheckboxes(addedNodes) {
+  addedNodes.forEach(node => {
+    if (node.nodeType !== 1) return;
+    // The node itself might be a checkbox
+    if (node.tagName === 'INPUT') {
+      checkNodeForPreTickedCheckbox(node);
+    }
+    // Or it might be a container with checkboxes inside
+    node.querySelectorAll?.('input[type="checkbox"]:checked').forEach(checkNodeForPreTickedCheckbox);
+  });
 }
 
 function showDarkPatternBadge(count) {
@@ -520,12 +937,75 @@ function showDarkPatternBadge(count) {
   setTimeout(() => badge?.remove(), 8000);
 }
 
-// Respect darkPatternsEnabled setting before running detector
+// ── Dark pattern observer setup ───────────────────────────────
+// Debounced at 800ms so rapid DOM mutations (SPAs, ads, infinite scroll)
+// don't fire a full querySelector-over-thousands-of-nodes sweep on every tick.
+// Moved outside the storage callback so the observer lifecycle is predictable.
+let _dpDebounceTimer = null;
+let _darkPatternsEnabled = false;  // set after storage check below
+
+const _darkPatternObserver = new MutationObserver((mutations) => {
+  if (!_darkPatternsEnabled) return;
+
+  let hasNewNodes = false;
+
+  for (const m of mutations) {
+    if (m.type === 'attributes') {
+      // A 'checked' attribute was set on an input — check it immediately.
+      // Note: this catches setAttribute('checked', '') but NOT the common
+      // el.checked = true property assignment. The 'change' listener below
+      // covers that case.
+      if (m.target.tagName === 'INPUT') checkNodeForPreTickedCheckbox(m.target);
+    } else if (m.type === 'childList' && m.addedNodes.length > 0) {
+      hasNewNodes = true;
+      // Immediately check any newly-added checkboxes — don't wait for the
+      // 800ms debounce, which exists for the expensive full-DOM sweep.
+      scanAddedNodesForCheckboxes(m.addedNodes);
+    }
+  }
+
+  // Still queue the full sweep for everything else (urgency text, countdowns…)
+  if (hasNewNodes) {
+    clearTimeout(_dpDebounceTimer);
+    _dpDebounceTimer = setTimeout(runDarkPatternDetector, 800);
+  }
+});
+
+_darkPatternObserver.observe(document.body || document.documentElement, {
+  childList:       true,
+  subtree:         true,
+  attributes:      true,
+  attributeFilter: ['checked']   // only watch the 'checked' attribute to keep mutation volume low
+});
+
+// ── Change-event listener for JS-property-ticked checkboxes ──
+// Direct property assignment (el.checked = true) does NOT fire a MutationObserver
+// attribute mutation. But most frameworks (React, Vue synthetic events, etc.)
+// DO dispatch a 'change' event when they update checkbox state programmatically.
+// Capture phase ensures we see it even if a page handler calls stopPropagation.
+document.addEventListener('change', function(e) {
+  if (!_darkPatternsEnabled) return;
+  const t = e.target;
+  if (t?.tagName === 'INPUT' && t.type === 'checkbox' && t.checked) {
+    checkNodeForPreTickedCheckbox(t);
+  }
+}, true);
+
+// Respect darkPatternsEnabled setting before running detector.
+// Also responds to live setting changes (enable/disable without page reload).
 chrome.storage.local.get(['settings'], function(result) {
   const settings = result.settings || {};
-  if (settings.darkPatternsEnabled === false) return;
-  runDarkPatternDetector();
-  setTimeout(runDarkPatternDetector, 2500);
+  _darkPatternsEnabled = settings.darkPatternsEnabled !== false;
+  if (_darkPatternsEnabled) runDarkPatternDetector();
+});
+
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.settings) {
+    const wasEnabled = _darkPatternsEnabled;
+    _darkPatternsEnabled = changes.settings.newValue?.darkPatternsEnabled !== false;
+    // Run immediately when re-enabled so the user sees results right away
+    if (!wasEnabled && _darkPatternsEnabled) runDarkPatternDetector();
+  }
 });
 
 
