@@ -116,6 +116,15 @@
     .icon-btn:hover { background: #eeeeee; border-color: rgba(0,0,0,0.15); }
     .icon-btn svg { width: 17px; height: 17px; fill: #6B7280; }
 
+    .profile-btn-wrap { position: relative; display: inline-flex; }
+    .profile-dot {
+      position: absolute; top: -3px; right: -3px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #16a34a; border: 1.5px solid #fff;
+      display: none;
+    }
+    .profile-btn-wrap.logged-in .profile-dot { display: block; }
+
     /* SCORE SECTION */
     .score-section {
       background: linear-gradient(135deg, rgba(189,108,108,0.85) 0%, #0d0d0d 100%);
@@ -453,6 +462,13 @@
 
   <!-- HEADER -->
   <div class="header">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="profile-btn-wrap" id="profile-btn-wrap">
+        <button class="icon-btn" id="profile-btn" title="Account">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </button>
+        <span class="profile-dot"></span>
+      </div>
     <div class="header-brand">
       <div class="brand-icon">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -460,6 +476,7 @@
         </svg>
       </div>
       <span class="brand-name">ClickSafe</span>
+    </div>
     </div>
     <div class="header-right">
       <span class="conn-pill checking" id="conn-pill">

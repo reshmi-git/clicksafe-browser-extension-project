@@ -368,6 +368,39 @@ document.getElementById("dashboard-btn")?.addEventListener("click", () => {
 document.getElementById("settings-btn2")?.addEventListener("click", () => {
   chrome.tabs.create({ url: chrome.runtime.getURL("pages/settings/settings.html") });
 });
+
+// ── Profile button ─────────────────────────────────────────────
+async function initProfileBtn() {
+  const wrap = document.getElementById("profile-btn-wrap");
+  const btn  = document.getElementById("profile-btn");
+  if (!wrap || !btn) return;
+
+  const { user } = await getStoredAuth();
+  if (user) {
+    wrap.classList.add("logged-in");
+    btn.title = user.email;
+  }
+
+  btn.addEventListener("click", () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL("pages/settings/settings.html") });
+  });
+
+  // Keep dot in sync if user logs in/out from settings while panel is open
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== "local" || !("authToken" in changes)) return;
+    const newToken = changes.authToken.newValue;
+    if (newToken) {
+      chrome.storage.local.get(["authUser"], r => {
+        wrap.classList.add("logged-in");
+        btn.title = r.authUser?.email || "Account";
+      });
+    } else {
+      wrap.classList.remove("logged-in");
+      btn.title = "Account";
+    }
+  });
+}
+initProfileBtn();
 document.getElementById("sh-view-all-btn")?.addEventListener("click", () => {
   chrome.tabs.create({ url: chrome.runtime.getURL("pages/dashboard/dashboard.html") });
 });
