@@ -205,7 +205,7 @@ function renderCompanyList(companies) {
   if (companies.length === 0) {
     list.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">✓</div>
+        <div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
         <div class="empty-title">No trackers detected</div>
         <div class="empty-sub">This page looks clean</div>
       </div>`;
@@ -240,7 +240,7 @@ function renderBackFace(trackerScripts, cookieData) {
   let html = "";
 
   if (cookieTrackers.length > 0) {
-    html += `<div class="detail-sublabel">🍪 Tracking Cookies</div>`;
+    html += `<div class="detail-sublabel"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg></span> Tracking Cookies</div>`;
     const domainGroups = new Map();
     cookieTrackers.forEach(t => {
       const cookie = t.cookie||t;
@@ -261,7 +261,7 @@ function renderBackFace(trackerScripts, cookieData) {
   }
 
   if (scripts.length > 0) {
-    html += `<div class="detail-sublabel">🔍 Tracker Scripts</div>`;
+    html += `<div class="detail-sublabel"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span> Tracker Scripts</div>`;
     html += scripts.map(t => {
       const domain = t.tracker||t.domain||"";
       const url = t.url||"";
@@ -336,8 +336,8 @@ function renderHistoryMini(history) {
     try { domain = new URL(item.url).hostname; } catch { domain = item.url||'?'; }
     const timeAgo = formatTimeAgo(new Date(item.timestamp));
     const badges = [];
-    if (item.cookieCount>0) badges.push(`<span class="h-badge h-badge-red">🍪 ${item.cookieCount}</span>`);
-    if (item.scriptCount>0) badges.push(`<span class="h-badge h-badge-orange">⚡ ${item.scriptCount}</span>`);
+    if (item.cookieCount>0) badges.push(`<span class="h-badge h-badge-red" style="display:inline-flex;align-items:center;gap:3px;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg> ${item.cookieCount}</span>`);
+    if (item.scriptCount>0) badges.push(`<span class="h-badge h-badge-orange" style="display:inline-flex;align-items:center;gap:3px;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ${item.scriptCount}</span>`);
 
     return `<div class="history-row">
       <div class="history-domain">${esc(domain)}</div>

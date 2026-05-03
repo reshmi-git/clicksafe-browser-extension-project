@@ -552,4 +552,4 @@ chrome.tabs.onRemoved.addListener(tabId => {
   ]);
 });
 
-console.log('[ClickSafe] Background service worker started ✅');
+console.log('[ClickSafe] Background service worker started [OK]');

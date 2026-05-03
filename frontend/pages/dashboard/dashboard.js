@@ -115,7 +115,7 @@ function showAnalyticsEmptyState() {
     'padding:60px 20px', 'text-align:center', 'border-radius:inherit'
   ].join(';');
   overlay.innerHTML =
-    '<div style="font-size:36px;margin-bottom:16px;">📊</div>' +
+    '<div style="margin-bottom:16px;display:flex;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>' +
     '<div style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text-dark,#111)">No data yet</div>' +
     '<div style="font-size:13px;color:var(--muted,#6b7280);max-width:280px;margin:0 auto;line-height:1.6;">' +
     'Browse a few sites and come back \u2014 charts will populate automatically.</div>';
@@ -265,7 +265,7 @@ function renderTopDomains(data, containerId) {
   });
   const sorted = Object.entries(domainCounts).sort((a,b)=>b[1]-a[1]).slice(0,10);
   if (sorted.length===0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No tracker data yet — browse some sites!</div></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-text">No tracker data yet — browse some sites!</div></div>`;
     return;
   }
   const max = sorted[0][1];
@@ -358,7 +358,7 @@ function buildCompaniesData(data) {
   const container = document.getElementById('companies-list');
   if (!container) return;
   if (companyMap.size===0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🏢</div><div class="empty-text">No company data yet — browse some sites</div></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg></div><div class="empty-text">No company data yet — browse some sites</div></div>`;
     return;
   }
 
@@ -371,18 +371,18 @@ function buildCompaniesData(data) {
 
     const sitesHtml = c.sites.size>0
       ? `<div class="tracker-sub-title" style="margin-top:12px">Sites where this tracker was found</div>
-         <div class="company-sites-list">${Array.from(c.sites).slice(0,8).map(s=>`<div class="company-site-row">🌐 <span>${esc(s)}</span></div>`).join('')}</div>`
+         <div class="company-sites-list">${Array.from(c.sites).slice(0,8).map(s=>`<div class="company-site-row" style="display:flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span>${esc(s)}</span></div>`).join('')}</div>`
       : '';
 
     const dataInfoHtml = info.collects ? `
       <div class="data-use-grid">
-        <div class="data-use-item"><div class="data-use-label">📥 What they collect</div><div class="data-use-value">${esc(info.collects)}</div></div>
-        <div class="data-use-item"><div class="data-use-label">💰 How they use it</div><div class="data-use-value">${esc(info.howUsed)}</div></div>
-        <div class="data-use-item"><div class="data-use-label">⏱️ How long they keep it</div><div class="data-use-value">${esc(info.retains||'Unknown')}</div></div>
-        <div class="data-use-item"><div class="data-use-label">⚠️ Privacy risk</div><div class="data-use-value">${esc(info.privacyRisk||'Unknown')}</div></div>
+        <div class="data-use-item"><div class="data-use-label"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> What they collect</span></div><div class="data-use-value">${esc(info.collects)}</div></div>
+        <div class="data-use-item"><div class="data-use-label"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><line x1="16.71" y1="13.88" x2="17" y2="14"/></svg> How they use it</span></div><div class="data-use-value">${esc(info.howUsed)}</div></div>
+        <div class="data-use-item"><div class="data-use-label"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> How long they keep it</span></div><div class="data-use-value">${esc(info.retains||'Unknown')}</div></div>
+        <div class="data-use-item"><div class="data-use-label"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Privacy risk</span></div><div class="data-use-value">${esc(info.privacyRisk||'Unknown')}</div></div>
       </div>
       ${info.optOut ? `<div style="margin-top:12px;padding:10px 12px;background:var(--green-bg);border:2px solid var(--green-dark);border-radius:var(--r-xs);">
-        <span style="font-size:10px;font-weight:900;color:var(--green-dark);text-transform:uppercase;letter-spacing:.06em;">🛡️ How to opt out</span>
+        <span style="font-size:10px;font-weight:900;color:var(--green-dark);text-transform:uppercase;letter-spacing:.06em;"><span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> How to opt out</span>
         <div style="font-size:12px;font-weight:700;color:var(--text-dark);margin-top:4px;">${esc(info.optOut)}</div>
       </div>` : ''}` : '<div style="padding:12px 0;color:var(--muted);font-size:12px;font-weight:700;">Detailed data use info not available for this tracker.</div>';
 
@@ -428,7 +428,7 @@ function renderDpTable() {
   if (!tbody) return;
   const filtered = activeFilter==='all' ? allDpLog : allDpLog.filter(r=>r.type===activeFilter);
   if (filtered.length===0) {
-    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">✨</div><div class="empty-text">No dark patterns logged yet</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div><div class="empty-text">No dark patterns logged yet</div></div></td></tr>`;
     return;
   }
   tbody.innerHTML = filtered.slice(0,100).map(row => {

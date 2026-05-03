@@ -55,7 +55,7 @@ function scanForMixedContent() {
   });
 
   if (mixedResources.length > 0) {
-    console.log(`[ClickSafe] ⚠️ Mixed content found: ${mixedResources.length} HTTP resource(s) on HTTPS page`);
+    console.log(`[ClickSafe] [WARN] Mixed content found: ${mixedResources.length} HTTP resource(s) on HTTPS page`);
     console.table(mixedResources);
 
     safeSendMessage({
@@ -67,7 +67,7 @@ function scanForMixedContent() {
       }
     });
   } else {
-    console.log("[ClickSafe] ✅ No mixed content detected on this page");
+    console.log("[ClickSafe] [OK] No mixed content detected on this page");
   }
 }
 
@@ -127,14 +127,14 @@ async function scanForTrackingScripts() {
   const foundTrackers = hits.map(p => ({ tracker: p.hostname, url: p.url }));
 
   if (foundTrackers.length > 0) {
-    console.log(`[ClickSafe] 🍪 Tracking scripts found: ${foundTrackers.length}`);
+    console.log(`[ClickSafe] [COOKIE] Tracking scripts found: ${foundTrackers.length}`);
     console.table(foundTrackers);
     safeSendMessage({
       type: "TRACKERS_DETECTED",
       data: { pageUrl: window.location.href, trackers: foundTrackers, timestamp: new Date().toISOString() }
     });
   } else {
-    console.log("[ClickSafe] ✅ No tracking scripts detected on this page");
+    console.log("[ClickSafe] [OK] No tracking scripts detected on this page");
   }
 }
 
@@ -311,7 +311,7 @@ function showWarningModal({ type, url, filename, threat }) {
   `;
 
   const target = type === "download" ? (filename || url) : url;
-  const icon = type === "download" ? "🚨" : "⚠️";
+  const icon = type === "download" ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
   const title = type === "download" ? "Dangerous Download Blocked" : "Dangerous Link Detected";
 
   // Use escaped values in innerHTML
@@ -399,7 +399,7 @@ function showWarningModal({ type, url, filename, threat }) {
 }
 
 // Make showWarningModal available globally for background.js messages
-console.log("[ClickSafe] content.js loaded ✅");
+console.log("[ClickSafe] content.js loaded [OK]");
 
 
 // ============================================================
@@ -462,7 +462,7 @@ function showPrivacyBanner({ score, topReason, total }) {
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0;
         font-size: 16px;
-      ">🛡️</div>
+      "><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
 
       <div style="flex: 1; min-width: 0;">
         <span style="
@@ -758,7 +758,7 @@ function highlightElement(el, pattern) {
 
   // Hover tooltip — injected once, shown/hidden via opacity
   const tooltip = document.createElement("div");
-  tooltip.innerText = `⚠️ ${pattern.label}`;
+  tooltip.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f1f5f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${pattern.label}`;
   tooltip.style.cssText = [
     "position:fixed!important",
     "background:#1e293b!important",
@@ -834,7 +834,7 @@ function highlightElement(el, pattern) {
     "pointer-events:auto!important",
     "user-select:none!important"
   ].join(";");
-  dismissBtn.textContent = "✕";
+  dismissBtn.textContent = "×";
   el.appendChild(dismissBtn);
 
   el.addEventListener("mouseenter", function() {
@@ -931,7 +931,7 @@ function showDarkPatternBadge(count) {
   if (existing) existing.remove();
   const badge = document.createElement("div");
   badge.id = "clicksafe-dp-badge";
-  badge.innerHTML = `<div style="position:fixed;bottom:24px;right:24px;background:#1a1a2e;border:1px solid rgba(249,115,22,0.4);color:white;padding:12px 18px;border-radius:12px;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;z-index:999999;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;cursor:pointer;"><span style="font-size:20px;">🚨</span><div><div style="color:#f97316;">${count} Dark Pattern${count > 1 ? "s" : ""} Detected</div><div style="font-weight:normal;font-size:11px;color:#9ca3af;margin-top:2px;">Highlighted on page · Click to dismiss</div></div></div>`;
+  badge.innerHTML = `<div style="position:fixed;bottom:24px;right:24px;background:#1a1a2e;border:1px solid rgba(249,115,22,0.4);color:white;padding:12px 18px;border-radius:12px;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;z-index:999999;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;cursor:pointer;"><span style="display:flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span><div><div style="color:#f97316;">${count} Dark Pattern${count > 1 ? "s" : ""} Detected</div><div style="font-weight:normal;font-size:11px;color:#9ca3af;margin-top:2px;">Highlighted on page · Click to dismiss</div></div></div>`;
   badge.addEventListener("click", () => badge.remove());
   document.body.appendChild(badge);
   setTimeout(() => badge?.remove(), 8000);
