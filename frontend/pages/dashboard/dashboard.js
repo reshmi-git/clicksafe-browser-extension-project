@@ -22,8 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Calendar nav buttons (inline onclick blocked by MV3 CSP) ─
   document.getElementById('cal-1-prev').addEventListener('click', () => changeCalMonth(-1, 'cal-1'));
   document.getElementById('cal-1-next').addEventListener('click', () => changeCalMonth( 1, 'cal-1'));
+  document.getElementById('cal-1-reset').addEventListener('click', () => resetCalMonth('cal-1'));
   document.getElementById('cal-2-prev').addEventListener('click', () => changeCalMonth(-1, 'cal-2'));
   document.getElementById('cal-2-next').addEventListener('click', () => changeCalMonth( 1, 'cal-2'));
+  document.getElementById('cal-2-reset').addEventListener('click', () => resetCalMonth('cal-2'));
 
   // History filters
   document.querySelectorAll('.hist-filter').forEach(btn => {

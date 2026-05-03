@@ -294,6 +294,8 @@
       cursor:pointer; transition:all .15s; padding:3px 8px;
     }
     .cal-btn:hover { border-color:var(--red); color:var(--red); }
+    .cal-btn-reset { margin-left:4px; }
+    .cal-btn-reset:hover { border-color:var(--red); color:var(--red); }
     .cal-month-lbl { font-size:12px; font-weight:600; color:#111111; }
     .cal-dow-row { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:4px; }
     .cal-dow-row span { text-align:center; font-family:var(--font-mono); font-size:12px; color:#6B7280; text-transform:uppercase; }
@@ -723,6 +725,7 @@
               <button class="cal-btn" id="cal-1-prev"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
               <span class="cal-month-lbl" id="cal-lbl-1"></span>
               <button class="cal-btn" id="cal-1-next"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+              <button class="cal-btn cal-btn-reset" id="cal-1-reset" title="Reset to current month"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
             </div>
             <div class="cal-dow-row"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
             <div class="cal-grid" id="cal-1"></div>
@@ -869,6 +872,7 @@
               <button class="cal-btn" id="cal-2-prev"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
               <span class="cal-month-lbl" id="cal-lbl-2"></span>
               <button class="cal-btn" id="cal-2-next"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+              <button class="cal-btn cal-btn-reset" id="cal-2-reset" title="Reset to current month"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
             </div>
             <div class="cal-dow-row"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
             <div class="cal-grid" id="cal-2"></div>

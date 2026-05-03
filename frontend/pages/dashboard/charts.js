@@ -101,6 +101,13 @@ function changeCalMonth(delta, gridId) {
   _renderCal(gridId, lblId);
 }
 
+function resetCalMonth(gridId) {
+  const now = new Date();
+  window._calState[gridId] = { year: now.getFullYear(), month: now.getMonth() };
+  const lblId = gridId.replace('cal-','cal-lbl-');
+  _renderCal(gridId, lblId);
+}
+
 // ── Donut ─────────────────────────────────────────────────────
 function renderDonut(data, canvasId, legendId, totalId) {
   const cookieTrackers = data.totalCookieTrackersFound||0;
