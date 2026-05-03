@@ -24,6 +24,7 @@ const scoreHistoryRoute    = require("./routes/scoreHistory");
 const darkPatternsRoute    = require("./routes/darkPatterns");
 const trackersRoute        = require("./routes/trackers");
 const blocklistRoute       = require("./routes/blocklist");
+const contactRoute         = require("./routes/contact");
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use("/api/score-history", scoreHistoryRoute);
 app.use("/api/dark-patterns", darkPatternsRoute);
 app.use("/api/trackers",      trackersRoute);
 app.use("/api/blocklist",     blocklistRoute);
+app.use("/api/contact",       contactRoute);
 
 // ── Landing page (static files) ─────────────────────────────
 const landingPath = path.join(__dirname, "..", "landing-page");

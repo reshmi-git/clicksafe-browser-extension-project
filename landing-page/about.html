@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Meet the team behind ClickSafe — four developers building real-time browser security for everyone." />
+  <title>About — ClickSafe</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body { background: #ffffff; }
+
+    /* ── HERO ── */
+    .about-hero {
+      background: #0d0d0d;
+      padding: 130px 0 80px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .about-hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 30%, transparent 100%);
+      pointer-events: none;
+    }
+    .about-hero-glow {
+      position: absolute;
+      width: 600px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(230,57,70,0.15) 0%, transparent 70%);
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .about-hero-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .about-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(230,57,70,0.7);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .about-eyebrow::before,
+    .about-eyebrow::after {
+      content: '';
+      display: block;
+      width: 28px; height: 1px;
+      background: rgba(230,57,70,0.35);
+    }
+    .about-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 5vw, 58px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: #f2ebe1;
+      margin-bottom: 20px;
+    }
+    .about-hero h1 em { font-style: italic; color: var(--red-bright); }
+    .about-hero-sub {
+      font-size: 16px;
+      color: rgba(245,240,232,0.5);
+      line-height: 1.75;
+    }
+
+    /* ── TEAM ── */
+    .team-section {
+      padding: 80px 0 64px;
+      background: #fff;
+    }
+    .team-header {
+      max-width: 520px;
+      margin-bottom: 52px;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 1px;
+      background: var(--red);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .team-card {
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative;
+    }
+    .team-card:hover {
+      border-color: rgba(230,57,70,0.25);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.09);
+      transform: translateY(-3px);
+    }
+
+    .team-card-top {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: #fafafa;
+    }
+
+    .team-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: #111;
+      border: 2px solid rgba(230,57,70,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: #f2ebe1;
+      position: relative;
+    }
+    .team-avatar::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(230,57,70,0.12);
+    }
+
+    /* unique tints per card */
+    .tc1 .team-avatar { background: #1a0d0e; }
+    .tc2 .team-avatar { background: #0d1218; }
+    .tc3 .team-avatar { background: #0d1a12; }
+    .tc4 .team-avatar { background: #1a140d; }
+
+    .team-name {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      letter-spacing: -0.1px;
+    }
+    .team-num {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(230,57,70,0.5);
+    }
+
+    .team-card-body {
+      padding: 18px 22px 22px;
+    }
+    .team-role-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .team-role {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+    .team-role-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .team-pill {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.05);
+      color: #666;
+      border: 1px solid rgba(0,0,0,0.07);
+    }
+
+    /* ── MISSION STRIP ── */
+    .mission-section {
+      background: #f8f8f8;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      padding: 64px 0;
+    }
+    .mission-inner {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr 1px 1fr;
+      gap: 0;
+      max-width: 900px;
+      margin: 0 auto;
+      align-items: stretch;
+    }
+    .mission-item {
+      padding: 0 40px;
+      text-align: center;
+    }
+    .mission-item:first-child { padding-left: 0; }
+    .mission-item:last-child { padding-right: 0; }
+    .mission-divider { background: var(--border-light); }
+    .mission-num {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--red-bright);
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .mission-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .mission-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      padding: 80px 0 100px;
+      background: #fff;
+    }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact-left { padding-top: 4px; }
+    .contact-left h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.5px;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+    .contact-left h2 em { font-style: italic; color: var(--red-bright); }
+    .contact-left p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 32px;
+      max-width: 380px;
+    }
+
+    .contact-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .contact-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .contact-meta-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      background: rgba(230,57,70,0.07);
+      border: 1px solid rgba(230,57,70,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-meta-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1px;
+    }
+    .contact-meta-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Form */
+    .contact-form-wrap {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    }
+    .form-header {
+      margin-bottom: 28px;
+    }
+    .form-header-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .form-header h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-dark);
+      letter-spacing: -0.2px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .form-group:last-of-type { margin-bottom: 0; }
+    .form-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-family: var(--font-body);
+    }
+    .form-label span {
+      color: var(--red-bright);
+      margin-left: 2px;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 9px;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      background: #f9f9f9;
+      font-size: 14px;
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      outline: none;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--red-bright);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(230,57,70,0.08);
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: #bbb; }
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+      line-height: 1.6;
+    }
+    .form-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+    .form-submit {
+      width: 100%;
+      padding: 13px 20px;
+      background: var(--red-bright);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .form-submit:hover { background: #C1121F; }
+    .form-submit:active { transform: scale(0.99); }
+    .form-submit:disabled { background: #ccc; cursor: not-allowed; }
+
+    /* Status messages */
+    .form-status {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 14px;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-status.success {
+      display: flex;
+      background: rgba(22,163,74,0.08);
+      border: 1px solid rgba(22,163,74,0.2);
+      color: #15803d;
+    }
+    .form-status.error {
+      display: flex;
+      background: rgba(230,57,70,0.07);
+      border: 1px solid rgba(230,57,70,0.2);
+      color: var(--red-bright);
+    }
+
+    .form-note {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 14px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.2px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+      .mission-inner { grid-template-columns: 1fr; gap: 32px; }
+      .mission-divider { display: none; }
+      .mission-item { padding: 0; border-bottom: 1px solid var(--border-light); padding-bottom: 28px; }
+      .mission-item:last-child { border-bottom: none; padding-bottom: 0; }
+    }
+    @media (max-width: 640px) {
+      .team-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form-wrap { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/>
+        </svg>
+        ClickSafe
+      </a>
+      <nav class="nav-links">
+        <a href="features.html">Features</a>
+        <a href="how-it-works.html">How it Works</a>
+        <a href="installation.html">Installation Setup</a>
+        <a href="about.html" style="color: var(--red-bright);">About</a>
+      </nav>
+      <a href="installation.html" class="nav-cta">Add to Browser</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="about-hero">
+    <div class="about-hero-grid"></div>
+    <div class="about-hero-glow"></div>
+    <div class="container">
+      <div class="about-hero-inner reveal">
+        <div class="about-eyebrow">The Team</div>
+        <h1>Built by four people<br>who care about <em>privacy.</em></h1>
+        <p class="about-hero-sub">
+          ClickSafe started as a university project and grew into a full
+          browser security tool — designed, engineered, and shipped by a
+          four-person team.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION STATS -->
+  <section class="mission-section">
+    <div class="container">
+      <div class="mission-inner">
+        <div class="mission-item reveal">
+          <div class="mission-num">4</div>
+          <div class="mission-label">Team Members</div>
+          <div class="mission-sub">Design, backend, frontend & database</div>
+        </div>
+        <div class="mission-divider"></div>
+        <div class="mission-item reveal">
+          <div class="mission-num">6</div>
+          <div class="mission-label">Protection Layers</div>
+          <div class="mission-sub">Running silently on every tab you open</div>
+        </div>
+        <div class="mission-divider"></div>
+        <div class="mission-item reveal">
+          <div class="mission-num">70k+</div>
+          <div class="mission-label">Trackers Blocked</div>
+          <div class="mission-sub">Local blocklist, zero server calls</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team-section">
+    <div class="container">
+      <div class="team-header reveal">
+        <div class="section-eyebrow">Meet the team</div>
+        <h2 class="section-title">The people who<br>built <em>ClickSafe</em></h2>
+        <p class="section-sub">Four roles, one shared goal — making the web safer for everyone without asking you to trust a black box.</p>
+      </div>
+
+      <div class="team-grid">
+
+        <!-- Devyani -->
+        <div class="team-card tc1 reveal">
+          <div class="team-card-top">
+            <div class="team-avatar">D</div>
+            <div class="team-name">Devyani Katara</div>
+            <div class="team-num">Member · 01</div>
+          </div>
+          <div class="team-card-body">
+            <div class="team-role-label">Role</div>
+            <div class="team-role">Extension Integration &amp; Database Management</div>
+            <div class="team-role-pills">
+              <span class="team-pill">Chrome APIs</span>
+              <span class="team-pill">MySQL</span>
+              <span class="team-pill">Integration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jhalak -->
+        <div class="team-card tc2 reveal">
+          <div class="team-card-top">
+            <div class="team-avatar">J</div>
+            <div class="team-name">Jhalak Mittal</div>
+            <div class="team-num">Member · 02</div>
+          </div>
+          <div class="team-card-body">
+            <div class="team-role-label">Role</div>
+            <div class="team-role">Extension UI/UX Design &amp; Product Presentation</div>
+            <div class="team-role-pills">
+              <span class="team-pill">UI/UX</span>
+              <span class="team-pill">Design Systems</span>
+              <span class="team-pill">Figma</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eva -->
+        <div class="team-card tc3 reveal">
+          <div class="team-card-top">
+            <div class="team-avatar">E</div>
+            <div class="team-name">Eva Chauhan</div>
+            <div class="team-num">Member · 03</div>
+          </div>
+          <div class="team-card-body">
+            <div class="team-role-label">Role</div>
+            <div class="team-role">Backend Development &amp; Deployment</div>
+            <div class="team-role-pills">
+              <span class="team-pill">Node.js</span>
+              <span class="team-pill">REST APIs</span>
+              <span class="team-pill">DevOps</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reshmi -->
+        <div class="team-card tc4 reveal">
+          <div class="team-card-top">
+            <div class="team-avatar">R</div>
+            <div class="team-name">Reshmi Yadav</div>
+            <div class="team-num">Member · 04</div>
+          </div>
+          <div class="team-card-body">
+            <div class="team-role-label">Role</div>
+            <div class="team-role">Landing Page Design &amp; Frontend Logic</div>
+            <div class="team-role-pills">
+              <span class="team-pill">HTML/CSS</span>
+              <span class="team-pill">JavaScript</span>
+              <span class="team-pill">Design</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- Left: info -->
+        <div class="contact-left reveal">
+          <div class="section-eyebrow" style="margin-bottom: 16px;">Contact Us</div>
+          <h2>Got a question<br>or found a <em>bug?</em></h2>
+          <p>We read every message. Whether it's a bug report, a feature suggestion, or just a question — drop it in the form and we'll get back to you.</p>
+
+          <div class="contact-meta">
+            <div class="contact-meta-row">
+              <div class="contact-meta-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="contact-meta-text">
+                <strong>Email</strong>
+                <span>support@clicksafe.dev</span>
+              </div>
+            </div>
+            <div class="contact-meta-row">
+              <div class="contact-meta-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              </div>
+              <div class="contact-meta-text">
+                <strong>GitHub</strong>
+                <span>Open an issue on the repo</span>
+              </div>
+            </div>
+            <div class="contact-meta-row">
+              <div class="contact-meta-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="contact-meta-text">
+                <strong>Response time</strong>
+                <span>Usually within 48 hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="contact-form-wrap reveal reveal-delay">
+          <div class="form-header">
+            <div class="form-header-label">Send a message</div>
+            <h3>We'd love to hear from you</h3>
+          </div>
+
+          <form id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="cf-name">Name <span>*</span></label>
+                <input class="form-input" type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="cf-email">Email <span>*</span></label>
+                <input class="form-input" type="email" id="cf-email" name="email" placeholder="you@example.com" required autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cf-subject">Subject <span>*</span></label>
+              <select class="form-select" id="cf-subject" name="subject" required>
+                <option value="" disabled selected>Select a topic…</option>
+                <option value="bug">Bug Report</option>
+                <option value="feature">Feature Request</option>
+                <option value="question">General Question</option>
+                <option value="security">Security Issue</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cf-message">Message <span>*</span></label>
+              <textarea class="form-textarea" id="cf-message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
+            </div>
+
+            <button type="submit" class="form-submit" id="cf-submit">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Send Message
+            </button>
+
+            <div class="form-status" id="cf-status"></div>
+            <p class="form-note">No spam, ever. Your details are only used to respond to you.</p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo footer-logo">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/></svg>
+          ClickSafe
+        </div>
+        <p>Real-time browser security for everyone.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener">GitHub</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@clicksafe.dev">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 ClickSafe.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // ── Contact form submission ────────────────────────────────
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn    = document.getElementById('cf-submit');
+      const status = document.getElementById('cf-status');
+
+      const name    = document.getElementById('cf-name').value.trim();
+      const email   = document.getElementById('cf-email').value.trim();
+      const subject = document.getElementById('cf-subject').value;
+      const message = document.getElementById('cf-message').value.trim();
+
+      // Basic validation
+      if (!name || !email || !subject || !message) {
+        status.className = 'form-status error';
+        status.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Please fill in all required fields.';
+        return;
+      }
+      const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRx.test(email)) {
+        status.className = 'form-status error';
+        status.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Please enter a valid email address.';
+        return;
+      }
+
+      // Send to backend
+      btn.disabled = true;
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending…';
+      status.className = 'form-status';
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message })
+        });
+
+        if (res.ok) {
+          status.className = 'form-status success';
+          status.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Message sent! We\'ll get back to you within 48 hours.';
+          document.getElementById('contact-form').reset();
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        status.className = 'form-status error';
+        status.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Something went wrong. Try emailing us directly at support@clicksafe.dev';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
+      }
+    });
+  </script>
+</body>
+</html>
