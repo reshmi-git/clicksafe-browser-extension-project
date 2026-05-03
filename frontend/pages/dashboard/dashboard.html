@@ -130,38 +130,38 @@
 
     /* -- SIDEBAR ---------------------------------------------- */
     .sidebar {
-      width: 220px; flex-shrink: 0;
-      background: #ffffff;
-      border-right: 1px solid var(--border-light);
+      width: 200px; flex-shrink: 0;
+      background: #0d0d0d;
+      border-right: 1px solid rgba(255,255,255,0.06);
       display: flex; flex-direction: column;
       position: sticky; top: 49px;
       height: calc(100vh - 49px);
-      overflow-y: auto; padding: 14px 10px 16px;
+      overflow-y: auto; padding: 14px 8px 16px;
     }
 
     .nav-section-lbl {
       font-family: var(--font-mono);
-      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: #9CA3AF;
-      padding: 0 8px; margin-bottom: 4px; margin-top: 14px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.28);
+      padding: 0 8px; margin-bottom: 4px; margin-top: 16px;
     }
     .nav-section-lbl:first-child { margin-top: 0; }
 
     .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 12px; border-radius: var(--r-xs);
-      font-size: 12px; font-weight: 600; color: var(--text-muted);
-      cursor: pointer; text-decoration: none; margin-bottom: 2px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: 6px;
+      font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.45);
+      cursor: pointer; text-decoration: none; margin-bottom: 1px;
       transition: all 0.12s; border: none; background: transparent;
       width: 100%; text-align: left; font-family: var(--font-body);
     }
-    .nav-item:hover { background: #f5f5f5; color: #374151; }
-    .nav-item.active { background: var(--red-dim); color: var(--red-bright); font-weight: 700; }
-    .nav-item.active:hover { background: var(--red-dim); }
-    .nav-icon { width: 17px; height: 17px; flex-shrink: 0; }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+    .nav-item.active { background: rgba(193,18,31,0.18); color: var(--red-bright); font-weight: 700; }
+    .nav-item.active:hover { background: rgba(193,18,31,0.22); }
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; }
     .nav-badge {
       margin-left: auto; font-family: var(--font-mono);
-      font-size: 12px; font-weight: 700;
+      font-size: 10px; font-weight: 700;
       background: var(--red-bright); color: white;
       padding: 1px 6px; border-radius: 999px;
     }
@@ -171,9 +171,9 @@
     .status-pill {
       display: flex; align-items: center; gap: 7px;
       padding: 8px 11px;
-      background: var(--green-bg);
-      border: 1px solid rgba(74,222,128,0.20);
-      border-radius: var(--r-xs);
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.18);
+      border-radius: 6px;
     }
     .status-dot-pulse {
       width: 6px; height: 6px; border-radius: 50%;
@@ -184,7 +184,7 @@
       0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}
       50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}
     }
-    .status-txt { font-size: 12px; font-weight: 600; color: var(--green); }
+    .status-txt { font-size: 11px; font-weight: 600; color: var(--green); }
 
     /* -- MAIN ------------------------------------------------- */
     .main { flex: 1; min-width: 0; overflow-y: auto; background: #f8f8f8; }
@@ -192,111 +192,59 @@
     .page { display: none; }
     .page.active { display: block; }
 
-    /* -- HERO BAND - gradient matching sidepanel score section -- */
-    .page-hero-band {
-      background: linear-gradient(135deg, rgba(189,108,108,0.85) 0%, #0d0d0d 100%);
-      padding: 18px 24px 20px;
-      box-shadow: 0 4px 16px rgba(193,18,31,0.18);
+    /* -- OVERVIEW HEADER ---------------------------------------- */
+    .overview-header {
+      padding: 24px 24px 0;
     }
+    .page-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: #111111; margin-bottom: 2px; }
+    .page-sub { font-size: 14px; color: #6B7280; font-weight: 500; margin-bottom: 22px; }
 
-    .mono-label {
-      font-family: var(--font-mono);
-      font-size: 12px; letter-spacing: 1.5px;
-      text-transform: uppercase; color: rgba(255,255,255,0.7);
+    /* -- STAT MINI CARDS --------------------------------------- */
+    .overview-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 24px;
       margin-bottom: 10px;
     }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: 22px; color: #ffffff; line-height: 1.15;
-      margin-bottom: 14px;
-    }
-
-    .hero-stat-grid {
+    .overview-grid-4 {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background: rgba(0,0,0,0.18);
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.18);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 24px;
+      margin-bottom: 0;
     }
 
-    .hero-stat-box {
-      background: #F9F9F9;
-      padding: 14px 16px;
-      transition: background 0.18s;
+    .stat-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .stat-lbl { font-family: var(--font-body); font-size:13px; font-weight:600; color:#374151; }
+    .stat-icon { width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; }
+    .stat-val { font-family: var(--font-mono); font-size:28px; font-weight:700; letter-spacing:-1.5px; line-height:1; margin-bottom:2px; color:#111111; }
+    .stat-meta { font-family: var(--font-mono); font-size:11px; color:#6B7280; }
+    .stat-tag {
+      display:inline-flex; align-items:center;
+      font-family: var(--font-mono); font-size:11px; font-weight:700;
+      padding:2px 8px; border-radius:999px; margin-top:7px;
+      border:1px solid transparent;
     }
-    .hero-stat-box:hover { background: #fff; }
 
-    .hero-stat-box:nth-child(2) { border-radius: 0; }
-    .hero-stat-box:nth-child(3) { border-radius: 0 13px 0 0; }
-    .hero-stat-box:nth-child(4) { border-radius: 0 0 0 13px; }
-    .hero-stat-box:nth-child(5) { border-radius: 0; }
-    .hero-stat-box:nth-child(6) { border-radius: 0 0 13px 0; }
+    /* -- SCORE CARD -------------------------------------------- */
+    .score-inner { display:flex; align-items:center; gap:16px; }
+    .gauge { position:relative; flex-shrink:0; width:84px; height:84px; }
+    .gauge svg { width:84px; height:84px; transform:rotate(-90deg); }
+    .g-track { fill:none; stroke:rgba(0,0,0,0.08); stroke-width:6; }
+    .g-fill { fill:none; stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset 1.2s cubic-bezier(.34,1.2,.64,1), stroke .4s; }
+    .gauge-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .gauge-num { font-family:var(--font-mono); font-size:20px; font-weight:700; letter-spacing:-1px; line-height:1; color:#111111; }
+    .gauge-sub { font-family:var(--font-mono); font-size:10px; color:#6B7280; }
 
-    .hero-stat-box.hero-featured {
-      grid-column: span 3;
-      border-radius: 0 !important;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: linear-gradient(135deg, rgba(189,108,108,0.65) 0%, rgba(0,0,0,0.88) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-stat-box.hero-featured::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 80% 50%, rgba(189,108,108,0.12) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .hero-stat-box.hero-featured:hover {
-      background: linear-gradient(135deg, rgba(189,108,108,0.72) 0%, rgba(0,0,0,0.92) 100%);
-    }
-    .hero-featured-icon {
-      width: 36px; height: 36px;
-      border-radius: 9px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; position: relative; z-index: 1;
-    }
-    .hero-featured-body { position: relative; z-index: 1; }
+    .score-verdict { font-size:15px; font-weight:700; letter-spacing:-0.2px; margin-bottom:2px; color:#111111; }
+    .score-desc { font-size:13px; color:#6B7280; font-weight:500; margin-bottom:8px; }
 
-    .hero-stat-label {
-      font-family: var(--font-mono);
-      font-size: 11px; letter-spacing: 0.8px;
-      color: #999; text-transform: uppercase; margin-bottom: 4px;
-    }
-    .hero-stat-box.hero-featured .hero-stat-label {
-      color: rgba(255,255,255,0.42);
-    }
-    .hero-stat-val {
-      font-family: var(--font-display);
-      font-size: 30px; color: #0a0a0a; line-height: 1;
-      margin-bottom: 2px; letter-spacing: -1.5px;
-    }
-    .hero-stat-box.hero-featured .hero-stat-val {
-      font-size: 22px; color: #fff; letter-spacing: -0.5px;
-    }
-    .hero-stat-sub {
-      font-family: var(--font-mono);
-      font-size: 11px; color: #bbb; margin-top: 2px;
-    }
-    .hero-stat-box.hero-featured .hero-stat-sub {
-      color: rgba(255,255,255,0.35);
-    }
-    .hero-stat-accent {
-      display: inline-block;
-      font-size: 9px; font-family: var(--font-mono);
-      letter-spacing: 1px; text-transform: uppercase;
-      color: #E63946;
-      border: 1px solid rgba(230,57,70,0.3);
-      padding: 2px 7px; border-radius: 4px; margin-top: 8px;
-    }
+    .sb-row { display:flex; align-items:center; gap:7px; margin-bottom:4px; }
+    .sb-lbl { font-family:var(--font-mono); font-size:11px; color:#6B7280; width:58px; text-transform:uppercase; letter-spacing:0.5px; }
+    .sb-track { flex:1; height:3px; background:rgba(0,0,0,0.08); border-radius:2px; overflow:hidden; }
+    .sb-fill { height:100%; border-radius:2px; transition:width 1s ease; }
+    .sb-cnt { font-family:var(--font-mono); font-size:11px; font-weight:700; color:#6B7280; width:16px; text-align:right; }
 
     /* -- SECTION LABEL ---------------------------------------- */
     .sec-lbl {
@@ -564,6 +512,31 @@
     .score-verdict-label { font-size:15px; font-weight:700; }
     .score-verdict-desc { font-size:12px; font-weight:500; margin-top:1px; }
 
+    /* -- PAGE HERO BAND --------------------------------------- */
+    .page-hero-band {
+      padding: 28px 28px 24px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      background: #ffffff;
+      margin-bottom: 0;
+    }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      margin-bottom: 6px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      color: #111111;
+      line-height: 1.2;
+    }
+
     /* -- EMPTY ------------------------------------------------ */
     .empty-state { text-align:center; padding:24px; color:#6B7280; }
     .empty-icon  { font-size:20px; margin-bottom:6px; }
@@ -633,7 +606,7 @@
 
     <div class="nav-section-lbl">System</div>
     <a class="nav-item" href="../settings/settings.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon" width="17" height="17"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       Settings
     </a>
 
@@ -644,86 +617,99 @@
     <!-- ══ OVERVIEW ══════════════════════════════════════════ -->
     <div class="page active" id="page-overview">
 
-      <!-- Gradient hero band - feat-stat style -->
-      <div class="page-hero-band">
-        <div class="mono-label">Session Total</div>
-        <div class="hero-stat-grid">
+      <!-- Clean Overview Header + Stat Cards -->
+      <div class="overview-header">
+        <div class="page-title">Security Overview</div>
+        <div class="page-sub">Real-time protection · current session</div>
+      </div>
 
-          <!-- Featured dark strip -->
-          <div class="hero-stat-box hero-featured">
-            <div class="hero-featured-icon">
-              <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
-                <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
-              </svg>
+      <div class="overview-grid-5">
+        <!-- hidden elements to keep JS working -->
+        <span id="dash-score" style="display:none"></span>
+        <span id="dash-gauge-arc" style="display:none"></span>
+        <span id="dash-score-label" style="display:none"></span>
+        <span id="dash-score-verdict" style="display:none"></span>
+        <div id="dash-score-bar" style="display:none"></div>
+        <span id="sv-t" style="display:none"></span>
+        <span id="sb-c" style="display:none"></span>
+        <span id="sv-c" style="display:none"></span>
+        <span id="sb-m" style="display:none"></span>
+        <span id="sv-m" style="display:none"></span>
+
+        <!-- Cookie Trackers -->
+        <div class="card">
+          <div class="stat-hd">
+            <span class="stat-lbl">Cookie Trackers</span>
+            <div class="stat-icon" style="background:var(--orange-bg)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/></svg>
             </div>
-            <div class="hero-featured-body">
-              <div class="hero-stat-val" style="font-size:18px;letter-spacing:-0.5px;">Quick Overall Overview</div>
-              <div class="hero-stat-sub" style="margin-top:5px;">Your session stats at a glance</div>
+          </div>
+          <div class="stat-val" style="color:var(--orange)" id="dash-cookie-trackers">0</div>
+          <div class="stat-meta">session total</div>
+
+        </div>
+
+        <!-- Tracker Scripts -->
+        <div class="card">
+          <div class="stat-hd">
+            <span class="stat-lbl">Tracker Scripts</span>
+            <div class="stat-icon" style="background:var(--orange-bg)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="8"/></svg>
             </div>
           </div>
+          <div class="stat-val" style="color:var(--orange)" id="dash-tracker-scripts">0</div>
+          <div class="stat-meta">session total</div>
 
-          <div class="hero-stat-box">
-            <div class="hero-stat-val" id="dash-cookie-trackers">0</div>
-            <div class="hero-stat-label">Cookie Trackers</div>
-            <div class="hero-stat-sub">session total</div>
+        </div>
+
+        <!-- Dark Patterns -->
+        <div class="card">
+          <div class="stat-hd">
+            <span class="stat-lbl">Dark Patterns</span>
+            <div class="stat-icon" style="background:var(--orange-bg)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="M12 16h.01"/><path d="M12 8v4"/><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86"/></svg>
+            </div>
           </div>
+          <div class="stat-val" style="color:var(--orange)" id="dash-dark-patterns">0</div>
+          <div class="stat-meta">all time</div>
 
-          <div class="hero-stat-box">
-            <div class="hero-stat-val" id="dash-tracker-scripts">0</div>
-            <div class="hero-stat-label">Tracker Scripts</div>
-            <div class="hero-stat-sub">session total</div>
+        </div>
+
+        <!-- Threats Blocked -->
+        <div class="card">
+          <div class="stat-hd">
+            <span class="stat-lbl">Threats Blocked</span>
+            <div class="stat-icon" style="background:var(--orange-bg)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="m2 2 20 20"/><path d="M5 5.4A14.37 14.37 0 0 0 3 11c1.26 5.16 5.84 9 9 10 1.81-.49 3.62-1.6 5.16-3.06"/><path d="M10.43 4.68A3.85 3.85 0 0 1 12 4.5c3.16 1 7.74 4.84 9 10a14.78 14.78 0 0 1-.51 3.31"/></svg>
+            </div>
           </div>
-
-          <div class="hero-stat-box">
-            <div class="hero-stat-val" id="dash-dark-patterns">0</div>
-            <div class="hero-stat-label">Dark Patterns</div>
-            <div class="hero-stat-sub">all time</div>
-            <span class="hero-stat-accent">Detected</span>
-          </div>
-
-          <div class="hero-stat-box">
-            <div class="hero-stat-val" id="dash-links-hero">0</div>
-            <div class="hero-stat-label">Links Checked</div>
-            <div class="hero-stat-sub">session total</div>
-          </div>
-
-          <div class="hero-stat-box">
-            <div class="hero-stat-val" id="dash-downloads-blocked">0</div>
-            <div class="hero-stat-label">Downloads Blocked</div>
-            <div class="hero-stat-sub">all time</div>
-            <span class="hero-stat-accent">Blocked</span>
-          </div>
-
+          <div class="stat-val" style="color:var(--orange)" id="dash-blocked">0</div>
+          <div class="stat-meta">all time</div>
         </div>
       </div>
 
-      <div class="sec-lbl">Breakdown</div>
-      <div class="content-pad">
-        <div class="g12">
-          <div class="card">
-            <div class="card-title">Top Tracking Domains</div>
-            <div class="card-sub">Most active this session</div>
-            <div id="domain-list">
-              <div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4"><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="8"/></svg></div><div class="empty-text">No data yet - browse some sites</div></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">Distribution</div>
-            <div class="card-sub">By threat type</div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 0;">
-              <div style="position:relative;width:160px;height:160px;flex-shrink:0">
-                <canvas id="donut-chart"></canvas>
-                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
-                  <span style="font-family:var(--font-display);font-size:28px;color:#111111" id="donut-total">0</span>
-                  <span style="font-family:var(--font-mono);font-size:12px;color:#6B7280">total</span>
-                </div>
-              </div>
-              <div id="donut-legend" style="width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;"></div>
-            </div>
-          </div>
+      <!-- Secondary stats row -->
+      <div class="overview-grid-4" style="margin-top:10px;grid-template-columns:repeat(3,1fr)">
+        <span id="dash-https" style="display:none"></span>
+        <div class="card" style="padding:13px 16px">
+          <div class="stat-hd" style="margin-bottom:5px"><span class="stat-lbl">Links Checked</span><div class="stat-icon" style="background:var(--orange-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div></div>
+          <div class="stat-val" style="font-size:20px;color:var(--orange)" id="dash-links">0</div>
+          <div class="stat-meta">session total</div>
         </div>
+        <div class="card" style="padding:13px 16px">
+          <div class="stat-hd" style="margin-bottom:5px"><span class="stat-lbl">Downloads Scanned</span><div class="stat-icon" style="background:var(--orange-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></div></div>
+          <div class="stat-val" style="font-size:20px;color:var(--orange)" id="dash-downloads">0</div>
+          <div class="stat-meta">all time</div>
+        </div>
+        <div class="card" style="padding:13px 16px">
+          <div class="stat-hd" style="margin-bottom:5px"><span class="stat-lbl">Mixed Content</span><div class="stat-icon" style="background:var(--orange-bg)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--orange)"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div></div>
+          <div class="stat-val" style="font-size:20px;color:var(--orange)" id="dash-mixed">0</div>
+          <div class="stat-meta">session total</div>
+        </div>
+      </div>
 
-        <div class="sec-lbl sec-lbl-inner">Activity</div>
+      <div class="sec-lbl">Activity</div>
+      <div class="content-pad">
         <div class="g21">
           <div class="card">
             <div class="card-title">24-Hour Timeline</div>
@@ -750,6 +736,31 @@
                 <div class="hm-lc" style="background:rgba(193,18,31,1)"></div>
               </div>
               <span>High</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-lbl sec-lbl-inner">Breakdown</div>
+        <div class="g12">
+          <div class="card">
+            <div class="card-title">Top Tracking Domains</div>
+            <div class="card-sub">Most active this session</div>
+            <div id="domain-list">
+              <div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4"><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="8"/></svg></div><div class="empty-text">No data yet - browse some sites</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Distribution</div>
+            <div class="card-sub">By threat type</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 0;">
+              <div style="position:relative;width:160px;height:160px;flex-shrink:0">
+                <canvas id="donut-chart"></canvas>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
+                  <span style="font-family:var(--font-display);font-size:28px;color:#111111" id="donut-total">0</span>
+                  <span style="font-family:var(--font-mono);font-size:12px;color:#6B7280">total</span>
+                </div>
+              </div>
+              <div id="donut-legend" style="width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;"></div>
             </div>
           </div>
         </div>
@@ -936,6 +947,7 @@
   </div><!-- /.main -->
 </div><!-- /.layout -->
 
+
 <script src="../../assets/js/chart.umd.min.js"></script>
 <script src="../../utils/helpers.js"></script>
 <script src="../../utils/auth.js"></script>
@@ -944,5 +956,6 @@
 <script src="historyView.js"></script>
 <script src="scoreHistory.js"></script>
 <script src="dashboard.js"></script>
+<script src="../../utils/auth-modal.js"></script>
 </body>
 </html>

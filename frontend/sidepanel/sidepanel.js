@@ -381,9 +381,7 @@ async function initProfileBtn() {
     btn.title = user.email;
   }
 
-  btn.addEventListener("click", () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL("pages/settings/settings.html") });
-  });
+  // Click is handled by the inline auth modal script in sidepanel.html
 
   // Keep dot in sync if user logs in/out from settings while panel is open
   chrome.storage.onChanged.addListener((changes, area) => {

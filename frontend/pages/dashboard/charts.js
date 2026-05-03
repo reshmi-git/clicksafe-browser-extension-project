@@ -113,7 +113,7 @@ function renderDonut(data, canvasId, legendId, totalId) {
 
   const labels = ['Cookie Trackers','Tracker Scripts','Mixed Content','Dark Patterns','Links Blocked'];
   const values = [cookieTrackers,trackerScripts,mixedContent,darkPatterns,linksBlocked];
-  const colors = ['#67000d','#a50f15','#cb181d','#ef3b2c','#fc8d59'];
+  const colors = ['#E63946','#FF9600','#a78bfa','#38bdf8','#4ade80'];
 
   const canvasEl = document.getElementById(canvasId);
   if (!canvasEl) return;

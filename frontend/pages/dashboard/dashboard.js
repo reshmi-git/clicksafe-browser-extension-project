@@ -183,9 +183,7 @@ function renderOverview(data) {
   setText('dash-links',            linksChecked);
   setText('dash-dark-patterns',    darkPatterns);
   setText('dash-downloads',        downloads);
-  setText('dash-downloads-blocked',downloadsBlocked);
-  setText('dash-https',            httpsRedirects);
-  setText('dash-links-hero',       linksChecked);
+  setText('dash-blocked',          blocked);
 
   // ── Fix 3: Score card uses real active tab, not the highest-numbered tabUrl_ key.
   // Query the actual active tab in the current window, then read its per-tab
@@ -234,36 +232,8 @@ function renderOverview(data) {
 // Parameter mapping: cookieTrackers→trackingCookies, trackerScripts→trackers
 
 function renderGauge(score, trackers, cookies, mixed) {
-  const arc     = document.getElementById('dash-gauge-arc');
-  const num     = document.getElementById('dash-score');
-  const label   = document.getElementById('dash-score-label');
-  const verdict = document.getElementById('dash-score-verdict');
-  const bar     = document.getElementById('dash-score-bar');
-
-  let color, lbl, desc;
-  if (score >= 80)      { color='#16a34a'; lbl='Safe';          desc='Your browsing looks clean!'; }
-  else if (score >= 50) { color='#C1121F'; lbl='Moderate Risk'; desc='Some trackers detected.'; }
-  else                  { color='#dc2626'; lbl='High Risk';      desc='Significant threats found.'; }
-
-  if (arc) { arc.style.strokeDashoffset = CIRCUMFERENCE * (1-score/100); arc.style.stroke = color; }
-  if (num)     { num.textContent=score; num.style.color=color; }
-  if (label)   { label.textContent=lbl; label.style.color=color; }
-  if (verdict) verdict.textContent=desc;
-  // bar (dash-score-bar) shows tracker proportion — set below with sbt
-
-  const max = Math.max(trackers, cookies, mixed, 1);
-  const svt = document.getElementById('sv-t');
-  const svc = document.getElementById('sv-c');
-  const svm = document.getElementById('sv-m');
-  const sbt = document.getElementById('dash-score-bar');
-  const sbc = document.getElementById('sb-c');
-  const sbm = document.getElementById('sb-m');
-  if (svt) svt.textContent = trackers;
-  if (svc) svc.textContent = cookies;
-  if (svm) svm.textContent = mixed;
-  if (sbt) sbt.style.width = (trackers/max*100)+'%';
-  if (sbc) sbc.style.width = (cookies/max*100)+'%';
-  if (sbm) sbm.style.width = (mixed/max*100)+'%';
+  // Score card UI removed — nothing to render visually.
+  // Function kept so callers don't break.
 }
 
 // ── Top Domains ───────────────────────────────────────────────
@@ -297,7 +267,7 @@ function renderTopDomains(data, containerId) {
     return;
   }
   const max = sorted[0][1];
-  const colors = ['#C1121F','#8B0000','#9B1C1C','#7B0D1E','#E5383B','#A4161A','#BA181B','#660708','#D00000','#6A0000'];
+  const colors = ['#E63946','#FF9600','#a78bfa','#38bdf8','#4ade80','#f472b6','#fb923c','#34d399','#60a5fa','#facc15'];
   container.innerHTML = sorted.map(([domain, count], i) => `
     <div class="domain-row">
       <div class="domain-name" title="${esc(domain)}">${esc(domain)}</div>
@@ -520,9 +490,7 @@ async function initProfileBtn() {
     btn.title = user.email;
   }
 
-  btn.addEventListener('click', () => {
-    window.location.href = '../settings/settings.html';
-  });
+  // Click is handled by the inline auth modal script in dashboard.html
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local' || !('authToken' in changes)) return;
