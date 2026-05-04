@@ -247,9 +247,24 @@
 
       <div class="inst-section" id="step1">
         <div class="step-label">Step 01</div>
-        <h2>Download the source</h2>
-        <p>Go to the GitHub repo and download the project as a ZIP file. Extract it anywhere on your computer.</p>
-        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex; font-size:13px; padding:10px 18px; margin-top:12px;">View on GitHub</a>
+        <h2>Download the extension</h2>
+        <p>Download the ClickSafe extension ZIP. Then extract it anywhere on your computer — you'll point Chrome to the extracted folder in Step 3.</p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; align-items:center;">
+          <a href="clicksafe-extension.zip" download="clicksafe-extension.zip" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; font-size:13px; padding:11px 20px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download clicksafe-extension.zip
+          </a>
+          <a href="INSTALL_README.md" download="INSTALL_README.md" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--text-muted); text-decoration:none; padding:11px 16px; border:1px solid var(--border-light); border-radius:8px; font-family:var(--font-body); font-weight:500; transition:color 0.15s, border-color 0.15s;" onmouseover="this.style.color='var(--text-dark)';this.style.borderColor='#bbb'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border-light)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            README (install guide)
+          </a>
+        </div>
+
+        <div style="margin-top:20px; padding:14px 18px; background:#f8f8f8; border:1px solid var(--border-light); border-radius:8px; display:flex; gap:10px; align-items:flex-start;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p style="margin:0; font-size:13px; color:#6b7280; line-height:1.6;">After downloading, <strong>extract the ZIP</strong> to a folder you won't move or delete. Chrome needs to reach the <code style="font-family:var(--font-mono);font-size:11.5px;background:#eeeff1;border-radius:3px;padding:1px 5px;">frontend/</code> folder from that location each time the browser starts.</p>
+        </div>
       </div>
 
       <div class="inst-section" id="step2">
