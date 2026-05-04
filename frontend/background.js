@@ -24,7 +24,7 @@ importScripts(
 // Google API key never touches the client.  Replace the placeholder below
 // with your actual Render service URL once you have deployed the backend
 // (see /backend/README.md for deployment steps).
-const BACKEND_URL = 'https://clicksafe-backend.onrender.com';
+const BACKEND_URL = 'https://clicksafe-browser-extension-project.onrender.com';
 // SB prefix refresh is driven by chrome.alarms (30-min period) instead of
 // setInterval, because service workers can be suspended between events which
 // would silently kill a setInterval timer.
