@@ -8,7 +8,24 @@
 //  the service worker, or the constant below for pages).
 // ============================================================
 
-const AUTH_BACKEND_URL = 'https://clicksafe-backend.onrender.com';
+// ── Backend URL — auto-detects local dev vs production ────────────────────────
+// When the extension is loaded unpacked (developer mode), the manifest has no
+// update_url. In production (store install) update_url is always present.
+// For now (pre-store), ALL installs are local, so we default to localhost.
+// Once deployed to Render, this will automatically switch to the prod URL.
+const PROD_BACKEND_URL  = 'https://clicksafe-browser-extension-project.onrender.com';
+const LOCAL_BACKEND_URL = 'http://localhost:3000';
+
+function resolveBackendUrl() {
+  try {
+    // update_url is injected by the store during packaging — present = prod
+    const manifest = chrome.runtime.getManifest();
+    if (manifest.update_url) return PROD_BACKEND_URL;
+  } catch (_) {}
+  return LOCAL_BACKEND_URL;
+}
+
+const AUTH_BACKEND_URL = resolveBackendUrl();
 
 // ── Token storage ─────────────────────────────────────────────────────────────
 
