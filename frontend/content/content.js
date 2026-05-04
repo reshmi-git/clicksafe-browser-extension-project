@@ -237,6 +237,60 @@ function debounce(fn, delay) {
   };
 }
 
+// ── Hover tooltip for harmful links ──────────────────────────
+// Shows a small red warning badge on the link element itself when
+// it is confirmed dangerous, so users see a warning before clicking.
+function attachHarmfulTooltip(linkEl, threat) {
+  // Don't attach twice
+  if (linkEl._clicksafeTooltip) return;
+
+  const tip = document.createElement("div");
+  tip.setAttribute("data-clicksafe-tip", "1");
+  tip.style.cssText = [
+    "position:fixed",
+    "z-index:2147483646",
+    "background:#dc2626",
+    "color:#fff",
+    "font:bold 12px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif",
+    "padding:5px 10px",
+    "border-radius:6px",
+    "box-shadow:0 4px 12px rgba(0,0,0,0.35)",
+    "pointer-events:none",
+    "opacity:0",
+    "transition:opacity 0.15s",
+    "max-width:280px",
+    "word-break:break-word",
+    "display:flex",
+    "align-items:center",
+    "gap:6px",
+  ].join(";");
+  tip.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Harmful link — ${threat || "threat detected"}`;
+  document.body.appendChild(tip);
+  linkEl._clicksafeTooltip = tip;
+
+  // Add a subtle red underline to the link itself so it's identifiable
+  linkEl.style.setProperty("outline", "2px solid #dc2626", "important");
+  linkEl.style.setProperty("outline-offset", "1px", "important");
+
+  function positionTip(e) {
+    const x = e.clientX + 12;
+    const y = e.clientY + 16;
+    const maxX = window.innerWidth  - tip.offsetWidth  - 8;
+    const maxY = window.innerHeight - tip.offsetHeight - 8;
+    tip.style.left = Math.min(x, maxX) + "px";
+    tip.style.top  = Math.max(8, Math.min(y, maxY)) + "px";
+  }
+
+  linkEl.addEventListener("mouseenter", function(e) {
+    tip.style.opacity = "1";
+    positionTip(e);
+  });
+  linkEl.addEventListener("mousemove", positionTip);
+  linkEl.addEventListener("mouseleave", function() {
+    tip.style.opacity = "0";
+  });
+}
+
 function handleLinkHover(url) {
   if (!url || url.startsWith("javascript:") || url.startsWith("#") || url.startsWith("mailto:")) return;
   if (whitelistedSites.includes(window.location.hostname)) return;
@@ -252,7 +306,15 @@ function handleLinkHover(url) {
     if (response && !response.safe) {
       checkedUrls.set(url, false);
       markBackendOnline();
-      showWarningModal({ type: "link", url, threat: response.threat });
+      // Attach hover tooltip to the currently hovered link
+      if (_hoveredLinkEl && _hoveredLinkEl.href === url) {
+        attachHarmfulTooltip(_hoveredLinkEl, response.threat);
+      }
+      // Also attach to all other links with the same URL on this page
+      document.querySelectorAll("a[href]").forEach(el => {
+        if (el.href === url) attachHarmfulTooltip(el, response.threat);
+      });
+      // The modal still fires on click via background.js — tooltip is extra warning on hover
     } else if (response) {
       if (response.unavailable) {
         // Backend is down — activate cooldown, don't cache this URL
@@ -268,9 +330,13 @@ function handleLinkHover(url) {
 
 const debouncedHover = debounce(handleLinkHover, 300);
 
+// Track the currently hovered link element so attachHarmfulTooltip can target it
+let _hoveredLinkEl = null;
+
 document.addEventListener("mouseover", function (e) {
   const link = e.target.closest("a[href]");
   if (link) {
+    _hoveredLinkEl = link;
     debouncedHover(link.href);
   }
 });
