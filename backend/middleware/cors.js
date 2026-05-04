@@ -9,6 +9,15 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 module.exports = function (req, res, next) {
+  // /api/health is a public status endpoint — no Origin restriction.
+  // The extension sidepanel fetches it directly (no chrome-extension Origin
+  // header in that context), so blocking it causes the OFFLINE badge even
+  // when the backend is perfectly healthy.
+  if (req.path === '/api/health') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    return next();
+  }
+
   const origin = req.headers.origin;
 
   const allowed =
