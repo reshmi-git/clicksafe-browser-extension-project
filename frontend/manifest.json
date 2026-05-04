@@ -57,7 +57,8 @@
   },
   "host_permissions": [
     "<all_urls>",
-    "https://*.onrender.com/"
+    "https://*.onrender.com/",
+    "http://localhost:3000/"
   ],
   "web_accessible_resources": [
     {
