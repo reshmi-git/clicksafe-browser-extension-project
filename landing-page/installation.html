@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Install ClickSafe in under 60 seconds. Step-by-step guide to get the extension running on Chrome or Edge and start browsing safely." />
+  <meta name="description" content="How to install ClickSafe on your browser." />
   <title>Installation — ClickSafe</title>
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -13,195 +13,39 @@
   <style>
     body { background: #ffffff; }
 
-    /* ── HERO ── */
     .inst-hero {
-      padding: 110px 0 72px;
+      padding: 80px 0 56px;
       background: #f8f8f8;
       border-bottom: 1px solid var(--border-light);
-      position: relative;
-      overflow: hidden;
     }
-    .inst-hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
-      background-size: 24px 24px;
-      mask-image: radial-gradient(ellipse 70% 80% at 85% 50%, black 20%, transparent 80%);
-      -webkit-mask-image: radial-gradient(ellipse 70% 80% at 85% 50%, black 20%, transparent 80%);
-      pointer-events: none;
-    }
-    .inst-hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 64px;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
+    .inst-hero-inner { max-width: 620px; }
     .inst-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .inst-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 20px;
-      height: 1px;
-      background: var(--red);
-    }
-    .inst-hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 4.5vw, 54px);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -1px;
-      color: var(--text-dark);
-      margin-bottom: 18px;
-    }
-    .inst-hero h1 em { font-style: italic; color: var(--red-bright); }
-    .inst-hero-desc {
-      font-size: 16px;
-      color: var(--text-muted);
-      line-height: 1.75;
-      max-width: 460px;
-      margin-bottom: 32px;
-    }
-    .inst-hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .inst-meta-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-muted);
-      background: #fff;
-      border: 1px solid var(--border-light);
-      padding: 5px 10px;
-      border-radius: 20px;
-    }
-    .inst-meta-chip svg { color: var(--red); }
-
-    /* Hero card — browser mockup with install steps */
-    .inst-hero-card {
-      background: #fff;
-      border: 1px solid var(--border-light);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.10);
-    }
-    .inst-card-bar {
-      background: #f0f0f0;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid var(--border-light);
-    }
-    .inst-card-dots { display: flex; gap: 5px; }
-    .inst-card-dots span {
-      width: 10px; height: 10px; border-radius: 50%;
-    }
-    .d1 { background: #FF5F57; }
-    .d2 { background: #FFBD2E; }
-    .d3 { background: #28C840; }
-    .inst-card-url {
-      flex: 1;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: #999;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 4px;
-      padding: 4px 10px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .inst-card-body { padding: 22px; }
-
-    .inst-card-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-    }
-    .inst-card-ext {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border: 1px solid var(--border-light);
-      border-radius: 10px;
-      margin-bottom: 10px;
-      transition: border-color 0.2s;
-    }
-    .inst-card-ext:hover { border-color: rgba(230,57,70,0.3); }
-    .inst-ext-icon {
-      width: 38px; height: 38px;
-      background: rgba(230,57,70,0.08);
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .inst-ext-info { flex: 1; }
-    .inst-ext-info strong {
-      display: block;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+    .inst-hero h1 {
+      font-size: clamp(30px, 4.5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
       color: var(--text-dark);
-      margin-bottom: 2px;
-    }
-    .inst-ext-info span {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-    .inst-ext-btn {
-      background: var(--red-bright);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
+      margin-bottom: 16px;
       font-family: var(--font-body);
-      padding: 6px 12px;
-      cursor: pointer;
-      white-space: nowrap;
     }
-    .inst-card-badges {
-      display: flex;
-      gap: 6px;
-      margin-top: 12px;
+    .inst-hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 500px;
     }
-    .inst-badge {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding: 3px 8px;
-      border-radius: 20px;
-    }
-    .ib-green { background: rgba(34,197,94,0.1); color: #16a34a; }
-    .ib-gray  { background: rgba(0,0,0,0.06); color: #888; }
 
-    /* ── LAYOUT (sidebar + content) ── */
     .inst-layout {
       display: grid;
       grid-template-columns: 230px 1fr;
@@ -232,13 +76,11 @@
       gap: 1px;
     }
     .sidebar-link {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      display: block;
       font-size: 13.5px;
       font-weight: 500;
       color: var(--text-muted);
-      padding: 8px 0 8px 16px;
+      padding: 7px 0 7px 16px;
       border: none;
       background: none;
       text-align: left;
@@ -265,882 +107,190 @@
     .sidebar-link:hover { color: var(--text-dark); }
     .sidebar-link.active { color: var(--text-dark); font-weight: 600; }
     .sidebar-link.active::before { transform: translateY(-50%) scaleY(1); }
-    .sidebar-step-num {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--red);
-      min-width: 18px;
-    }
 
-    .sidebar-divider {
-      height: 1px;
-      background: var(--border-light);
-      margin: 16px 0;
-    }
-
-    .sidebar-time {
-      padding-left: 16px;
-    }
-    .sidebar-time-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-    .sidebar-time-val {
-      font-family: var(--font-mono);
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--red-bright);
-      letter-spacing: -1px;
-    }
-    .sidebar-time-unit {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
-    /* ── CONTENT AREA ── */
     .inst-content {
-      padding: 56px 0 56px 56px;
+      padding: 56px 0 96px 64px;
+      max-width: 720px;
     }
 
-    /* Section block */
-    .inst-block {
-      margin-bottom: 72px;
+    .inst-section {
+      padding-bottom: 56px;
+      margin-bottom: 56px;
+      border-bottom: 1px solid var(--border-light);
       scroll-margin-top: 100px;
     }
-    .inst-block-eyebrow {
+    .inst-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .step-label {
       font-family: var(--font-mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: var(--red);
       margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
-    .inst-block h2 {
-      font-family: var(--font-display);
-      font-size: clamp(24px, 2.5vw, 34px);
-      font-weight: 400;
+    .inst-section h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       color: var(--text-dark);
-      line-height: 1.15;
-      letter-spacing: -0.3px;
-      margin-bottom: 10px;
-    }
-    .inst-block h2 em { font-style: italic; color: var(--red-bright); }
-    .inst-block-sub {
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      max-width: 560px;
-      margin-bottom: 32px;
-    }
-
-    /* Step cards */
-    .steps-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: 1px solid var(--border-light);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .step-row {
-      display: grid;
-      grid-template-columns: 60px 1fr;
-      align-items: stretch;
-      border-bottom: 1px solid var(--border-light);
-      transition: background 0.2s;
-    }
-    .step-row:last-child { border-bottom: none; }
-    .step-row:hover { background: #fafafa; }
-    .step-row.step-active { background: #fff9f9; }
-
-    .step-num-col {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: 24px;
-      border-right: 1px solid var(--border-light);
-    }
-    .step-num-badge {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--red);
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      background: rgba(230,57,70,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .step-body { padding: 22px 24px; }
-    .step-body h3 {
+      margin-bottom: 14px;
       font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 6px;
     }
-    .step-body p {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin: 0;
+    .inst-section p {
+      font-size: 15.5px;
+      color: #374151;
+      line-height: 1.8;
+      margin-bottom: 12px;
+      font-family: var(--font-body);
     }
-    .step-body p + p { margin-top: 8px; }
+    .inst-section p:last-child { margin-bottom: 0; }
 
-    .step-detail {
-      margin-top: 12px;
-      padding: 12px 14px;
-      background: #f8f8f8;
-      border-radius: 8px;
-      border-left: 3px solid rgba(230,57,70,0.25);
-    }
-    .step-detail-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--red);
-      margin-bottom: 5px;
-    }
-    .step-detail p {
-      font-size: 13px !important;
-      color: #555 !important;
-      margin: 0 !important;
-    }
-
-    /* Code-style path */
     .inst-path {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      background: #f0f0f0;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 6px;
-      padding: 8px 12px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: #444;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 7px 12px;
+      color: #374151;
       margin-top: 10px;
     }
-    .inst-path svg { color: var(--red); flex-shrink: 0; }
 
-
-
-    /* ── USING SECTION ── */
-
-    /* Feature usage cards */
-    .usage-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .usage-card {
-      border: 1px solid var(--border-light);
-      border-radius: 14px;
-      padding: 22px;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .usage-card:hover {
-      border-color: rgba(230,57,70,0.25);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.07);
-      transform: translateY(-2px);
-    }
-    .usage-card-num {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 1.5px;
-      color: rgba(230,57,70,0.5);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .usage-card-icon {
-      width: 36px; height: 36px;
-      background: rgba(230,57,70,0.07);
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-    .usage-card h3 {
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 6px;
-    }
-    .usage-card p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.65;
-      margin: 0;
-    }
-    .usage-card-tag {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: rgba(230,57,70,0.5);
-      margin-top: 12px;
-    }
-
-    /* Dark usage card */
-    .usage-card.uc-dark {
-      background: #111;
-      border-color: rgba(255,255,255,0.06);
-      grid-column: 1 / -1;
-    }
-    .usage-card.uc-dark:hover {
-      border-color: rgba(230,57,70,0.3);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-    }
-    .usage-card.uc-dark h3 { color: #f2ebe1; }
-    .usage-card.uc-dark p { color: rgba(245,240,232,0.55); }
-    .usage-card.uc-dark .usage-card-num { color: rgba(230,57,70,0.6); }
-    .usage-card.uc-dark .usage-card-tag { color: rgba(230,57,70,0.4); }
-    .usage-card.uc-dark .usage-card-icon {
-      background: rgba(230,57,70,0.15);
-    }
-    .uc-dark-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 24px;
-    }
-    .uc-dark-item {}
-    .uc-dark-item-title {
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 700;
-      color: #f2ebe1;
-      margin-bottom: 4px;
-    }
-    .uc-dark-item p {
-      font-size: 12px !important;
-      color: rgba(245,240,232,0.5) !important;
-      line-height: 1.6 !important;
-    }
-
-    /* ── TROUBLESHOOT ── */
-    .trouble-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .trouble-item {
-      border: 1px solid var(--border-light);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .trouble-q {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 18px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-dark);
-      transition: color 0.15s;
-    }
-    .trouble-q:hover { color: var(--red-bright); }
-    .trouble-q[aria-expanded="true"] { color: var(--red-bright); }
-    .trouble-icon {
-      width: 24px; height: 24px;
-      background: rgba(230,57,70,0.08);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-right: 12px;
-    }
-    .trouble-arrow {
-      font-size: 16px;
-      color: var(--red);
-      transition: transform 0.25s;
-      flex-shrink: 0;
-    }
-    .trouble-q[aria-expanded="true"] .trouble-arrow { transform: rotate(90deg); }
-    .trouble-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 18px 0 54px;
-    }
-    .trouble-a.open { max-height: 200px; padding-bottom: 16px; }
-    .trouble-a p {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin: 0;
-    }
-
-    /* ── CTA STRIP ── */
     .inst-cta {
-      background: var(--dark);
-      border-radius: 18px;
-      padding: 36px 40px;
+      background: var(--text-dark);
+      border-radius: 12px;
+      padding: 36px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .inst-cta::before {
-      content: '';
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 260px; height: 260px;
-      background: radial-gradient(ellipse, rgba(230,57,70,0.2) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .inst-cta-left { position: relative; z-index: 1; }
-    .inst-cta-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: rgba(230,57,70,0.7);
-      margin-bottom: 8px;
+      margin-top: 8px;
     }
     .inst-cta h3 {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 400;
-      color: var(--text-light);
-      letter-spacing: -0.3px;
-      margin-bottom: 4px;
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      font-family: var(--font-body);
     }
-    .inst-cta h3 em { font-style: italic; color: var(--red-bright); }
     .inst-cta p {
-      font-size: 13.5px;
-      color: var(--text-light-muted);
-    }
-    .inst-cta-right { position: relative; z-index: 1; flex-shrink: 0; }
-
-    /* ── PROGRESS DOTS ── */
-    .inst-progress {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 32px;
-    }
-    .prog-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.12);
-      transition: background 0.2s, width 0.2s;
-    }
-    .prog-dot.done {
-      background: var(--red-bright);
-    }
-    .prog-dot.active {
-      width: 18px;
-      border-radius: 3px;
-      background: var(--red-bright);
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      margin: 0;
+      font-family: var(--font-body);
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .inst-layout { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+      .inst-layout { grid-template-columns: 1fr; padding: 0 20px; }
       .inst-sidebar { display: none; }
       .inst-content { padding: 40px 0; }
-      .inst-hero-inner { grid-template-columns: 1fr; }
-      .inst-hero-card { display: none; }
-      .usage-grid { grid-template-columns: 1fr; }
-      .uc-dark-inner { grid-template-columns: 1fr; }
-      .inst-cta { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <header class="navbar" id="navbar">
+  <header class="navbar scrolled" id="navbar">
     <div class="container nav-inner">
-      <a href="index.html" class="nav-logo">
+      <div class="nav-logo">
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-          <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/>
+          <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/>
         </svg>
         ClickSafe
-      </a>
+      </div>
       <nav class="nav-links">
+        <a href="index.html">Home</a>
         <a href="features.html">Features</a>
         <a href="how-it-works.html">How it Works</a>
-        <a href="installation.html" style="color: var(--red-bright);">Installation Setup</a>
+        <a href="installation.html" style="color: var(--red);">Installation Setup</a>
         <a href="about.html">About</a>
       </nav>
-      <a href="#get-extension" class="nav-cta">Add to Browser</a>
+      <a href="installation.html" class="nav-cta">Add to Browser</a>
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="inst-hero">
     <div class="container">
       <div class="inst-hero-inner">
-        <div class="reveal">
-          <div class="inst-eyebrow">Installation Guide</div>
-          <h1>Up and running<br>in under <em>60 seconds.</em></h1>
-          <p class="inst-hero-desc">
-            No account needed. No store required. Clone the repo, load it in
-            developer mode, and ClickSafe starts protecting every tab immediately.
-          </p>
-          <div class="inst-hero-meta">
-            <div class="inst-meta-chip">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              Free forever
-            </div>
-            <div class="inst-meta-chip">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              No sign-up required
-            </div>
-            <div class="inst-meta-chip">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              Chrome &amp; Edge (Dev Mode)
-            </div>
-          </div>
+        <div class="inst-eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Installation Setup
         </div>
-
-        <!-- Mock extension store card -->
-        <div class="inst-hero-card reveal reveal-delay">
-          <div class="inst-card-bar">
-            <div class="inst-card-dots">
-              <span class="d1"></span>
-              <span class="d2"></span>
-              <span class="d3"></span>
-            </div>
-            <div class="inst-card-url">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              chrome://extensions
-            </div>
-          </div>
-          <div class="inst-card-body">
-            <div class="inst-card-label">Developer Mode · Unpacked Extension</div>
-            <div class="inst-card-ext">
-              <div class="inst-ext-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/>
-                </svg>
-              </div>
-              <div class="inst-ext-info">
-                <strong>ClickSafe</strong>
-                <span>Open source &middot; Load unpacked</span>
-              </div>
-              <button class="inst-ext-btn">Load Unpacked</button>
-            </div>
-            <div class="inst-card-badges">
-              <span class="inst-badge ib-green">
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg>
-                Verified
-              </span>
-              <span class="inst-badge ib-gray">Open Source</span>
-              <span class="inst-badge ib-gray">MIT License</span>
-            </div>
-          </div>
-        </div>
+        <h1>Get ClickSafe running<br>in under a minute.</h1>
+        <p>ClickSafe isn't on the Chrome Web Store yet. Load it directly from the source — takes four steps.</p>
       </div>
     </div>
   </section>
 
-  <!-- SIDEBAR + CONTENT LAYOUT -->
-  <div style="border-bottom: 1px solid var(--border-light);">
-    <div class="inst-layout">
+  <div class="inst-layout">
 
-      <!-- SIDEBAR -->
-      <aside class="inst-sidebar">
-        <div class="inst-sidebar-inner">
-          <div class="sidebar-label">On this page</div>
-          <nav class="sidebar-nav" id="sidebar-nav">
-            <a href="#get-extension" class="sidebar-link active" data-section="get-extension">
-              <span class="sidebar-step-num">01</span> Get the Extension
-            </a>
-            <a href="#install-steps" class="sidebar-link" data-section="install-steps">
-              <span class="sidebar-step-num">02</span> Install it
-            </a>
-            <a href="#how-to-use" class="sidebar-link" data-section="how-to-use">
-              <span class="sidebar-step-num">03</span> How to Use
-            </a>
-            <a href="#pin-extension" class="sidebar-link" data-section="pin-extension">
-              <span class="sidebar-step-num">04</span> Pin &amp; Configure
-            </a>
-            <a href="#troubleshoot" class="sidebar-link" data-section="troubleshoot">
-              <span class="sidebar-step-num">—</span> Troubleshooting
-            </a>
-          </nav>
+    <aside class="inst-sidebar">
+      <div class="inst-sidebar-inner">
+        <div class="sidebar-label">Steps</div>
+        <nav class="sidebar-nav">
+          <a href="#step1" class="sidebar-link active">01 — Download</a>
+          <a href="#step2" class="sidebar-link">02 — Developer Mode</a>
+          <a href="#step3" class="sidebar-link">03 — Load Extension</a>
+          <a href="#step4" class="sidebar-link">04 — Confirm</a>
+        </nav>
+      </div>
+    </aside>
 
-          <div class="sidebar-divider"></div>
+    <main class="inst-content">
 
-          <div class="sidebar-time">
-            <div class="sidebar-time-label">Total setup time</div>
-            <div class="sidebar-time-val">&lt; 60s</div>
-            <div class="sidebar-time-unit">No account needed</div>
-          </div>
+      <div class="inst-section" id="step1">
+        <div class="step-label">Step 01</div>
+        <h2>Download the source</h2>
+        <p>Go to the GitHub repo and download the project as a ZIP file. Extract it anywhere on your computer.</p>
+        <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex; font-size:13px; padding:10px 18px; margin-top:12px;">View on GitHub</a>
+      </div>
+
+      <div class="inst-section" id="step2">
+        <div class="step-label">Step 02</div>
+        <h2>Enable Developer Mode</h2>
+        <p>Open Chrome and go to <code style="font-family:var(--font-mono);font-size:12.5px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:4px;padding:1px 6px;">chrome://extensions</code> in the address bar. Toggle on <strong>Developer mode</strong> using the switch in the top-right corner.</p>
+      </div>
+
+      <div class="inst-section" id="step3">
+        <div class="step-label">Step 03</div>
+        <h2>Load the extension</h2>
+        <p>Click <strong>Load unpacked</strong> — this button appears once Developer mode is on. Select the <strong>frontend</strong> folder from the extracted project.</p>
+        <div class="inst-path">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Load unpacked → select /frontend
         </div>
-      </aside>
+      </div>
 
-      <!-- MAIN CONTENT -->
-      <main class="inst-content">
+      <div class="inst-section" id="step4">
+        <div class="step-label">Step 04</div>
+        <h2>Confirm it's running</h2>
+        <p>The ClickSafe shield icon will appear in your Chrome toolbar. Click it to open the side panel — if you see your Privacy Score, you're protected.</p>
+        <p>If the icon is hidden, click the puzzle-piece menu in the toolbar and pin ClickSafe.</p>
+      </div>
 
-        <!-- ── STEP 1: GET THE EXTENSION ── -->
-        <section class="inst-block reveal" id="get-extension">
-          <div class="inst-block-eyebrow">
-            <span>Step 01</span>
-          </div>
-          <h2>Get the <em>extension</em></h2>
-          <p class="inst-block-sub">
-            ClickSafe isn&rsquo;t on the Chrome Web Store yet &mdash; but you can load it directly
-            from the GitHub repo in under a minute. No store required.
-          </p>
-
-          <div class="steps-grid">
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">1</div></div>
-              <div class="step-body">
-                <h3>Clone or download the repo</h3>
-                <p>Grab the source from GitHub. You only need the <strong>frontend/</strong> folder to run the extension &mdash; the rest is backend.</p>
-                <div style="margin-top: 14px;">
-                  <a href="https://github.com/reshmi-git/clicksafe-browser-extension-project" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex; font-size:13px; padding:10px 18px;">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                    View on GitHub
-                  </a>
-                </div>
-                <div class="inst-path" style="margin-top: 12px;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                  git clone https://github.com/reshmi-git/clicksafe-browser-extension-project
-                </div>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">2</div></div>
-              <div class="step-body">
-                <h3>Open the Extensions page in Chrome</h3>
-                <p>Paste <strong>chrome://extensions</strong> into your address bar and hit Enter. Then toggle on <strong>Developer mode</strong> using the switch in the top-right corner.</p>
-                <div class="inst-path">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  chrome://extensions &rarr; Developer mode &rarr; ON
-                </div>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">3</div></div>
-              <div class="step-body">
-                <h3>Load the unpacked extension</h3>
-                <p>Click <strong>Load unpacked</strong> (appears after enabling Developer mode) and select the <strong>frontend/</strong> folder from the cloned repo. ClickSafe will appear in your extensions list immediately.</p>
-                <div class="inst-path">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                  Load unpacked &rarr; select /frontend folder
-                </div>
-                <div class="step-detail">
-                  <div class="step-detail-label">Permissions explained</div>
-                  <p>ClickSafe requests access to read browsing activity and manage downloads. This is needed to scan links and intercept files before they hit disk. No data ever leaves your browser.</p>
-                </div>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">4</div></div>
-              <div class="step-body">
-                <h3>Confirm it&rsquo;s running</h3>
-                <p>You should see the ClickSafe card in chrome://extensions with a blue toggle switched on. The red shield icon will also appear in your toolbar &mdash; if it&rsquo;s hidden, click the puzzle-piece icon to find and pin it.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── STEP 2: INSTALL ── -->
-        <section class="inst-block reveal" id="install-steps">
-          <div class="inst-block-eyebrow">
-            <span>Step 02</span>
-          </div>
-          <h2>Verify the <em>install</em></h2>
-          <p class="inst-block-sub">
-            Once installed, take 10 seconds to make sure everything is running correctly before you start browsing.
-          </p>
-          <div class="steps-grid">
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">1</div></div>
-              <div class="step-body">
-                <h3>Check the toolbar icon</h3>
-                <p>Look for the red shield icon in your browser's toolbar (top-right area). If you don't see it, it may be hidden — click the puzzle piece icon to find and pin it.</p>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">2</div></div>
-              <div class="step-body">
-                <h3>Open the side panel</h3>
-                <p>Click the ClickSafe icon in the toolbar. A side panel slides open with your current page's <strong>Privacy Score</strong>, active trackers, and HTTPS status. If you see this, you're fully protected.</p>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">3</div></div>
-              <div class="step-body">
-                <h3>Navigate to any site</h3>
-                <p>Try going to any website. Watch the Privacy Score in the side panel update in real time as the page loads. Numbers dropping? That means trackers were found — and blocked.</p>
-                <div class="step-detail">
-                  <div class="step-detail-label">What a healthy score looks like</div>
-                  <p>A score of 80–100 means the page has no trackers, is served over HTTPS, and has no mixed content. Most major news sites score 40–65 due to advertising trackers.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── STEP 3: HOW TO USE ── -->
-        <section class="inst-block reveal" id="how-to-use">
-          <div class="inst-block-eyebrow">
-            <span>Step 03</span>
-          </div>
-          <h2>Using <em>ClickSafe</em></h2>
-          <p class="inst-block-sub">
-            ClickSafe works automatically — you don't need to do anything for most protections.
-            Here's what each part does and when it speaks up.
-          </p>
-
-          <!-- Dark banner: automatic protections -->
-          <div class="usage-card uc-dark reveal" style="margin-bottom: 14px;">
-            <div class="usage-card-num">Always-on · Zero config</div>
-            <div class="uc-dark-inner">
-              <div class="uc-dark-item">
-                <div style="width:32px;height:32px;background:rgba(230,57,70,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                </div>
-                <div class="uc-dark-item-title">HTTPS Upgrades</div>
-                <p>Every HTTP connection is silently upgraded. You'll never see an insecure site if a secure version exists.</p>
-              </div>
-              <div class="uc-dark-item">
-                <div style="width:32px;height:32px;background:rgba(230,57,70,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
-                </div>
-                <div class="uc-dark-item-title">Tracker Blocking</div>
-                <p>70k+ tracker domains blocked on every page load. The Privacy Score reflects how many were caught.</p>
-              </div>
-              <div class="uc-dark-item">
-                <div style="width:32px;height:32px;background:rgba(230,57,70,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </div>
-                <div class="uc-dark-item-title">Dark Patterns</div>
-                <p>Fake urgency timers, confirm-shaming, and pre-ticked boxes are highlighted inline on the page.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="usage-grid">
-            <div class="usage-card reveal">
-              <div class="usage-card-num">01</div>
-              <div class="usage-card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              </div>
-              <h3>Dangerous Link Warnings</h3>
-              <p>When you click a link that matches a known phishing or malware domain, ClickSafe intercepts the navigation and shows a warning page. You can still proceed — it's your choice.</p>
-              <div class="usage-card-tag">Triggered on click · SHA-256 local check</div>
-            </div>
-
-            <div class="usage-card reveal">
-              <div class="usage-card-num">02</div>
-              <div class="usage-card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              </div>
-              <h3>Download Interception</h3>
-              <p>Every file you download is scanned for malware signatures before it's written to disk. If a threat is detected, the download is blocked and you'll see an alert.</p>
-              <div class="usage-card-tag">Pre-disk · Fails closed on threat</div>
-            </div>
-
-            <div class="usage-card reveal">
-              <div class="usage-card-num">03</div>
-              <div class="usage-card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-              </div>
-              <h3>Privacy Dashboard</h3>
-              <p>Click the ClickSafe toolbar icon to open the side panel, then hit <strong>Full Dashboard</strong>. You'll see charts of trackers over time, company data profiles, and your full scan history.</p>
-              <div class="usage-card-tag">Toolbar icon → Full Dashboard</div>
-            </div>
-
-            <div class="usage-card reveal">
-              <div class="usage-card-num">04</div>
-              <div class="usage-card-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-              </div>
-              <h3>Site Whitelist</h3>
-              <p>Trust a site? Open the side panel and click <strong>Settings → Whitelist</strong>. Whitelisted domains skip tracker checks and won't be warned on. Useful for internal tools or trusted apps.</p>
-              <div class="usage-card-tag">Side panel → Settings</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── STEP 4: PIN & CONFIGURE ── -->
-        <section class="inst-block reveal" id="pin-extension">
-          <div class="inst-block-eyebrow">
-            <span>Step 04</span>
-          </div>
-          <h2>Pin &amp; <em>configure</em></h2>
-          <p class="inst-block-sub">
-            Get ClickSafe one click away and tune it to how you work.
-          </p>
-          <div class="steps-grid">
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">1</div></div>
-              <div class="step-body">
-                <h3>Pin the icon to your toolbar</h3>
-                <p>Click the <strong>puzzle piece</strong> icon in Chrome's toolbar to see all installed extensions. Find ClickSafe and click the <strong>pin</strong> icon next to it. The red shield will now always be visible.</p>
-                <div class="inst-path">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                  Toolbar → Puzzle piece → ClickSafe → Pin
-                </div>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">2</div></div>
-              <div class="step-body">
-                <h3>Open Settings</h3>
-                <p>Click the shield icon → Side panel opens → Click the <strong>gear icon</strong> in the top-right corner of the panel. This opens the full Settings page.</p>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-num-col"><div class="step-num-badge">3</div></div>
-              <div class="step-body">
-                <h3>Adjust your preferences</h3>
-                <p>From Settings you can toggle individual features on/off, manage your whitelist, adjust warning sensitivity, and optionally create an account to sync data across devices.</p>
-                <div class="step-detail">
-                  <div class="step-detail-label">Optional: Create an account</div>
-                  <p>An account lets you sync your whitelist, Privacy Score history, and settings between browsers. It's optional — ClickSafe works fully offline without one.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── TROUBLESHOOTING ── -->
-        <section class="inst-block reveal" id="troubleshoot">
-          <div class="inst-block-eyebrow">
-            <span>Troubleshooting</span>
-          </div>
-          <h2>Something not <em>working?</em></h2>
-          <p class="inst-block-sub">
-            Most issues clear up in under a minute. Try these first.
-          </p>
-
-          <div class="trouble-list">
-
-            <div class="trouble-item">
-              <button class="trouble-q" aria-expanded="false">
-                <div style="display:flex;align-items:center;flex:1;">
-                  <div class="trouble-icon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  </div>
-                  The shield icon isn't showing in my toolbar
-                </div>
-                <span class="trouble-arrow">›</span>
-              </button>
-              <div class="trouble-a">
-                <p>Click the puzzle-piece icon (Extensions menu) in Chrome's toolbar. Find ClickSafe in the list and click the pin icon to make it permanently visible. If ClickSafe isn't in the list at all, the install didn't complete — try reinstalling from the Web Store.</p>
-              </div>
-            </div>
-
-            <div class="trouble-item">
-              <button class="trouble-q" aria-expanded="false">
-                <div style="display:flex;align-items:center;flex:1;">
-                  <div class="trouble-icon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  </div>
-                  The side panel opens blank or won't load
-                </div>
-                <span class="trouble-arrow">›</span>
-              </button>
-              <div class="trouble-a">
-                <p>Try closing the side panel and reopening it by clicking the ClickSafe icon again. If it stays blank, go to chrome://extensions, find ClickSafe, click the reload button, then re-open the panel. This usually fixes loading issues after a browser update.</p>
-              </div>
-            </div>
-
-            <div class="trouble-item">
-              <button class="trouble-q" aria-expanded="false">
-                <div style="display:flex;align-items:center;flex:1;">
-                  <div class="trouble-icon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  </div>
-                  Privacy Score shows 0 or doesn't update
-                </div>
-                <span class="trouble-arrow">›</span>
-              </button>
-              <div class="trouble-a">
-                <p>The Privacy Score updates after the page fully loads. Try waiting a moment or doing a hard refresh (Ctrl+Shift+R). On pages with heavy JavaScript, scoring can take 1–2 seconds. If it consistently shows 0 on all sites, try disabling and re-enabling the extension in chrome://extensions.</p>
-              </div>
-            </div>
-
-            <div class="trouble-item">
-              <button class="trouble-q" aria-expanded="false">
-                <div style="display:flex;align-items:center;flex:1;">
-                  <div class="trouble-icon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  </div>
-                  A site I trust is being blocked or flagged
-                </div>
-                <span class="trouble-arrow">›</span>
-              </button>
-              <div class="trouble-a">
-                <p>Open the ClickSafe side panel on that site, go to Settings → Whitelist, and add the domain. Whitelisted sites skip all tracker checks and won't trigger warnings. You can remove them at any time from the same settings screen.</p>
-              </div>
-            </div>
-
-            <div class="trouble-item">
-              <button class="trouble-q" aria-expanded="false">
-                <div style="display:flex;align-items:center;flex:1;">
-                  <div class="trouble-icon">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  </div>
-                  The extension works in Chrome but not Edge
-                </div>
-                <span class="trouble-arrow">›</span>
-              </button>
-              <div class="trouble-a">
-                <p>In Edge, go to edge://extensions and make sure ClickSafe is toggled on. Edge may also require you to explicitly allow extensions from other stores — look for the "Allow extensions from other stores" banner in the extension page and enable it.</p>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- CTA STRIP -->
-        <div class="inst-cta reveal">
-          <div class="inst-cta-left">
-            <div class="inst-cta-eyebrow">You're all set</div>
-            <h3>Start browsing without <em>fear.</em></h3>
-            <p>ClickSafe is running. Every tab is now protected.</p>
-          </div>
-          <div class="inst-cta-right">
-            <a href="how-it-works.html" class="btn-primary" style="font-size:13px; padding:11px 20px;">
-              See how it works
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
+      <div class="inst-cta">
+        <div>
+          <h3>That's it. You're protected.</h3>
+          <p>ClickSafe runs automatically on every tab from here on.</p>
         </div>
+        <a href="how-it-works.html" class="btn-primary" style="white-space:nowrap; font-size:13px; padding:11px 20px;">See how it works</a>
+      </div>
 
-      </main>
-    </div>
+    </main>
   </div>
 
-  <footer class="footer" id="about">
+  <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
         <div class="nav-logo footer-logo">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#E63946"/></svg>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1L3 4.5V10c0 4 3.1 7.5 7 8.5 3.9-1 7-4.5 7-8.5V4.5L10 1z" fill="#bd6c6c"/></svg>
           ClickSafe
         </div>
         <p>Real-time browser security for everyone.</p>
@@ -1152,44 +302,29 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>&copy; 2026 ClickSafe.</p>
+      <p>&copy; 2026 ClickSafe. Built with care.</p>
     </div>
   </footer>
 
   <script src="script.js"></script>
   <script>
-
-    // ── Troubleshoot accordion ────────────────────────────────
-    document.querySelectorAll('.trouble-q').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        document.querySelectorAll('.trouble-q').forEach(b => {
-          b.setAttribute('aria-expanded', 'false');
-          b.nextElementSibling.classList.remove('open');
-        });
-        if (!isOpen) {
-          btn.setAttribute('aria-expanded', 'true');
-          btn.nextElementSibling.classList.add('open');
-        }
-      });
-    });
-
-    // ── Sidebar active link on scroll ─────────────────────────
-    const sections = document.querySelectorAll('.inst-block');
-    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-section]');
+    const sections = ['step1', 'step2', 'step3', 'step4'];
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const id = entry.target.id;
           sidebarLinks.forEach(link => {
-            link.classList.toggle('active', link.dataset.section === id);
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
           });
         }
       });
     }, { rootMargin: '-20% 0px -70% 0px' });
 
-    sections.forEach(s => observer.observe(s));
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
   </script>
 </body>
 </html>
