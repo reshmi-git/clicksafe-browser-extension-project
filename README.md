@@ -28,28 +28,27 @@ URLs are hashed and checked **locally first** using Google Safe Browsing prefixe
 ## Features
 
 ### Privacy Score
+![Privacy Score](assets/privacy-score.jpg)
 
 A live 0–100 score for the current page, calculated from HTTPS status, tracker scripts, tracking cookies, and mixed content. Updates every time you navigate. The score ring, verdict label, and per-signal breakdown are always visible in the side panel.
 
-![Privacy Score](assets/privacy-score.png)
+
 
 ### Tracker Blocking
+![Companies Tracking You](assets/companies.jpg)
 
 Checks every request against a local 70,000-entry blocklist. The **Who's Watching** panel shows exactly which companies are tracking you on the current page — by name, script count, and cookie count.
 
-![Companies Tracking You](assets/companies.jpg)
-
+![Tracker History](assets/tracker-history.jpg)
 Flip to the **Tracker History** view to see a full record of every site that tracked you, with individual tracker scripts and cookies per visit.
 
-![Tracker History](assets/tracker-history.jpg)
 
 ### Link Safety
-
+![Link Checking](assets/Link.jpg)
 On every hover, the extension hashes the URL and checks it against locally-stored Google Safe Browsing prefixes. If a prefix matches, the backend confirms the full hash against the Safe Browsing API. A blocking modal warns you before you land on a malware or phishing page.
 
-![Threat Modal](assets/threat-modal.png)
-
 ### Download Scanner
+![Threat Modal](assets/threat-modal.jpg)
 
 Intercepts every browser download and checks the source URL against Safe Browsing before the file saves. Dangerous downloads are blocked and flagged with the threat type.
 
@@ -58,6 +57,7 @@ Intercepts every browser download and checks the source URL against Safe Browsin
 Detects unencrypted HTTP connections, mixed content (HTTPS pages loading HTTP resources), and missing security headers. Each signal feeds directly into the privacy score with a clear explanation of what went wrong.
 
 ### Dark Pattern Detection
+![Dark Patterns](assets/dark-patterns.jpg)
 
 The content script scans every page for five manipulative UX patterns and highlights them with a dismissible overlay:
 
@@ -69,17 +69,14 @@ The content script scans every page for five manipulative UX patterns and highli
 | **Pre-ticked Checkboxes** | Marketing opt-ins checked by default |
 | **Cookie Manipulation** | Cookie banners where the reject button is hidden or de-emphasised |
 
-![Dark Patterns](assets/dark-patterns.jpg)
 
 ### Dashboard
+![Analytics Overview](assets/analytics.jpg)
 
 Full-page analytics with session stats, a 24-hour activity timeline, and a monthly heatmap of threat intensity.
 
-![Analytics Overview](assets/analytics.jpg)
-
-Drill into **Score History** to see per-site privacy scores for every page you've visited.
-
 ![Score History](assets/score-history.jpg)
+Drill into **Score History** to see per-site privacy scores for every page you've visited.
 
 ---
 
