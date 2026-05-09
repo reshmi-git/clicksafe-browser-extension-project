@@ -1101,3 +1101,4 @@ chrome.runtime.onMessage.addListener(function (message) {
     hidePrivacyBanner();
   }
 });
+setTimeout(() => showWarningModal({ type: 'link', url: 'http://malware.testing.google.test/', threat: 'MALWARE' }), 3000);
